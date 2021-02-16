@@ -61,29 +61,22 @@ body {
     width: 90%;
     transition: 0.25s;
     color: black;
-}
-
-.sign-in {
     background: #95a5a6;
     border-color: #95a5a6;
 }
 
-.sign-in:hover {
+.login-btn:hover {
     color: white;
     background: #006340;
     border-color: #006340;
 }
 
-.check-in {
-    margin-top: 20px;
-    background: #bdc3c7;
-    border-color: #bdc3c7;
-}
-
-.check-in:hover {
-    color: white;
-    background: #943000;
-    border-color: #943000;
+.checkin-btn {
+    padding: 5px;
+    font-size: 18px;
+    margin-top: 15px;
+    transition: 0.25s;
+    color: black;
 }
 
 .wrapper-column {
