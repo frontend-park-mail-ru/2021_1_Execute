@@ -1,0 +1,17 @@
+@media all and (min-width: 500px) {
+    body {
+        font-size: 320px !important;
+    }
+}
+
+@media all and (min-width: 700px) {
+    body {
+        font-size: 240px !important;
+    }
+}
+
+@media all and (min-width: 1200px) {
+    body {
+        font-size: 180px !important;
+    }
+}
