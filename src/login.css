@@ -70,8 +70,8 @@ body {
 
 .sign-in:hover {
     color: white;
-    background: #009863;
-    border-color: #009863;
+    background: #006340;
+    border-color: #006340;
 }
 
 .check-in {
@@ -82,8 +82,8 @@ body {
 
 .check-in:hover {
     color: white;
-    background: #E34A00;
-    border-color: #E34A00;
+    background: #943000;
+    border-color: #943000;
 }
 
 .wrapper {
