@@ -6,7 +6,7 @@ body {
     background-size: unset;
 }
 
-.login-box {
+.checkin-box {
     width: 280px;
     padding: 40px;
     position: absolute;
@@ -18,7 +18,7 @@ body {
     background-color: #ecf0f1;
 }
 
-.login-box h1 {
+.checkin-box h1 {
     border-bottom: 4px solid;
     font-size: 40px;
     margin: 0px 0 30px 0;
@@ -51,7 +51,7 @@ body {
     margin: 0 2px;
 }
 
-.login-btn {
+.checkin-btn {
     border: 2px solid;
     padding: 5px;
     font-size: 18px;
@@ -61,29 +61,14 @@ body {
     width: 90%;
     transition: 0.25s;
     color: black;
-}
-
-.sign-in {
     background: #95a5a6;
     border-color: #95a5a6;
 }
 
-.sign-in:hover {
+.checkin-btn:hover {
     color: white;
     background: #006340;
     border-color: #006340;
-}
-
-.check-in {
-    margin-top: 20px;
-    background: #bdc3c7;
-    border-color: #bdc3c7;
-}
-
-.check-in:hover {
-    color: white;
-    background: #943000;
-    border-color: #943000;
 }
 
 .wrapper-column {

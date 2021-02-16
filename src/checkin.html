@@ -3,13 +3,13 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Логин</title>
-    <link rel="stylesheet" href="login.css">
+    <title>Регистрация</title>
+    <link rel="stylesheet" href="checkin.css">
 </head>
 
 <body>
-    <div class="login-box">
-        <h1>Логин</h1>
+    <div class="checkin-box">
+        <h1>Регистрация</h1>
 
         <div class="textbox">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-fill"
@@ -27,10 +27,18 @@
             </svg>
             <input type="password" placeholder="Пароль" name="" value="">
         </div>
+
+        <div class="textbox">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lock-fill"
+                viewBox="0 0 16 16">
+                <path
+                    d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z" />
+            </svg>
+            <input type="password" placeholder="Повторите пароль" name="" value="">
+        </div>
         
         <div class="wrapper-column">
-            <input class="login-btn sign-in" type="button" name="" value="Войти">
-            <input class="login-btn check-in" type="button" name="" value="Регистрация" onclick="window.location='./checkin.html'">
+            <input class="checkin-btn" type="button" name="" value="Регистрация">
         </div>
 
     </div>
