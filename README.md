@@ -9,9 +9,11 @@
 
 ## Менторы
 - [Гавриленко Роман](https://github.com/gavroman)
-- [undefined](https://github.com/)
+- [Мария Богомолова](https://github.com/keithzetterstrom)
+- [Екатерина Придиус](https://github.com/pringleskate)
 
 ## Ссылка на проект
+- [Статика (fork)](https://iu9-trello.netlify.app/src/login.html)
 
 ## Репозиторий бекенда
-- [Бекенд](https://github.com/go-park-mail-ru/)
+- [Бекенд](https://github.com/go-park-mail-ru/2021_1_Execute)
