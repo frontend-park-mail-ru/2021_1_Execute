@@ -1,0 +1,33 @@
+.profile-avatar-big {
+    width: 200px;
+    height: 200px;
+}
+
+.profile-avatar-big img {
+    position: absolute;
+    background-position: center center;
+    background-size: cover;
+    width: 200px;
+    height: 200px;
+    border-radius: 100px;
+    margin-bottom: 10px;
+    transition: 0.25s;
+    object-fit: cover;
+}
+
+.profile-avatar-big:hover img {
+    border-radius: 50px;
+    opacity: 0.75;
+}
+
+.profile-avatar-big svg {
+    width: 200px;
+    height: 200px;
+    position: absolute;
+    opacity: 0;
+    transition: 0.25s;
+}
+
+.profile-avatar-big:hover svg {
+    opacity: 0.5;
+}
