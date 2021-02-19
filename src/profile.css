@@ -10,20 +10,21 @@
     width: 200px;
     height: 200px;
     border-radius: 100px;
-    margin-bottom: 10px;
     transition: 0.25s;
     object-fit: cover;
 }
 
 .profile-avatar-big:hover img {
-    border-radius: 50px;
+    border-radius: 15px;
     opacity: 0.75;
 }
 
 .profile-avatar-big svg {
-    width: 200px;
-    height: 200px;
-    position: absolute;
+    position: relative;
+    left: 50px;
+    top: 50px;
+    width: 100px;
+    height: 100px;
     opacity: 0;
     transition: 0.25s;
 }
