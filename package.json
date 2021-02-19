@@ -5,19 +5,6 @@
   "scripts": {
     "lint": "eslint --fix . && echo '  LINT OK'"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.js": [
-      "eslint --fix"
-    ],
-    "*.css": [
-      "stylelint --fix"
-    ]
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/frontend-park-mail-ru/2021_1_Execute.git"
@@ -30,7 +17,6 @@
   "homepage": "https://github.com/frontend-park-mail-ru/2021_1_Execute#readme",
   "devDependencies": {
     "eslint": "^7.20.0",
-    "husky": "^5.0.9",
     "stylelint": "^13.10.0",
     "stylelint-config-standard": "^20.0.0"
   }
