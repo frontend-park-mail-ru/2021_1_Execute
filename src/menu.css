@@ -1,4 +1,4 @@
-.menu-background {
+body {
   font-family: sans-serif;
   background-color: #34495e;
   background-size: unset;
@@ -20,7 +20,7 @@
 .menu-box h1 {
   border-bottom: 4px solid;
   font-size: 40px;
-  margin: 0 0 30px 0;
+  margin: 0 0 20px 0;
   padding: 13px 0;
 }
 
@@ -38,6 +38,7 @@
   height: 16px;
   float: left;
   text-align: center;
+  margin: 3px 5px;
 }
 
 .menu-textbox input {
@@ -51,7 +52,16 @@
   margin: 0 2px;
 }
 
-.menu-green-btn {
+.menu-textbox input::placeholder {
+  color: auto;
+  transition: 0.25s;
+}
+
+.menu-textbox:hover input::placeholder {
+  color: #1e4270;
+}
+
+.menu-btn {
   border: 2px solid;
   padding: 5px;
   font-size: 18px;
@@ -65,13 +75,19 @@
   border-color: #95a5a6;
 }
 
-.menu-green-btn:hover {
+.menu-btn-green:hover {
   color: white;
   background: #006340;
   border-color: #006340;
 }
 
-.menu-red-linebtn {
+.menu-btn-red:hover {
+  color: white;
+  background: #e34a00;
+  border-color: #e34a00;
+}
+
+.menu-linebtn-red {
   padding: 5px;
   font-size: 18px;
   margin-top: 15px;
@@ -79,8 +95,8 @@
   color: black;
 }
 
-.menu-red-linebtn:hover {
-  color: red;
+.menu-linebtn-red:hover {
+  color: #e34a00;
 }
 
 .menu-wrapper-column {
