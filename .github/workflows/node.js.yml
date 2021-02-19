@@ -22,4 +22,3 @@ jobs:
     - run: npm ci
     - run: npm run stylelint
     - run: npm run eslint
-    
