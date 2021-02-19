@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Frontend репозиторий",
   "scripts": {
-    "lint": "eslint --fix . && echo '  LINT OK'"
+    "lint": "eslint --fix . && stylelint --fix '**/*.css' && echo '  LINT OK'"
   },
   "repository": {
     "type": "git",
@@ -17,6 +17,8 @@
   "homepage": "https://github.com/frontend-park-mail-ru/2021_1_Execute#readme",
   "devDependencies": {
     "eslint": "^7.20.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1",
     "stylelint": "^13.10.0",
     "stylelint-config-standard": "^20.0.0"
   }
