@@ -13,6 +13,9 @@
   "lint-staged": {
     "*.js": [
       "eslint --fix"
+    ],
+    "*.css": [
+      "stylelint --fix"
     ]
   },
   "repository": {
