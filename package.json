@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "Frontend репозиторий",
   "scripts": {
-    "lint": "eslint --fix . && stylelint --fix '**/*.css' && echo '  LINT OK'"
+    "lint": "eslint --fix . && stylelint --fix '**/*.css' && echo '  LINT OK'",
+    "stylelint": "stylelint '**/*.css'",
+    "eslint": "eslint '**/*.js'"
   },
   "repository": {
     "type": "git",
