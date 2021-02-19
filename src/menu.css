@@ -1,106 +1,106 @@
 body {
-    font-family: sans-serif;
-    background-color: #34495e;
-    background-size: unset;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  font-family: sans-serif;
+  background-color: #34495e;
+  background-size: unset;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .menu-box {
-    width: 280px;
-    padding: 40px;
-    border-radius: 5px;
-    color: black;
-    background-color: #ecf0f1;
-    box-shadow: 0 0 10px;
+  width: 280px;
+  padding: 40px;
+  border-radius: 5px;
+  color: black;
+  background-color: #ecf0f1;
+  box-shadow: 0 0 10px;
 }
 
 .menu-box h1 {
-    border-bottom: 4px solid;
-    font-size: 40px;
-    margin: 0 0 20px 0;
-    padding: 13px 0;
+  border-bottom: 4px solid;
+  font-size: 40px;
+  margin: 0 0 20px 0;
+  padding: 13px 0;
 }
 
 .menu-textbox {
-    width: 100%;
-    overflow: hidden;
-    font-size: 20px;
-    padding: 8px 0;
-    margin: 8px 0;
-    border-bottom: 1px solid;
+  width: 100%;
+  overflow: hidden;
+  font-size: 20px;
+  padding: 8px 0;
+  margin: 8px 0;
+  border-bottom: 1px solid;
 }
 
 .menu-textbox svg {
-    width: 16px;
-    height: 16px;
-    float: left;
-    text-align: center;
-    margin: 3px 5px;
+  width: 16px;
+  height: 16px;
+  float: left;
+  text-align: center;
+  margin: 3px 5px;
 }
 
 .menu-textbox input {
-    border: none;
-    outline: none;
-    background: none;
-    color: black;
-    font-size: 18px;
-    width: 80%;
-    float: left;
-    margin: 0 2px;
+  border: none;
+  outline: none;
+  background: none;
+  color: black;
+  font-size: 18px;
+  width: 80%;
+  float: left;
+  margin: 0 2px;
 }
 
 .menu-textbox input::placeholder {
-    color: auto;
-    transition: 0.25s;
+  color: auto;
+  transition: 0.25s;
 }
 
 .menu-textbox:hover input::placeholder {
-    color: #1E4270;
+  color: #1e4270;
 }
 
 .menu-btn {
-    border: 2px solid;
-    padding: 5px;
-    font-size: 18px;
-    margin-top: 30px;
-    cursor: pointer;
-    border-radius: 5px;
-    width: 90%;
-    transition: 0.25s;
-    color: black;
-    background: #95a5a6;
-    border-color: #95a5a6;
+  border: 2px solid;
+  padding: 5px;
+  font-size: 18px;
+  margin-top: 30px;
+  cursor: pointer;
+  border-radius: 5px;
+  width: 90%;
+  transition: 0.25s;
+  color: black;
+  background: #95a5a6;
+  border-color: #95a5a6;
 }
 
 .menu-btn-green:hover {
-    color: white;
-    background: #006340;
-    border-color: #006340;
+  color: white;
+  background: #006340;
+  border-color: #006340;
 }
 
 .menu-btn-red:hover {
-    color: white;
-    background: #E34A00;
-    border-color: #E34A00;
+  color: white;
+  background: #e34a00;
+  border-color: #e34a00;
 }
 
 .menu-linebtn-red {
-    padding: 5px;
-    font-size: 18px;
-    margin-top: 15px;
-    transition: 0.25s;
-    color: black;
+  padding: 5px;
+  font-size: 18px;
+  margin-top: 15px;
+  transition: 0.25s;
+  color: black;
 }
 
 .menu-linebtn-red:hover {
-    color: #E34A00;
+  color: #e34a00;
 }
 
 .menu-wrapper-column {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }

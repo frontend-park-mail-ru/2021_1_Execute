@@ -1,0 +1,32 @@
+{
+  "name": "2021_1_execute",
+  "version": "1.0.0",
+  "description": "Frontend репозиторий",
+  "scripts": {
+    "lint": "eslint --fix . && stylelint --fix '**/*.css' && echo '  LINT OK'",
+    "stylelint": "stylelint '**/*.css'",
+    "eslint": "eslint '**/*.js'"
+  },
+  "hooks": {
+    "pre-commit": "lint-staged"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/frontend-park-mail-ru/2021_1_Execute.git"
+  },
+  "author": "EXECUTE",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/frontend-park-mail-ru/2021_1_Execute/issues"
+  },
+  "homepage": "https://github.com/frontend-park-mail-ru/2021_1_Execute#readme",
+  "devDependencies": {
+    "eslint": "^7.20.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1",
+    "husky": "^5.0.9",
+    "lint-staged": "^10.5.4",
+    "stylelint": "^13.10.0",
+    "stylelint-config-standard": "^20.0.0"
+  }
+}
