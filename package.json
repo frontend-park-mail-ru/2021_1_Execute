@@ -7,7 +7,8 @@
     "lint-fix": "eslint --fix '**/*.js' && stylelint --fix '**/*.css' && echo '  LINT OK'",
     "stylelint": "stylelint '**/*.css'",
     "eslint": "eslint '**/*.js'",
-    "template": "find . -name \"*.handlebars\" -exec handlebars {} -f {}.js \\;"
+    "template": "find . -name \"*.handlebars\" -exec handlebars {} -f {}.js \\;",
+    "start": "npm run template && node server.js"
   },
   "hooks": {
     "pre-commit": "nmp run lint"
