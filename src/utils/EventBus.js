@@ -54,13 +54,13 @@ export default class EventBus {
    * @throws ошибка, если передано невалидное имя события
    * @throws ошибка, если событию не назначен обработчик
    */
-  call(eventName, data) {
+  call(eventName) {
     if (this.validateEventName(eventName)) {
       throw new Error('Invalid event name');
     }
     if (!this.events.has(eventName)) {
       throw new Error('Missing handler');
     }
-    this.events.get(eventName)(data);
+    return this.events.get(eventName);
   }
 }
