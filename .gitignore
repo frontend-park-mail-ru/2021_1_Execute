@@ -73,3 +73,6 @@ dist
 
 #jetbrains
 .idea/
+
+#templates
+*.handlebars.js

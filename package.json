@@ -6,7 +6,9 @@
     "lint": "eslint '**/*.js' && stylelint  '**/*.css' && echo '  LINT OK'",
     "lint-fix": "eslint --fix '**/*.js' && stylelint --fix '**/*.css' && echo '  LINT OK'",
     "stylelint": "stylelint '**/*.css'",
-    "eslint": "eslint '**/*.js'"
+    "eslint": "eslint '**/*.js'",
+    "template": "find . -name \"*.handlebars\" -exec handlebars {} -f {}.js \\;",
+    "start": "npm run template && node server.js"
   },
   "hooks": {
     "pre-commit": "nmp run lint"
@@ -25,6 +27,7 @@
     "eslint": "^7.20.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.22.1",
+    "handlebars": "^4.7.7",
     "husky": "^5.0.9",
     "stylelint": "^13.10.0",
     "stylelint-config-standard": "^20.0.0"
