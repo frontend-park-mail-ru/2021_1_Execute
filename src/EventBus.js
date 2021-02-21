@@ -28,7 +28,7 @@ export default class EventBus {
       throw new Error('Invalid event name');
     }
     if (typeof handler !== 'function') {
-      throw new Error('handler must be function');
+      throw new Error('Handler must be a function');
     }
     this.events.set(eventName, handler);
   }
@@ -59,7 +59,7 @@ export default class EventBus {
       throw new Error('Invalid event name');
     }
     if (!this.events.has(eventName)) {
-      throw new Error('missing handler');
+      throw new Error('Missing handler');
     }
     this.events.get(eventName)(data);
   }
