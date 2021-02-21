@@ -53,6 +53,7 @@ export default class EventBus {
    * @param  {*} data - данные для функции-обработчика события
    * @throws ошибка, если передано невалидное имя события
    * @throws ошибка, если событию не назначен обработчик
+   * @returns {function} - функция-обработчик события
    */
   call(eventName) {
     if (this.validateEventName(eventName)) {
