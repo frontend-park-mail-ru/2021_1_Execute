@@ -12,4 +12,4 @@ testItem.classList.add('menu-box');
   testItem.append(testItemH1.cloneNode(true));
 }
 
-root.append(testItem)
+root.append(testItem);
