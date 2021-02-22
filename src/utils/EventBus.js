@@ -3,9 +3,7 @@
  * @param  {string} eventName - имя события
  * @returns {boolean} - валидно или нет имя события
  */
-function validateEventName(eventName) {
-  return typeof eventName === 'string';
-}
+const validateEventName = (eventName) => typeof eventName === 'string';
 
 /**
  * Класс представляет собой шину событий
