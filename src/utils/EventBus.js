@@ -1,19 +1,19 @@
 /**
+ * Функция проверяет имя события
+ * @param  {string} eventName - имя события
+ * @returns {boolean} - валидно или нет имя события
+ */
+function validateEventName(eventName) {
+  return typeof eventName === 'string';
+}
+
+/**
  * Класс представляет собой шину событий
  * @class EventBus
  */
 export default class EventBus {
   constructor() {
     this.events = new Map();
-  }
-
-  /**
-   * Функция проверяет имя события
-   * @param  {string} eventName - имя события
-   * @returns {boolean} - валидно или нет имя события
-   */
-  static validateEventName(eventName) {
-    return typeof eventName === 'string';
   }
 
   /**
@@ -24,7 +24,7 @@ export default class EventBus {
    * @throws ошибка, если переданный обработчик события - не функция
    */
   subscribe(eventName, handler) {
-    if (this.validateEventName(eventName)) {
+    if (validateEventName(eventName)) {
       throw new Error('Invalid event name');
     }
     if (typeof handler !== 'function') {
@@ -39,7 +39,7 @@ export default class EventBus {
    * @throws ошибка, если передано невалидное имя события
    */
   unsubscribe(eventName) {
-    if (this.validateEventName(eventName)) {
+    if (validateEventName(eventName)) {
       throw new Error('Invalid event name');
     }
     if (this.events.has(eventName)) {
@@ -50,18 +50,18 @@ export default class EventBus {
   /**
    * Метод позволяет вызвать функцию-обработчик события с переданными данными
    * @param  {string} eventName - имя события
-   * @param  {*} data - данные для функции-обработчика события
+   * @param  {Object} data - данные для функции-обработчика события
    * @throws ошибка, если передано невалидное имя события
    * @throws ошибка, если событию не назначен обработчик
    * @returns {function} - функция-обработчик события
    */
-  call(eventName) {
-    if (this.validateEventName(eventName)) {
+  call(eventName, data) {
+    if (validateEventName(eventName)) {
       throw new Error('Invalid event name');
     }
     if (!this.events.has(eventName)) {
       throw new Error('Missing handler');
     }
-    return this.events.get(eventName);
+    this.events.get(eventName)(data);
   }
 }
