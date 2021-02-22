@@ -1,11 +1,11 @@
-import './login.handlebars.js';
+import './registration.handlebars.js';
 import ValidationModule from '../validation/validation.js';
 
-export default class LoginModule {
+export default class RegistrationModule {
   /**
    * @param router {!Router}
    * @param root {!HTMLElement}
-   * @return {!LoginModule}
+   * @return {!ProfileModule}
    */
   constructor(router, root) {
     this.router = router;
@@ -16,21 +16,27 @@ export default class LoginModule {
    * Render site by data
    */
   render(data) {
-    ValidationModule.exitProfile(data);
-    window.history.pushState({ urlPath: window.location.pathname }, null, '/login');
+    if (ValidationModule.correctLoginProfile(data)) {
+      return false;
+    }
+    window.history.pushState({ urlPath: window.location.pathname }, null, '/registration');
     // eslint-disable-next-line no-undef
-    this.root.innerHTML = Handlebars.templates.login(data);
+    this.root.innerHTML = Handlebars.templates.registration(data);
 
+    const inputEmail = document.getElementById('e-mail');
     const inputUserName = document.getElementById('username');
     const inputPassword = document.getElementById('password');
+    const inputRepeatPassword = document.getElementById('repeat-password');
     const buttonEnter = document.getElementById('enter');
-    const buttonGotoRegistration = document.getElementById('goto-registration');
+    const buttonGotoLogin = document.getElementById('goto-login');
 
     const allFocusElem = [
+      { elem: inputEmail, script: () => buttonEnter.click() },
       { elem: inputUserName, script: () => buttonEnter.click() },
       { elem: inputPassword, script: () => buttonEnter.click() },
+      { elem: inputRepeatPassword, script: () => buttonEnter.click() },
       { elem: buttonEnter, script: () => buttonEnter.click() },
-      { elem: buttonGotoRegistration, script: () => buttonGotoRegistration.click() },
+      { elem: buttonGotoLogin, script: () => buttonGotoLogin.click() },
     ];
 
     const changeFocus = (index) => (event) => {
@@ -58,31 +64,17 @@ export default class LoginModule {
     allFocusElem.forEach(({ elem }, index) => elem.addEventListener('keydown', changeFocus(index)));
     allFocusElem[0].elem.focus();
 
-    inputUserName.dataset.numtimeout = 0;
-    inputPassword.dataset.numtimeout = 0;
-
     buttonEnter.addEventListener('click', () => {
+      // console.log(inputEmail.parentElement);
+      // inputEmail.parentElement.style = 'color:green';
+      data.email = inputEmail.value;
       data.username = inputUserName.value;
       data.password = inputPassword.value;
-      if (!this.router.call('/profile')()) {
-        inputUserName.parentElement.style = 'color:red';
-        inputPassword.parentElement.style = 'color:red';
-
-        inputUserName.dataset.numtimeout -= -1;
-        inputPassword.dataset.numtimeout -= -1;
-        setTimeout(() => {
-          inputUserName.dataset.numtimeout -= 1;
-          inputPassword.dataset.numtimeout -= 1;
-          if (inputUserName.dataset.numtimeout === '0') {
-            inputUserName.parentElement.style = '';
-            inputPassword.parentElement.style = '';
-          }
-        }, 2 * 1000);
-      }
+      this.router.call('/profile')();
     });
 
-    buttonGotoRegistration.addEventListener('click', () => {
-      this.router.call('/registration')();
+    buttonGotoLogin.addEventListener('click', () => {
+      this.router.call('/login')();
     });
 
     return true;
