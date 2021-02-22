@@ -58,8 +58,8 @@ body {
   transition: 0.25s;
 }
 
-.menu-textbox:hover input::placeholder, .menu-textbox:focus input::placeholder {
-  color: #494949;
+.menu-textbox:hover input::placeholder, .menu-textbox input:focus::placeholder {
+  color: #252525;
 }
 
 .menu-btn {
