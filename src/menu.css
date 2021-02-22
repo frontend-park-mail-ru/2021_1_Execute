@@ -57,8 +57,8 @@ body {
   transition: 0.25s;
 }
 
-.menu-textbox:hover input::placeholder {
-  color: #1e4270;
+.menu-textbox:hover input::placeholder, .menu-textbox:focus input::placeholder {
+  color: #494949;
 }
 
 .menu-btn {
@@ -75,27 +75,32 @@ body {
   border-color: #95a5a6;
 }
 
-.menu-btn-green:hover {
+.menu-btn-green:hover, .menu-btn-green:focus {
   color: white;
   background: #006340;
   border-color: #006340;
 }
 
-.menu-btn-red:hover {
+.menu-btn-red:hover, .menu-btn-red:focus {
   color: white;
   background: #e34a00;
   border-color: #e34a00;
 }
 
 .menu-linebtn-red {
-  padding: 5px;
+  cursor: pointer;
+  border: 0;
+  padding: 0;
+  width: 90%;
   font-size: 18px;
-  margin-top: 15px;
+  margin-top: 20px;
+  text-decoration: underline;
   transition: 0.25s;
+  background: fixed;
   color: black;
 }
 
-.menu-linebtn-red:hover {
+.menu-linebtn-red:hover, .menu-linebtn-red:focus {
   color: #e34a00;
 }
 
