@@ -82,8 +82,8 @@ body {
 
 .menu-btn-orange {
   color: black;
-  background: #E38C00;
-  border-color: #E38C00;
+  background: #e38c00;
+  border-color: #e38c00;
 }
 
 .menu-btn-red {
@@ -106,14 +106,14 @@ body {
 
 .menu-btn-active-orange:hover {
   color: white;
-  background: #E38C00;
-  border-color: #E38C00;
+  background: #e38c00;
+  border-color: #e38c00;
 }
 
 .menu-btn-active-orange:active {
   color: white;
-  background: #F1AC3C;
-  border-color: #F1AC3C;
+  background: #f1ac3c;
+  border-color: #f1ac3c;
 }
 
 .menu-btn-active-red:hover {
@@ -124,8 +124,8 @@ body {
 
 .menu-btn-active-red:active {
   color: white;
-  background: #F1773C;
-  border-color: #F1773C;
+  background: #f1773c;
+  border-color: #f1773c;
 }
 
 .menu-linebtn {
@@ -148,7 +148,7 @@ body {
 }
 
 .menu-linebtn-orange {
-  color: #E38C00;
+  color: #e38c00;
 }
 
 .menu-linebtn-red {
