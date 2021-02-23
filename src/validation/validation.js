@@ -120,9 +120,7 @@ export default class ValidationModule {
    * @return {boolean}
    */
   static correctChangeProfile(profile, newProfile) {
-    console.log('kek1');
     if (profile.validate === this.UNCORRECT_SERVERANS) {
-      console.log('kek2');
       return false;
     }
     this.correctUserName(newProfile);
@@ -138,10 +136,8 @@ export default class ValidationModule {
       && newProfile.correct_email === this.CORRECT_PARSE
       && newProfile.correct_repeatPassword === this.CORRECT_PARSE)) {
       newProfile.validate = this.UNCORRECT_PARSE;
-      console.log('kek3');
       return false;
     }
-    console.log('kek4');
 
     // Пусть тут запрос к серверу
     const askServer = (_profile, _newProfile) => {
@@ -158,8 +154,6 @@ export default class ValidationModule {
       console.log('Server ans:', idealProfile);
       return idealProfile;
     };
-
-    console.log('kek5');
 
     const idealProfile = askServer(profile, newProfile);
     if (idealProfile !== undefined) {
