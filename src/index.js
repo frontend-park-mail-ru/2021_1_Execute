@@ -1,27 +1,28 @@
-import LoginModule from './login/login.js';
-import ProfileModule from './profile/profile.js';
-import RegistrationModule from './registration/registration.js';
+import LoginController from './login/loginController.js';
+import ProfileController from './profile/profileController.js';
+import RegistrationController from './registration/registrationController.js';
 
 const root = document.getElementById('root');
-const data = {};
 const router = {
   m: new Map(),
-  call(path) {
-    return this.m.get(path);
+  go(path, ...data) {
+    window.history.pushState({ urlPath: window.location.pathname }, null, path);
+    return this.m.get(path)(...data);
   },
   subscribe(path, func) {
     this.m.set(path, func);
   },
 };
+const profile = {};
 
-const loginModule = new LoginModule(router, root);
-const profileModule = new ProfileModule(router, root);
-const registrationModule = new RegistrationModule(router, root);
+const loginController = new LoginController(router, root);
+const profileController = new ProfileController(router, root);
+const registrationController = new RegistrationController(router, root);
 
-router.subscribe('/login', () => loginModule.render(data));
-router.subscribe('/', () => router.call('/login')());
-router.subscribe('/profile', () => profileModule.render(data));
-router.subscribe('/registration', () => registrationModule.render(data));
+router.subscribe('/login', () => loginController.start(profile));
+router.subscribe('/', () => router.go('/login', profile));
+router.subscribe('/profile', () => profileController.start(profile));
+router.subscribe('/registration', () => registrationController.start(profile));
 
 const tryToConnect = [window.location.pathname, '/login', '/profile'];
-tryToConnect.some((path) => router.call(path)());
+tryToConnect.some((path) => router.go(path, profile));
