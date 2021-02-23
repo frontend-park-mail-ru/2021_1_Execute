@@ -2,20 +2,20 @@ import EventBus from './EventBus.js';
 
 export default class Router {
   constructor() {
-    this.EventBus = new EventBus();
+    this.routes = new EventBus();
   }
 
-  subscribe(path, handler) {
-    this.EventBus.subscribe(path, handler);
+  addRoute(path, handler) {
+    this.routes.subscribe(path, handler);
   }
 
-  unsubscribe(path) {
-    this.EventBus.unsubscribe(path);
+  deleteRoute(path) {
+    this.routes.unsubscribe(path);
   }
 
   go(path, ...data) {
     this.addHistoryRecord(path);
-    this.EventBus.call(path, ...data);
+    this.routes.call(path, ...data);
   }
 
   static addHistoryRecord(path, state = { urlPath: window.location.pathname }) {
