@@ -11,6 +11,7 @@
         "ecmaVersion": 11,
         "sourceType": "module"
     },
+    "ignorePatterns": ["*.handlebars.js"],
     "rules": {
         "curly": [
             "error",

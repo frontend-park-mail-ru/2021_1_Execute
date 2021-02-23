@@ -31,6 +31,7 @@ body {
   padding: 8px 0;
   margin: 8px 0;
   border-bottom: 1px solid;
+  transition: 0.25s;
 }
 
 .menu-textbox svg {
@@ -39,6 +40,7 @@ body {
   float: left;
   text-align: center;
   margin: 3px 5px;
+  transition: none;
 }
 
 .menu-textbox input {
@@ -57,8 +59,8 @@ body {
   transition: 0.25s;
 }
 
-.menu-textbox:hover input::placeholder {
-  color: #1e4270;
+.menu-textbox:hover input::placeholder, .menu-textbox input:focus::placeholder {
+  color: #252525;
 }
 
 .menu-btn {
@@ -70,32 +72,90 @@ body {
   border-radius: 5px;
   width: 90%;
   transition: 0.25s;
+}
+
+.menu-btn-grey {
   color: black;
   background: #95a5a6;
   border-color: #95a5a6;
 }
 
-.menu-btn-green:hover {
+.menu-btn-orange {
+  color: black;
+  background: #e38c00;
+  border-color: #e38c00;
+}
+
+.menu-btn-red {
+  color: black;
+  background: #e34a00;
+  border-color: #e34a00;
+}
+
+.menu-btn-active-green:hover {
   color: white;
   background: #006340;
   border-color: #006340;
 }
 
-.menu-btn-red:hover {
+.menu-btn-active-green:active {
+  color: white;
+  background: #009863;
+  border-color: #009863;
+}
+
+.menu-btn-active-orange:hover {
+  color: white;
+  background: #e38c00;
+  border-color: #e38c00;
+}
+
+.menu-btn-active-orange:active {
+  color: white;
+  background: #f1ac3c;
+  border-color: #f1ac3c;
+}
+
+.menu-btn-active-red:hover {
   color: white;
   background: #e34a00;
   border-color: #e34a00;
 }
 
-.menu-linebtn-red {
-  padding: 5px;
+.menu-btn-active-red:active {
+  color: white;
+  background: #f1773c;
+  border-color: #f1773c;
+}
+
+.menu-linebtn {
+  cursor: pointer;
+  border: 0;
+  padding: 0 10px;
   font-size: 18px;
-  margin-top: 15px;
+  margin-top: 20px;
+  text-decoration: underline;
   transition: 0.25s;
+  background: fixed;
+}
+
+.menu-linebtn-black {
   color: black;
 }
 
-.menu-linebtn-red:hover {
+.menu-linebtn-green {
+  color: #006340;
+}
+
+.menu-linebtn-orange {
+  color: #e38c00;
+}
+
+.menu-linebtn-red {
+  color: #e34a00;
+}
+
+.menu-linebtn-active-red:hover {
   color: #e34a00;
 }
 

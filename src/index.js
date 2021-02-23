@@ -1,13 +1,22 @@
+import LoginController from './login/loginController.js';
+
 const root = document.getElementById('root');
+const router = {
+  m: new Map(),
+  go(path, ...data) {
+    window.history.pushState({ urlPath: window.location.pathname }, null, path);
+    return this.m.get(path)(...data);
+  },
+  subscribe(path, func) {
+    this.m.set(path, func);
+  },
+};
+const profile = {};
 
-const testItem = document.createElement('div');
-testItem.classList.add('menu-box');
+const loginController = new LoginController(router, root);
 
-const testItemH1 = document.createElement('h1');
-testItemH1.innerText = 'Тест';
+router.subscribe('/', () => router.go('/login', profile));
+router.subscribe('/login', () => loginController.start(profile));
 
-testItem.append(testItemH1);
-testItem.append(testItemH1.cloneNode());
-testItem.append(testItemH1.cloneNode(true));
-
-root.append(testItem);
+const tryToConnect = [window.location.pathname, '/login', '/profile'];
+tryToConnect.some((path) => router.go(path, profile));
