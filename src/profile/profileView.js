@@ -33,12 +33,6 @@ export default class ProfileView {
         inputEMail.value, inputUserName.value, inputPassword.value, inputRepeatPassword.value);
     });
 
-    this.eventBus.subscribe('profile-success', () => {
-      TemporaryReplacement.forTwoSeconds(inputUserName.parentElement.style, 'color', '#009863');
-      TemporaryReplacement.forTwoSeconds(buttonChangeData, 'className', 'menu-linebtn menu-linebtn-green');
-      TemporaryReplacement.forTwoSeconds(buttonChangeData, 'innerText', 'Имя изменяно');
-    });
-
     this.eventBus.subscribe('profile-warning', (newProfile) => {
       if (newProfile.correct_email === ValidationModule.UNCORRECT_PARSE) {
         TemporaryReplacement.forTwoSeconds(inputEMail.parentElement.style, 'color', '#E38C00');
@@ -60,6 +54,14 @@ export default class ProfileView {
       TemporaryReplacement.forTwoSeconds(inputUserName.parentElement.style, 'color', '#e34a00');
       TemporaryReplacement.forTwoSeconds(buttonChangeData, 'className', 'menu-linebtn menu-linebtn-red');
       TemporaryReplacement.forTwoSeconds(buttonChangeData, 'innerText', 'Имя занято');
+    });
+
+    this.eventBus.subscribe('profile-success', () => {
+      TemporaryReplacement.forTwoSeconds(inputUserName.parentElement.style, 'color', '#009863');
+      TemporaryReplacement.forTwoSeconds(inputPassword.parentElement.style, 'color', '#009863');
+      TemporaryReplacement.forTwoSeconds(inputRepeatPassword.parentElement.style, 'color', '#009863');
+      TemporaryReplacement.forTwoSeconds(buttonChangeData, 'className', 'menu-linebtn menu-linebtn-green');
+      TemporaryReplacement.forTwoSeconds(buttonChangeData, 'innerText', 'Данные изменены');
     });
   }
 }

@@ -17,9 +17,9 @@ export default class ProfileModel {
       email, username, password, repeatPassword,
     };
     ValidationModule.correctChangeProfile(this.profile, newProfile);
-    switch (this.profile.validate) {
+    switch (newProfile.validate) {
       case ValidationModule.UNCORRECT_PARSE:
-        this.eventBus.call('profile-warning');
+        this.eventBus.call('profile-warning', newProfile);
         break;
       case ValidationModule.UNCORRECT_SERVERANS:
         this.eventBus.call('profile-error');
