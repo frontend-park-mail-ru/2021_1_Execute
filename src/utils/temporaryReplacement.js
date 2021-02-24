@@ -1,37 +1,62 @@
-/* eslint-disable no-underscore-dangle */
+function runNowAndAfterNSeconds(sriptNow, scriptAfter, n) {
+  sriptNow();
+  setTimeout(scriptAfter, n * 1000);
+}
+
 export default class TemporaryReplacement {
-  /**
-   * Заменяет на N секунд значение в obj[prop] на replacement.
-   * Вызов во время ожидания ни к чему не приведет.
-   * Использует в obj поле temporaryReplacement.
-   * @param {*} obj
-   * @param {*} prop
-   * @param {*} replacement
-   */
-  static forNSeconds(obj, prop, replacement, n) {
-    if (!obj.temporaryReplacement) {
-      obj.temporaryReplacement = {};
-    }
-    if (!obj.temporaryReplacement[prop]) {
-      obj.temporaryReplacement[prop] = true;
-      const oldValue = obj[prop];
-      obj[prop] = replacement;
-      setTimeout(() => {
-        obj[prop] = oldValue;
-        obj.temporaryReplacement[prop] = false;
-      }, n * 1000);
-    }
+  static makeChecker(obj) {
+    return Object.keys(obj).reduce((checker, key) => {
+      checker[key] = {};
+      return checker;
+    }, {});
   }
 
-  /**
-   * Заменяет на 2 секунды значение в obj[prop] на replacement.
-   * Вызов во время ожидания ни к чему не приведет.
-   * Использует в obj поле temporaryReplacement.
-   * @param {*} obj
-   * @param {*} prop
-   * @param {*} replacement
-   */
-  static forTwoSeconds(obj, prop, replacement) {
-    this.forNSeconds(obj, prop, replacement, 2);
+  static get InObjectProperty() {
+    return class {
+      static forNSeconds(obj, nameProp, replacement, checker, n) {
+        if (!checker[nameProp]) {
+          checker[nameProp] = {};
+        }
+        if (!checker[nameProp].blockTR) {
+          runNowAndAfterNSeconds(() => {
+            checker[nameProp].blockTR = true;
+            checker[nameProp].valueTR = obj[nameProp];
+            obj[nameProp] = replacement;
+          }, () => {
+            obj[nameProp] = checker[nameProp].valueTR;
+            checker[nameProp].blockTR = false;
+          }, n);
+        }
+      }
+
+      static forTwoSeconds(obj, prop, replacement, checker) {
+        this.forNSeconds(obj, prop, replacement, checker, 2);
+      }
+    };
+  }
+
+  static get InElementClass() {
+    return class {
+      static forNSeconds(elem, classNamesAdd, classNamesDelete, checker, n) {
+        if (!checker.add) {
+          checker.add = {};
+        }
+        if (!checker.add.blockTR) {
+          runNowAndAfterNSeconds(() => {
+            checker.add.blockTR = true;
+            elem.classList.remove(...classNamesDelete);
+            elem.classList.add(...classNamesAdd);
+          }, () => {
+            elem.classList.remove(...classNamesAdd);
+            elem.classList.add(...classNamesDelete);
+            checker.add.blockTR = false;
+          }, n);
+        }
+      }
+
+      static forTwoSeconds(elem, classNamesAdd, classNamesDelete, checker) {
+        this.forNSeconds(elem, classNamesAdd, classNamesDelete, checker, 2);
+      }
+    };
   }
 }

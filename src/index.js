@@ -1,22 +1,13 @@
 import LoginController from './login/loginController.js';
+import Router from './utils/router.js';
 
 const root = document.getElementById('root');
-const router = {
-  m: new Map(),
-  go(path, ...data) {
-    window.history.pushState({ urlPath: window.location.pathname }, null, path);
-    return this.m.get(path)(...data);
-  },
-  subscribe(path, func) {
-    this.m.set(path, func);
-  },
-};
+const router = new Router();
 const profile = {};
 
 const loginController = new LoginController(router, root);
 
-router.subscribe('/', () => router.go('/login', profile));
-router.subscribe('/login', () => loginController.start(profile));
+router.addRoute('/', () => router.go('/login', profile));
+router.addRoute('/login', () => loginController.start(profile));
 
-const tryToConnect = [window.location.pathname, '/login', '/profile'];
-tryToConnect.some((path) => router.go(path, profile));
+router.go(window.location.pathname);

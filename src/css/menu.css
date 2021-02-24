@@ -1,6 +1,33 @@
+:root {
+  --red-dark: #943000;
+  --red-grey: #aa542b;
+  --red: #e34a00;
+  --red-bright: #f1773c;
+  --red-light: #f1976c;
+  --yellow-dark: #945b00;
+  --yellow-grey: #aa7a2b;
+  --yellow: #e38c00;
+  --yellow-bright: #f1ac3c;
+  --yellow-light: #f1be6c;
+  --green-dark: #006340;
+  --green-grey: #1d7254;
+  --green: #009863;
+  --green-bright: #33cc96;
+  --green-light: #5ccca4;
+  --blue-dark: #012b61;
+  --blue-grey: #1e4270;
+  --blue: #034395;
+  --blue-bright: #3677ca;
+  --blue-light: #5d8dca;
+  --body-bg-color: #34495e;
+  --box-bg-color: #ecf0f1;
+  --btn-grey-color: #95a5a6;
+  --text-placeholder-color: #252525;
+}
+
 body {
   font-family: sans-serif;
-  background-color: #34495e;
+  background-color: var(--body-bg-color);
   background-size: unset;
   height: 100vh;
   display: flex;
@@ -13,7 +40,7 @@ body {
   padding: 40px;
   border-radius: 5px;
   color: black;
-  background-color: #ecf0f1;
+  background-color: var(--box-bg-color);
   box-shadow: 0 0 10px;
 }
 
@@ -32,6 +59,10 @@ body {
   margin: 8px 0;
   border-bottom: 1px solid;
   transition: 0.25s;
+}
+
+.menu-textbox-warning {
+  color: var(--yellow);
 }
 
 .menu-textbox svg {
@@ -55,12 +86,11 @@ body {
 }
 
 .menu-textbox input::placeholder {
-  color: auto;
   transition: 0.25s;
 }
 
 .menu-textbox:hover input::placeholder, .menu-textbox input:focus::placeholder {
-  color: #252525;
+  color: var(--text-placeholder-color);
 }
 
 .menu-btn {
@@ -76,56 +106,65 @@ body {
 
 .menu-btn-grey {
   color: black;
-  background: #95a5a6;
-  border-color: #95a5a6;
+  background: var(--btn-grey-color);
+  border-color: var(--btn-grey-color);
 }
 
-.menu-btn-orange {
+.menu-btn-active-green:focus {
   color: black;
-  background: #e38c00;
-  border-color: #e38c00;
-}
-
-.menu-btn-red {
-  color: black;
-  background: #e34a00;
-  border-color: #e34a00;
+  background: var(--green);
+  border-color: var(--green);
 }
 
 .menu-btn-active-green:hover {
   color: white;
-  background: #006340;
-  border-color: #006340;
+  background: var(--green-dark);
+  border-color: var(--green-dark);
 }
 
 .menu-btn-active-green:active {
+  transition: 0.1s;
   color: white;
-  background: #009863;
-  border-color: #009863;
+  background: var(--green);
+  border-color: var(--green);
 }
 
-.menu-btn-active-orange:hover {
-  color: white;
-  background: #e38c00;
-  border-color: #e38c00;
-}
-
-.menu-btn-active-orange:active {
-  color: white;
-  background: #f1ac3c;
-  border-color: #f1ac3c;
+.menu-btn-active-red:focus {
+  color: black;
+  background: var(--red-bright);
+  border-color: var(--red-bright);
 }
 
 .menu-btn-active-red:hover {
   color: white;
-  background: #e34a00;
-  border-color: #e34a00;
+  background: var(--red);
+  border-color: var(--red);
 }
 
 .menu-btn-active-red:active {
+  transition: 0.1s;
   color: white;
-  background: #f1773c;
-  border-color: #f1773c;
+  background: var(--red-bright);
+  border-color: var(--red-bright);
+}
+
+.menu-btn-warning {
+  color: black;
+  background: var(--yellow);
+  border-color: var(--yellow);
+}
+
+.menu-btn-warning:hover {
+  color: white;
+  background: var(--yellow-dark);
+  border-color: var(--yellow-dark);
+}
+
+.menu-btn-warning:active {
+  transition: 0.1s;
+  color: white;
+  background: var(--yellow-bright);
+  border-color: var(--yellow-bright);
 }
 
 .menu-linebtn {

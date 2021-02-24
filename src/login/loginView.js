@@ -1,48 +1,76 @@
 import './login.handlebars.js';
-import ValidationModule from '../validation/validation.js';
+import ValidationModule from '../utils/validationModule.js';
 import TemporaryReplacement from '../utils/temporaryReplacement.js';
+import LoginEvents from './loginEvents.js';
 
 export default class LoginView {
   /**
    * @param {!EventBus}
    * @return {!LoginView}
    */
-  constructor(eventBus, profile) {
+  constructor(eventBus) {
     this.eventBus = eventBus;
-    this.profile = profile;
   }
 
-  render(root) {
+  render(root, profile) {
     // eslint-disable-next-line no-undef
-    root.innerHTML = Handlebars.templates.login(this.profile);
+    root.innerHTML = Handlebars.templates.login(profile);
+    this.findNeedElem();
     this.addEventListeners();
   }
 
+  findNeedElem() {
+    this.textboxUserName = document.getElementById('textbox-username');
+    this.textboxPassword = document.getElementById('textbox-password');
+    this.inputUserName = document.getElementById('username');
+    this.inputPassword = document.getElementById('password');
+    this.buttonEnter = document.getElementById('enter');
+    this.buttonGotoRegistration = document.getElementById('goto-registration');
+    this.checker = TemporaryReplacement.makeChecker(this);
+  }
+
   addEventListeners() {
-    const inputUserName = document.getElementById('username');
-    const inputPassword = document.getElementById('password');
-    const buttonEnter = document.getElementById('enter');
-    const buttonGotoRegistration = document.getElementById('goto-registration');
+    this.buttonEnter.addEventListener('click',
+      () => this.eventBus.call(LoginEvents.clickEnter,
+        { username: this.inputUserName.value, password: this.inputPassword.value }));
+    this.buttonGotoRegistration.addEventListener('click',
+      () => this.eventBus.call(LoginEvents.clickGoToRegistration));
 
-    buttonEnter.addEventListener('click', () => this.eventBus.call('clickEnter', inputUserName.value, inputPassword.value));
-    buttonGotoRegistration.addEventListener('click', () => this.eventBus.call('clickGotoRegistration'));
+    this.eventBus.subscribe(LoginEvents.handleLoginWarning, this.handleLoginWarning);
+    this.eventBus.subscribe(LoginEvents.handleLoginError, this.handleLoginError);
+  }
 
-    this.eventBus.subscribe('login-warning', () => {
-      if (this.profile.correct_username === ValidationModule.UNCORRECT_PARSE) {
-        TemporaryReplacement.forTwoSeconds(inputUserName.parentElement.style, 'color', '#E38C00');
-      }
-      if (this.profile.correct_password === ValidationModule.UNCORRECT_PARSE) {
-        TemporaryReplacement.forTwoSeconds(inputPassword.parentElement.style, 'color', '#E38C00');
-      }
-      TemporaryReplacement.forTwoSeconds(buttonEnter, 'className', 'menu-btn menu-btn-orange menu-btn-active-orange');
-      TemporaryReplacement.forTwoSeconds(buttonEnter, 'innerText', 'Некорректные данные');
-    });
+  handleLoginWarning(warning) {
+    if (warning.correctUserName === ValidationModule.UNCORRECT_PARSE) {
+      TemporaryReplacement.InElementClass.forTwoSeconds(
+        this.textboxUserName, ['menu-textbox-warning'], [], this.checker.textboxUserName,
+      );
+    }
+    if (warning.correctPassword === ValidationModule.UNCORRECT_PARSE) {
+      TemporaryReplacement.InElementClass.forTwoSeconds(
+        this.textboxPassword, ['menu-textbox-warning'], [], this.checker.textboxPassword,
+      );
+    }
+    TemporaryReplacement.InElementClass.forTwoSeconds(
+      this.buttonEnter, ['menu-btn-warning'], ['menu-btn-grey', 'menu-btn-active-green'], this.checker.buttonEnter,
+    );
+    TemporaryReplacement.InObjectProperty.forTwoSeconds(
+      this.buttonEnter, 'innerText', 'Некорректные данные', this.checker.buttonEnter,
+    );
+  }
 
-    this.eventBus.subscribe('login-error', () => {
-      TemporaryReplacement.forTwoSeconds(inputUserName.parentElement.style, 'color', '#e34a00');
-      TemporaryReplacement.forTwoSeconds(inputPassword.parentElement.style, 'color', '#e34a00');
-      TemporaryReplacement.forTwoSeconds(buttonEnter, 'className', 'menu-btn menu-btn-red menu-btn-active-red');
-      TemporaryReplacement.forTwoSeconds(buttonEnter, 'innerText', 'Неверные данные');
-    });
+  handleLoginError() {
+    TemporaryReplacement.InElementClass.forTwoSeconds(
+      this.textboxUserName, ['menu-textbox-error'], this.checker.textboxUserName,
+    );
+    TemporaryReplacement.InElementClass.forTwoSeconds(
+      this.textboxPassword, ['menu-textbox-error'], this.checker.textboxPassword,
+    );
+    TemporaryReplacement.InElementClass.forTwoSeconds(
+      this.buttonEnter, ['menu-btn-error'], this.checker.buttonEnter,
+    );
+    TemporaryReplacement.InObjectProperty.forTwoSeconds(
+      this.buttonEnter, 'innerText', 'Неверные данные', this.checker.buttonEnter,
+    );
   }
 }

@@ -11,7 +11,9 @@
         "ecmaVersion": 11,
         "sourceType": "module"
     },
-    "ignorePatterns": ["*.handlebars.js"],
+    "ignorePatterns": [
+        "*.handlebars.js"
+    ],
     "rules": {
         "curly": [
             "error",
@@ -26,6 +28,12 @@
             "always"
         ],
         "no-new": "off",
-        "no-param-reassign": ["error", {"props": false}]
+        "no-param-reassign": [
+            "error",
+            {
+                "props": false
+            }
+        ],
+        "max-classes-per-file": "off"
     }
 }

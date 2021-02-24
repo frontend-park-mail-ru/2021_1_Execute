@@ -1,35 +1,37 @@
-import ValidationModule from '../validation/validation.js';
+import ValidationModule from '../utils/validationModule.js';
+import LoginEvents from './loginEvents.js';
 
 export default class LoginModel {
   /**
    * @param {!EventBus}
    * @return {!LoginView}
    */
-  constructor(eventBus, profile) {
+  constructor(eventBus) {
     this.eventBus = eventBus;
-    this.profile = profile;
-    this.eventBus.subscribe('clickEnter', (username, password) => this.enter(username, password));
-    this.eventBus.subscribe('clickGotoRegistration', () => this.gotoRegistration());
+    this.eventBus.subscribe(LoginEvents.clickEnter,
+      (profile) => this.clickEnter(profile));
+    this.eventBus.subscribe(LoginEvents.clickGoToRegistration,
+      () => this.clickGoToRegistration());
   }
 
-  enter(username, password) {
-    Object.entries({ username, password }).forEach(([key, value]) => {
-      this.profile[key] = value;
-    });
-    ValidationModule.correctLoginProfile(this.profile);
+  clickEnter(profile) {
+    const status = ValidationModule.correctLoginProfile(profile);
+    if (!status.correct) {
+      this.eventBus.call(LoginEvents.handleLoginWarning, status);
+    }
     switch (this.profile.validate) {
       case ValidationModule.UNCORRECT_PARSE:
-        this.eventBus.call('login-warning');
+        this.eventBus.call(LoginEvents.handleLoginWarning);
         break;
       case ValidationModule.UNCORRECT_SERVERANS:
-        this.eventBus.call('login-error');
+        this.eventBus.call(LoginEvents.handleLoginError);
         break;
       default:
-        this.eventBus.call('profile');
+        this.eventBus.call(LoginEvents.profile);
     }
   }
 
-  gotoRegistration() {
-    this.eventBus.call('registration');
+  clickGoToRegistration() {
+    this.eventBus.call(LoginEvents.registration);
   }
 }
