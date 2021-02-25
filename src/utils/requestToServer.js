@@ -20,8 +20,10 @@ export default class RequestToServer {
         },
       });
       status = await response.json();
+      // eslint-disable-next-line no-console
       console.log('loginform-success', status);
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('loginform-error', error);
     }
     return status;
