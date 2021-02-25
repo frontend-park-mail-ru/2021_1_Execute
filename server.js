@@ -1,5 +1,4 @@
-import ValidationModule from './src/utils/validationModule.js';
-import { ServerWays } from './src/utils/requestToServer.js';
+// const fetch = require('node-fetch');
 
 const express = require('express');
 const body = require('body-parser');
@@ -7,11 +6,15 @@ const cookie = require('cookie-parser');
 const morgan = require('morgan');
 const uuid = require('uuid/v4');
 const path = require('path');
+const { correctLoginProfile } = require('./server/validationModule.js');
+const { ApiRoutes } = require('./server/requestToServer.js');
 
 const app = express();
 
 app.use(morgan('dev'));
-app.use(express.static(path.resolve(__dirname, '.', 'src')));
+app.use(express.static(path.resolve(__dirname)));
+app.use(express.static(path.resolve(__dirname, 'src')));
+app.use(express.static(path.resolve(__dirname, 'img')));
 app.use(body.json());
 app.use(cookie());
 
@@ -33,12 +36,11 @@ const users = {
 };
 const ids = {};
 
-app.post(ServerWays.loginForm, (req, res) => {
-  const profile = req.body;
-  if (!ValidationModule.correctLoginProfile(profile)) {
+app.post(ApiRoutes.loginForm, (req, res) => {
+  const { username, password } = req.body;
+  if (!correctLoginProfile({ username, password })) {
     return res.status(400).json({ error: 'Не валидные данные пользователя' });
   }
-  const { username, password } = profile;
 
   if (!users[username] || users[username].password !== password) {
     return res.status(400).json({ error: 'Не верный E-Mail и/или пароль' });
@@ -52,6 +54,10 @@ app.post(ServerWays.loginForm, (req, res) => {
 });
 
 app.get('/', (req, res) => {
+  res.sendFile(path.join(`${__dirname}/src/index.html`));
+});
+
+app.get('/login', (req, res) => {
   res.sendFile(path.join(`${__dirname}/src/index.html`));
 });
 

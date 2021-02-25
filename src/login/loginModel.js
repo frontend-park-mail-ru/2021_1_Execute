@@ -1,4 +1,5 @@
-import ValidationModule from '../utils/validationModule.js';
+import { correctLoginProfile } from '../utils/validationModule.js';
+import { loginForm } from '../utils/requestToServer.js';
 import LoginEvents from './loginEvents.js';
 
 export default class LoginModel {
@@ -10,28 +11,22 @@ export default class LoginModel {
     this.eventBus = eventBus;
     this.eventBus.subscribe(LoginEvents.clickEnter,
       (profile) => this.clickEnter(profile));
-    this.eventBus.subscribe(LoginEvents.clickGoToRegistration,
-      () => this.clickGoToRegistration());
   }
 
   clickEnter(profile) {
-    const status = ValidationModule.correctLoginProfile(profile);
-    if (!status.correct) {
-      this.eventBus.call(LoginEvents.handleLoginWarning, status);
+    const callError = (message = 'Не верный логин или пароль') => this.eventBus.call(LoginEvents.loginError, message);
+    if (!correctLoginProfile(profile)) {
+      callError();
+    } else {
+      let timer;
+      const messageFromServer = loginForm(profile).then(
+        (req) => {
+          clearTimeout(timer);
+          console.log('cl', req);
+          this.eventBus.call(LoginEvents.profile, messageFromServer);
+        },
+      ).catch((err) => callError(err.error));
+      timer = setTimeout(() => callError('Превышенно время ожидания сервера'), 5 * 1000);
     }
-    switch (this.profile.validate) {
-      case ValidationModule.UNCORRECT_PARSE:
-        this.eventBus.call(LoginEvents.handleLoginWarning);
-        break;
-      case ValidationModule.UNCORRECT_SERVERANS:
-        this.eventBus.call(LoginEvents.handleLoginError);
-        break;
-      default:
-        this.eventBus.call(LoginEvents.profile);
-    }
-  }
-
-  clickGoToRegistration() {
-    this.eventBus.call(LoginEvents.registration);
   }
 }

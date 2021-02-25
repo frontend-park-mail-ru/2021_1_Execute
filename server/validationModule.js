@@ -3,7 +3,7 @@
  * @param profile
  * @return {boolean}
  */
-export const correctUserName = (username) => typeof username === 'string'
+const correctUserName = (username) => typeof username === 'string'
   && username.match(/^[a-zA-Z0-9]+.{6,16}$/) !== null;
 
 /**
@@ -11,7 +11,7 @@ export const correctUserName = (username) => typeof username === 'string'
  * @param profile
  * @return {boolean}
  */
-export const correctEmail = (email) => typeof email === 'string'
+const correctEmail = (email) => typeof email === 'string'
   && email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)
   !== null;
 
@@ -20,7 +20,7 @@ export const correctEmail = (email) => typeof email === 'string'
  * @param profile
  * @return {boolean}
  */
-export const correctPassword = (password) => typeof password === 'string'
+const correctPassword = (password) => typeof password === 'string'
   && password.match(/.{6,16}$/) !== null;
 
 /**
@@ -28,5 +28,9 @@ export const correctPassword = (password) => typeof password === 'string'
  * @param profile
  * @return {boolean}
  */
-export const correctLoginProfile = (profile) => correctUserName(profile.username)
+const correctLoginProfile = (profile) => correctUserName(profile.username)
   && correctPassword(profile.password);
+
+module.exports = {
+  correctUserName, correctEmail, correctPassword, correctLoginProfile,
+};

@@ -20,6 +20,5 @@ export default class LoginController {
 
   start() {
     this.view.render(this.root);
-    return true;
   }
 }

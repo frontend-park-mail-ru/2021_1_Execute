@@ -21,7 +21,7 @@
   --blue-light: #5d8dca;
   --body-bg-color: #34495e;
   --box-bg-color: #ecf0f1;
-  --btn-grey-color: #95a5a6;
+  --btn-primary-color: #95a5a6;
   --text-placeholder-color: #252525;
 }
 
@@ -106,8 +106,8 @@ body {
 
 .menu-btn-grey {
   color: black;
-  background: var(--btn-grey-color);
-  border-color: var(--btn-grey-color);
+  background: var(--btn-primary-color);
+  border-color: var(--btn-primary-color);
 }
 
 .menu-btn-active-green:focus {

@@ -1,6 +1,5 @@
 import './login.handlebars.js';
-import ValidationModule from '../utils/validationModule.js';
-import TemporaryReplacement from '../utils/temporaryReplacement.js';
+import { makeChecker, InElementClass, InObjectProperty } from '../utils/temporaryReplacement.js';
 import LoginEvents from './loginEvents.js';
 
 export default class LoginView {
@@ -12,9 +11,9 @@ export default class LoginView {
     this.eventBus = eventBus;
   }
 
-  render(root, profile) {
+  render(root) {
     // eslint-disable-next-line no-undef
-    root.innerHTML = Handlebars.templates.login(profile);
+    root.innerHTML = Handlebars.templates.login();
     this.findNeedElem();
     this.addEventListeners();
   }
@@ -26,51 +25,22 @@ export default class LoginView {
     this.inputPassword = document.getElementById('password');
     this.buttonEnter = document.getElementById('enter');
     this.buttonGotoRegistration = document.getElementById('goto-registration');
-    this.checker = TemporaryReplacement.makeChecker(this);
+    this.checker = makeChecker(this);
   }
 
   addEventListeners() {
-    this.buttonEnter.addEventListener('click',
-      () => this.eventBus.call(LoginEvents.clickEnter,
-        { username: this.inputUserName.value, password: this.inputPassword.value }));
-    this.buttonGotoRegistration.addEventListener('click',
-      () => this.eventBus.call(LoginEvents.clickGoToRegistration));
-
-    this.eventBus.subscribe(LoginEvents.handleLoginWarning, this.handleLoginWarning);
-    this.eventBus.subscribe(LoginEvents.handleLoginError, this.handleLoginError);
+    console.log(this);
+    this.buttonEnter.addEventListener('click', () => this.eventBus.call(LoginEvents.clickEnter,
+      { username: this.inputUserName.value, password: this.inputPassword.value }));
+    this.buttonGotoRegistration.addEventListener('click', () => this.eventBus.call(LoginEvents.registration));
+    this.eventBus.subscribe(LoginEvents.loginError, this.handleLoginError);
   }
 
-  handleLoginWarning(warning) {
-    if (warning.correctUserName === ValidationModule.UNCORRECT_PARSE) {
-      TemporaryReplacement.InElementClass.forTwoSeconds(
-        this.textboxUserName, ['menu-textbox-warning'], [], this.checker.textboxUserName,
-      );
-    }
-    if (warning.correctPassword === ValidationModule.UNCORRECT_PARSE) {
-      TemporaryReplacement.InElementClass.forTwoSeconds(
-        this.textboxPassword, ['menu-textbox-warning'], [], this.checker.textboxPassword,
-      );
-    }
-    TemporaryReplacement.InElementClass.forTwoSeconds(
-      this.buttonEnter, ['menu-btn-warning'], ['menu-btn-grey', 'menu-btn-active-green'], this.checker.buttonEnter,
-    );
-    TemporaryReplacement.InObjectProperty.forTwoSeconds(
-      this.buttonEnter, 'innerText', 'Некорректные данные', this.checker.buttonEnter,
-    );
-  }
-
-  handleLoginError() {
-    TemporaryReplacement.InElementClass.forTwoSeconds(
-      this.textboxUserName, ['menu-textbox-error'], this.checker.textboxUserName,
-    );
-    TemporaryReplacement.InElementClass.forTwoSeconds(
-      this.textboxPassword, ['menu-textbox-error'], this.checker.textboxPassword,
-    );
-    TemporaryReplacement.InElementClass.forTwoSeconds(
-      this.buttonEnter, ['menu-btn-error'], this.checker.buttonEnter,
-    );
-    TemporaryReplacement.InObjectProperty.forTwoSeconds(
-      this.buttonEnter, 'innerText', 'Неверные данные', this.checker.buttonEnter,
-    );
+  handleLoginError(message) {
+    console.log(message, this);
+    InElementClass.forTwoSeconds(this.textboxUserName, ['menu-textbox-error'], this.checker.textboxUserName);
+    InElementClass.forTwoSeconds(this.textboxPassword, ['menu-textbox-error'], this.checker.textboxPassword);
+    InElementClass.forTwoSeconds(this.buttonEnter, ['menu-btn-error'], this.checker.buttonEnter);
+    InObjectProperty.forTwoSeconds(this.buttonEnter, 'innerText', message, this.checker.buttonEnter);
   }
 }
