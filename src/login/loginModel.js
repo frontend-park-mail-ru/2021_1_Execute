@@ -20,9 +20,8 @@ export default class LoginModel {
     } else {
       let timer;
       const messageFromServer = loginForm(profile).then(
-        (req) => {
+        () => {
           clearTimeout(timer);
-          console.log('cl', req);
           this.eventBus.call(LoginEvents.profile, messageFromServer);
         },
       ).catch((err) => callError(err.error));

@@ -29,7 +29,6 @@ export default class LoginView {
   }
 
   addEventListeners() {
-    console.log(this);
     this.buttonEnter.addEventListener('click', () => this.eventBus.call(LoginEvents.clickEnter,
       { username: this.inputUserName.value, password: this.inputPassword.value }));
     this.buttonGotoRegistration.addEventListener('click', () => this.eventBus.call(LoginEvents.registration));
@@ -37,7 +36,6 @@ export default class LoginView {
   }
 
   handleLoginError(message) {
-    console.log(message, this);
     InElementClass.forTwoSeconds(this.textboxUserName, ['menu-textbox-error'], this.checker.textboxUserName);
     InElementClass.forTwoSeconds(this.textboxPassword, ['menu-textbox-error'], this.checker.textboxPassword);
     InElementClass.forTwoSeconds(this.buttonEnter, ['menu-btn-error'], this.checker.buttonEnter);
