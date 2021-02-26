@@ -6,14 +6,14 @@ const cookie = require('cookie-parser');
 const morgan = require('morgan');
 const uuid = require('uuid/v4');
 const path = require('path');
-const { correctLoginProfile } = require('./server/validationModule.js');
+const { correctLoginProfile } = require('./validationModule.js');
 
 const app = express();
 
 app.use(morgan('dev'));
 app.use(express.static(path.resolve(__dirname)));
-app.use(express.static(path.resolve(__dirname, 'src')));
-app.use(express.static(path.resolve(__dirname, 'img')));
+app.use(express.static(path.resolve(__dirname, '..', 'src')));
+app.use(express.static(path.resolve(__dirname, '..', 'img')));
 app.use(body.json());
 app.use(cookie());
 
@@ -58,11 +58,11 @@ app.post(ApiRoutes.loginForm, (req, res) => {
 });
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'src', 'index.html'));
+  res.sendFile(path.join(__dirname, '..', 'src', 'index.html'));
 });
 
 app.get('/login', (req, res) => {
-  res.sendFile(path.join(__dirname, 'src', 'index.html'));
+  res.sendFile(path.join(__dirname, '..', 'src', 'index.html'));
 });
 
 const port = process.env.PORT || 3000;
