@@ -1,12 +1,23 @@
 import EventBus from './eventBus.js';
 
+const standardizedPath = (path) => {
+  let newPath = path;
+  if (!path.startsWith('/')) {
+    newPath = `/${newPath}`;
+  }
+  if (!path.endsWith('/')) {
+    newPath += '/';
+  }
+  return newPath;
+};
+
 export default class Router {
   constructor() {
     this.routes = new EventBus();
   }
 
   addRoute(path, handler) {
-    this.routes.subscribe(path, handler);
+    this.routes.subscribe(standardizedPath(path), handler);
   }
 
   deleteRoute(path) {
@@ -14,12 +25,13 @@ export default class Router {
   }
 
   go(path, ...data) {
-    Router.addHistoryRecord(path);
-    this.routes.call(path, ...data);
+    const newPath = standardizedPath(path);
+    Router.addHistoryRecord(newPath);
+    this.routes.call(newPath, ...data);
   }
 
   static addHistoryRecord(path, state = { urlPath: window.location.pathname }) {
-    window.history.pushState(state, '', path);
+    window.history.pushState(state, '', standardizedPath(path));
   }
 
   static back() {
