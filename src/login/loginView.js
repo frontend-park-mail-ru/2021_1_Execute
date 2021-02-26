@@ -1,5 +1,5 @@
 import './login.handlebars.js';
-import { makeChecker, InElementClass, InObjectProperty } from '../utils/temporaryReplacement.js';
+import { makeChecker, replaceCssClassForTwoSeconds, replaceObjectPropForTwoSeconds } from '../utils/temporaryReplacement.js';
 import LoginEvents from './loginEvents.js';
 
 export default class LoginView {
@@ -29,16 +29,17 @@ export default class LoginView {
   }
 
   addEventListeners() {
-    this.buttonEnter.addEventListener('click', () => this.eventBus.call(LoginEvents.clickEnter,
-      { username: this.inputUserName.value, password: this.inputPassword.value }));
+    this.buttonEnter.addEventListener('click', () => this.eventBus.call(LoginEvents.clickEnter, {
+      username: this.inputUserName.value, password: this.inputPassword.value,
+    }));
     this.buttonGotoRegistration.addEventListener('click', () => this.eventBus.call(LoginEvents.registration));
-    this.eventBus.subscribe(LoginEvents.loginError, this.handleLoginError);
+    this.eventBus.subscribe(LoginEvents.loginError, (message) => this.handleLoginError(message));
   }
 
   handleLoginError(message) {
-    InElementClass.forTwoSeconds(this.textboxUserName, ['menu-textbox-error'], this.checker.textboxUserName);
-    InElementClass.forTwoSeconds(this.textboxPassword, ['menu-textbox-error'], this.checker.textboxPassword);
-    InElementClass.forTwoSeconds(this.buttonEnter, ['menu-btn-error'], this.checker.buttonEnter);
-    InObjectProperty.forTwoSeconds(this.buttonEnter, 'innerText', message, this.checker.buttonEnter);
+    replaceCssClassForTwoSeconds(this.textboxUserName, ['menu-textbox-error'], [], this.checker.textboxUserName);
+    replaceCssClassForTwoSeconds(this.textboxPassword, ['menu-textbox-error'], [], this.checker.textboxPassword);
+    replaceCssClassForTwoSeconds(this.buttonEnter, ['menu-btn-error'], ['menu-btn-success'], this.checker.buttonEnter);
+    replaceObjectPropForTwoSeconds(this.buttonEnter, 'innerText', message, this.checker.buttonEnter);
   }
 }

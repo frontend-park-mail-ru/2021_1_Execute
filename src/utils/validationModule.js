@@ -1,6 +1,6 @@
 /**
  * Проверка корректности строки как имени пользователя
- * @param profile
+ * @param {string} username
  * @return {boolean}
  */
 export const correctUserName = (username) => typeof username === 'string'
@@ -8,7 +8,7 @@ export const correctUserName = (username) => typeof username === 'string'
 
 /**
  * Проверка корректности строки как e-mail
- * @param profile
+ * @param {string} email
  * @return {boolean}
  */
 export const correctEmail = (email) => typeof email === 'string'
@@ -17,7 +17,7 @@ export const correctEmail = (email) => typeof email === 'string'
 
 /**
  * Проверка корректности строки как пароля
- * @param profile
+ * @param {string} password
  * @return {boolean}
  */
 export const correctPassword = (password) => typeof password === 'string'
@@ -25,8 +25,12 @@ export const correctPassword = (password) => typeof password === 'string'
 
 /**
  * Проверка корректности данных пользователя при логине
- * @param profile
+ * @param {Object} profile
+ * @param {string} profile.username
+ * @param {string} profile.password
  * @return {boolean}
  */
-export const correctLoginProfile = (profile) => correctUserName(profile.username)
+export const correctLoginProfile = (profile) => typeof profile === 'object'
+  && profile !== null
+  && correctUserName(profile.username)
   && correctPassword(profile.password);

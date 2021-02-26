@@ -21,8 +21,22 @@
   --blue-light: #5d8dca;
   --body-bg-color: #34495e;
   --box-bg-color: #ecf0f1;
-  --btn-primary-color: #95a5a6;
+  --btn-primary-bg-color: #95a5a6;
   --text-placeholder-color: #252525;
+  --btn-success-pasive-bg-color: var(--btn-primary-bg-color);
+  --btn-success-pasive-text-color: black;
+  --btn-success-focus-bg-color: var(--green);
+  --btn-success-focus-text-color: black;
+  --btn-success-hover-bg-color: var(--green-dark);
+  --btn-success-hover-text-color: white;
+  --btn-success-active-bg-color: var(--green);
+  --btn-success-active-text-color: white;
+  --btn-error-pasive-bg-color: var(--red);
+  --btn-error-pasive-text-color: black;
+  --btn-error-hover-bg-color: var(--red-dark);
+  --btn-error-hover-text-color: white;
+  --btn-error-active-bg-color: var(--red);
+  --btn-error-active-text-color: white;
 }
 
 body {
@@ -39,7 +53,6 @@ body {
   width: 280px;
   padding: 40px;
   border-radius: 5px;
-  color: black;
   background-color: var(--box-bg-color);
   box-shadow: 0 0 10px;
 }
@@ -61,8 +74,8 @@ body {
   transition: 0.25s;
 }
 
-.menu-textbox-warning {
-  color: var(--yellow);
+.menu-textbox-error {
+  color: var(--red);
 }
 
 .menu-textbox svg {
@@ -78,7 +91,6 @@ body {
   border: none;
   outline: none;
   background: none;
-  color: black;
   font-size: 18px;
   width: 80%;
   float: left;
@@ -104,67 +116,48 @@ body {
   transition: 0.25s;
 }
 
-.menu-btn-grey {
-  color: black;
-  background: var(--btn-primary-color);
-  border-color: var(--btn-primary-color);
+.menu-btn-success {
+  color: var(--btn-success-pasive-text-color);
+  background: var(--btn-success-pasive-bg-color);
+  border-color: var(--btn-success-pasive-bg-color);
 }
 
-.menu-btn-active-green:focus {
-  color: black;
-  background: var(--green);
-  border-color: var(--green);
+.menu-btn-success:focus {
+  color: var(--btn-success-focus-text-color);
+  background: var(--btn-success-focus-bg-color);
+  border-color: var(--btn-success-focus-bg-color);
 }
 
-.menu-btn-active-green:hover {
-  color: white;
-  background: var(--green-dark);
-  border-color: var(--green-dark);
+.menu-btn-success:hover {
+  color: var(--btn-success-hover-text-color);
+  background: var(--btn-success-hover-bg-color);
+  border-color: var(--btn-success-hover-bg-color);
 }
 
-.menu-btn-active-green:active {
+.menu-btn-success:active {
   transition: 0.1s;
-  color: white;
-  background: var(--green);
-  border-color: var(--green);
+  color: var(--btn-success-active-text-color);
+  background: var(--btn-success-active-bg-color);
+  border-color: var(--btn-success-active-bg-color);
 }
 
-.menu-btn-active-red:focus {
-  color: black;
-  background: var(--red-bright);
-  border-color: var(--red-bright);
+.menu-btn-error {
+  color: var(--btn-error-pasive-text-color);
+  background: var(--btn-error-pasive-bg-color);
+  border-color: var(--btn-error-pasive-bg-color);
 }
 
-.menu-btn-active-red:hover {
-  color: white;
-  background: var(--red);
-  border-color: var(--red);
+.menu-btn-error:hover {
+  color: var(--btn-error-hover-text-color);
+  background: var(--btn-error-hover-bg-color);
+  border-color: var(--btn-error-hover-bg-color);
 }
 
-.menu-btn-active-red:active {
+.menu-btn-error:active {
   transition: 0.1s;
-  color: white;
-  background: var(--red-bright);
-  border-color: var(--red-bright);
-}
-
-.menu-btn-warning {
-  color: black;
-  background: var(--yellow);
-  border-color: var(--yellow);
-}
-
-.menu-btn-warning:hover {
-  color: white;
-  background: var(--yellow-dark);
-  border-color: var(--yellow-dark);
-}
-
-.menu-btn-warning:active {
-  transition: 0.1s;
-  color: white;
-  background: var(--yellow-bright);
-  border-color: var(--yellow-bright);
+  color: var(--btn-error-active-text-color);
+  background: var(--btn-error-active-bg-color);
+  border-color: var(--btn-error-active-bg-color);
 }
 
 .menu-linebtn {

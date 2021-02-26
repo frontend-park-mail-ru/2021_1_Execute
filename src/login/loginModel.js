@@ -19,12 +19,11 @@ export default class LoginModel {
       callError();
     } else {
       let timer;
-      const messageFromServer = loginForm(profile).then(
-        () => {
-          clearTimeout(timer);
-          this.eventBus.call(LoginEvents.profile, messageFromServer);
-        },
-      ).catch((err) => callError(err.error));
+      const messageFromServer = loginForm(profile)
+        .then(
+          () => this.eventBus.call(LoginEvents.profile, messageFromServer),
+        ).catch((err) => callError(err.error))
+        .finally(() => clearTimeout(timer));
       timer = setTimeout(() => callError('Превышенно время ожидания сервера'), 5 * 1000);
     }
   }

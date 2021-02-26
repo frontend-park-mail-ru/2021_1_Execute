@@ -1,8 +1,8 @@
 const LoginEvents = {
   clickEnter: 'login.model.clickEnter',
   loginError: 'login.view.loginError',
-  profile: 'login.controller.profile',
-  registration: 'login.controller.registration',
+  profile: 'profile.controller.start',
+  registration: 'registration.controller.start',
 };
 
 export default LoginEvents;

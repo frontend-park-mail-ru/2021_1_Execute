@@ -7,7 +7,6 @@ const morgan = require('morgan');
 const uuid = require('uuid/v4');
 const path = require('path');
 const { correctLoginProfile } = require('./server/validationModule.js');
-const { ApiRoutes } = require('./server/requestToServer.js');
 
 const app = express();
 
@@ -36,14 +35,19 @@ const users = {
 };
 const ids = {};
 
+const ApiRoutes = {
+  loginForm: '/loginform',
+  login: '/login',
+};
+
 app.post(ApiRoutes.loginForm, (req, res) => {
   const { username, password } = req.body;
   if (!correctLoginProfile({ username, password })) {
-    return res.status(400).json({ error: 'Не валидные данные пользователя' });
+    return res.status(200).json({ error: 'Не валидные данные пользователя' });
   }
 
   if (!users[username] || users[username].password !== password) {
-    return res.status(400).json({ error: 'Не верный E-Mail и/или пароль' });
+    return res.status(200).json({ error: 'Не верный E-Mail и/или пароль' });
   }
 
   const id = uuid();
@@ -54,11 +58,11 @@ app.post(ApiRoutes.loginForm, (req, res) => {
 });
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(`${__dirname}/src/index.html`));
+  res.sendFile(path.join(__dirname, 'src', 'index.html'));
 });
 
 app.get('/login', (req, res) => {
-  res.sendFile(path.join(`${__dirname}/src/index.html`));
+  res.sendFile(path.join(__dirname, 'src', 'index.html'));
 });
 
 const port = process.env.PORT || 3000;
