@@ -1,13 +1,14 @@
+import LoginController from './login/loginController.js';
+import Router from './utils/router.js';
+
 const root = document.getElementById('root');
+const router = new Router();
 
-const testItem = document.createElement('div');
-testItem.classList.add('menu-box');
+const loginController = new LoginController(router, root);
 
-const testItemH1 = document.createElement('h1');
-testItemH1.innerText = 'Тест';
+router.addRoute('/', () => router.go('login'));
+router.addRoute('login', () => loginController.start());
+router.addRoute('registation', () => {});
+router.addRoute('profile', () => {});
 
-testItem.append(testItemH1);
-testItem.append(testItemH1.cloneNode());
-testItem.append(testItemH1.cloneNode(true));
-
-root.append(testItem);
+router.go(window.location.pathname);

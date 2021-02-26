@@ -1,0 +1,198 @@
+:root {
+  --red-dark: #943000;
+  --red-grey: #aa542b;
+  --red: #e34a00;
+  --red-bright: #f1773c;
+  --red-light: #f1976c;
+  --yellow-dark: #945b00;
+  --yellow-grey: #aa7a2b;
+  --yellow: #e38c00;
+  --yellow-bright: #f1ac3c;
+  --yellow-light: #f1be6c;
+  --green-dark: #006340;
+  --green-grey: #1d7254;
+  --green: #009863;
+  --green-bright: #33cc96;
+  --green-light: #5ccca4;
+  --blue-dark: #012b61;
+  --blue-grey: #1e4270;
+  --blue: #034395;
+  --blue-bright: #3677ca;
+  --blue-light: #5d8dca;
+  --body-bg-color: #34495e;
+  --box-bg-color: #ecf0f1;
+  --btn-primary-bg-color: #95a5a6;
+  --text-placeholder-color: #252525;
+  --btn-success-pasive-bg-color: var(--btn-primary-bg-color);
+  --btn-success-pasive-text-color: black;
+  --btn-success-focus-bg-color: var(--green);
+  --btn-success-focus-text-color: black;
+  --btn-success-hover-bg-color: var(--green-dark);
+  --btn-success-hover-text-color: white;
+  --btn-success-active-bg-color: var(--green);
+  --btn-success-active-text-color: white;
+  --btn-error-pasive-bg-color: var(--red);
+  --btn-error-pasive-text-color: black;
+  --btn-error-hover-bg-color: var(--red-dark);
+  --btn-error-hover-text-color: white;
+  --btn-error-active-bg-color: var(--red);
+  --btn-error-active-text-color: white;
+}
+
+body {
+  font-family: sans-serif;
+  background-color: var(--body-bg-color);
+  background-size: unset;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.menu-box {
+  width: 280px;
+  padding: 40px;
+  border-radius: 5px;
+  background-color: var(--box-bg-color);
+  box-shadow: 0 0 10px;
+}
+
+.menu-box h1 {
+  border-bottom: 4px solid;
+  font-size: 40px;
+  margin: 0 0 20px 0;
+  padding: 13px 0;
+}
+
+.menu-textbox {
+  width: 100%;
+  overflow: hidden;
+  font-size: 20px;
+  padding: 8px 0;
+  margin: 8px 0;
+  border-bottom: 1px solid;
+  transition: 0.25s;
+}
+
+.menu-textbox-error {
+  color: var(--red);
+}
+
+.menu-textbox svg {
+  width: 16px;
+  height: 16px;
+  float: left;
+  text-align: center;
+  margin: 3px 5px;
+  transition: none;
+}
+
+.menu-textbox input {
+  border: none;
+  outline: none;
+  background: none;
+  font-size: 18px;
+  width: 80%;
+  float: left;
+  margin: 0 2px;
+}
+
+.menu-textbox input::placeholder {
+  transition: 0.25s;
+}
+
+.menu-textbox:hover input::placeholder, .menu-textbox input:focus::placeholder {
+  color: var(--text-placeholder-color);
+}
+
+.menu-btn {
+  border: 2px solid;
+  padding: 5px;
+  font-size: 18px;
+  margin-top: 30px;
+  cursor: pointer;
+  border-radius: 5px;
+  width: 90%;
+  transition: 0.25s;
+}
+
+.menu-btn-success {
+  color: var(--btn-success-pasive-text-color);
+  background: var(--btn-success-pasive-bg-color);
+  border-color: var(--btn-success-pasive-bg-color);
+}
+
+.menu-btn-success:focus {
+  color: var(--btn-success-focus-text-color);
+  background: var(--btn-success-focus-bg-color);
+  border-color: var(--btn-success-focus-bg-color);
+}
+
+.menu-btn-success:hover {
+  color: var(--btn-success-hover-text-color);
+  background: var(--btn-success-hover-bg-color);
+  border-color: var(--btn-success-hover-bg-color);
+}
+
+.menu-btn-success:active {
+  transition: 0.1s;
+  color: var(--btn-success-active-text-color);
+  background: var(--btn-success-active-bg-color);
+  border-color: var(--btn-success-active-bg-color);
+}
+
+.menu-btn-error {
+  color: var(--btn-error-pasive-text-color);
+  background: var(--btn-error-pasive-bg-color);
+  border-color: var(--btn-error-pasive-bg-color);
+}
+
+.menu-btn-error:hover {
+  color: var(--btn-error-hover-text-color);
+  background: var(--btn-error-hover-bg-color);
+  border-color: var(--btn-error-hover-bg-color);
+}
+
+.menu-btn-error:active {
+  transition: 0.1s;
+  color: var(--btn-error-active-text-color);
+  background: var(--btn-error-active-bg-color);
+  border-color: var(--btn-error-active-bg-color);
+}
+
+.menu-linebtn {
+  cursor: pointer;
+  border: 0;
+  padding: 0 10px;
+  font-size: 18px;
+  margin-top: 20px;
+  text-decoration: underline;
+  transition: 0.25s;
+  background: fixed;
+}
+
+.menu-linebtn-black {
+  color: black;
+}
+
+.menu-linebtn-green {
+  color: #006340;
+}
+
+.menu-linebtn-orange {
+  color: #e38c00;
+}
+
+.menu-linebtn-red {
+  color: #e34a00;
+}
+
+.menu-linebtn-active-red:hover {
+  color: #e34a00;
+}
+
+.menu-wrapper-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
