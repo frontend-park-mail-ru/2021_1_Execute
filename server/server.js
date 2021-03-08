@@ -20,16 +20,17 @@ app.use(cookie());
 const users = {
   ZhukDima: {
     email: 'zhukdo@gmail.com',
-    photo: '/img/32.png',
+    photo: '/32.jpg',
     password: '123456',
   },
   Skaliks: {
     email: 'zhukdo@yandex.ru',
-    photo: '/img/35.png',
+    photo: '/35.jpg',
     password: '654321',
   },
   Anonim: {
     email: 'anon@mail.ru',
+    photo: '/not-available.png',
     password: '123123',
   },
 };
@@ -38,6 +39,8 @@ const ids = {};
 const ApiRoutes = {
   loginForm: '/loginform',
   login: '/login',
+  profileForm: '/profileform',
+  profile: '/profile',
 };
 
 app.post(ApiRoutes.loginForm, (req, res) => {
@@ -52,16 +55,23 @@ app.post(ApiRoutes.loginForm, (req, res) => {
 
   const id = uuid();
   ids[id] = username;
+  const profile = { username, ...users[username] };
 
   res.cookie('login', id, { expires: new Date(Date.now() + 1000 * 60 * 10) });
-  return res.status(200).json({ id });
+  return res.status(200).json(profile);
 });
+
+app.post(ApiRoutes.profileForm, (req, res) => res.status(200).json({ message: 'Данные изменены' }));
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'src', 'index.html'));
 });
 
-app.get('/login', (req, res) => {
+app.get(ApiRoutes.login, (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'src', 'index.html'));
+});
+
+app.get(ApiRoutes.profile, (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'src', 'index.html'));
 });
 

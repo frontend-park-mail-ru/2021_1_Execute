@@ -9,8 +9,7 @@ export default class LoginModel {
    */
   constructor(eventBus) {
     this.eventBus = eventBus;
-    this.eventBus.subscribe(LoginEvents.clickEnter,
-      (profile) => this.clickEnter(profile));
+    this.eventBus.subscribe(LoginEvents.clickEnter, (profile) => this.clickEnter(profile));
   }
 
   clickEnter(profile) {
@@ -19,9 +18,9 @@ export default class LoginModel {
       callError();
     } else {
       let timer;
-      const messageFromServer = loginForm(profile)
+      loginForm(profile)
         .then(
-          () => this.eventBus.call(LoginEvents.profile, messageFromServer),
+          (val) => this.eventBus.call(LoginEvents.profile, val),
         ).catch((err) => callError(err.error))
         .finally(() => clearTimeout(timer));
       timer = setTimeout(() => callError('Превышенно время ожидания сервера'), 5 * 1000);
