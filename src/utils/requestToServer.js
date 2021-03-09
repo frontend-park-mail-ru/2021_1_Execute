@@ -100,7 +100,7 @@ export const setCookie = (name, value, inputOptions = {}) => {
  * @param {string} profile.password
  * @return {Promise}
  */
-export const registrationForm = async (profile) => {
+ export const registrationForm = async (profile) => {
   return fetch(BACKEND_ADDRESS + ApiRoutes.registration, {
     credentials: 'include',
     method: 'POST',
