@@ -29,15 +29,15 @@ export default class RegistrationModel {
     const messageFromServer = registrationForm(profile)
       .then((response) => {
         switch (response.status) {
-          case 200: // - OK (успешный запрос)
-          case 308: // - PermanentRedirect (уже залогинен, редирект на главную)
+          case 200:
+          case 308:
             this.eventBus.call(RegistrationEvents.profile, messageFromServer);
             break;
-          case 400: // - BadRequest (неверный запрос)
+          case 400:
             callError('BadRequest');
             break;
           case 409: // - Conflict (пользователь с таким ником уже существует)
-            callError('Пользователь с таким ником уже существует');
+            callError('Пользователь с таким email уже существует');
             break;
           default:
             callError('Неизвестная ошибка');
