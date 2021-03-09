@@ -1,5 +1,5 @@
 import { correctLoginProfile } from '../utils/validationModule.js';
-import { loginForm, setCookie } from '../utils/requestToServer.js';
+import { loginForm } from '../utils/requestToServer.js';
 import LoginEvents from './loginEvents.js';
 
 export default class LoginModel {
@@ -13,15 +13,14 @@ export default class LoginModel {
   }
 
   clickEnter(profile) {
-    const callError = (message = 'Не верный логин или пароль') => this.eventBus.call(LoginEvents.loginError, message);
+    const callError = (message = 'Не верная почта или пароль') => this.eventBus.call(LoginEvents.loginError, message);
     if (!correctLoginProfile(profile)) {
       callError();
     } else {
       let timer;
       loginForm(profile)
         .then(
-          ({ id }) => {
-            setCookie('id', id);
+          () => {
             this.eventBus.call(LoginEvents.profile);
           },
         ).catch((err) => callError(err.error))

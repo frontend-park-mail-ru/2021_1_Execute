@@ -1,6 +1,6 @@
 import { correctChangeProfile } from '../utils/validationModule.js';
 import {
-  profilePatchForm, profileGetForm, getCookie, waitAnsFromServer,
+  profilePatchForm, profileGetForm, waitAnsFromServer,
 } from '../utils/requestToServer.js';
 import { ProfileEvent } from './profileEvents.js';
 
@@ -16,8 +16,8 @@ export default class ProfileModel {
   }
 
   getData() {
-    console.log(getCookie('id'));
-    waitAnsFromServer(profileGetForm(getCookie('id')),
+    //console.log(getCookie('id'));
+    waitAnsFromServer(profileGetForm(),
       (message) => this.eventBus.call(ProfileEvent.profileError, message),
       (val) => this.eventBus.call(ProfileEvent.profileSuccess, val.user));
   }

@@ -34,7 +34,7 @@ export const correctPassword = (password) => typeof password === 'string'
  */
 export const correctLoginProfile = (profile) => typeof profile === 'object'
   && profile !== null
-  && correctUserName(profile.username)
+  && correctEmail(profile.email)
   && correctPassword(profile.password);
 
 /**

@@ -16,6 +16,7 @@ export const ApiRoutes = {
  * @return {Promise}
  */
 export const loginForm = async (profile) => fetch(BACKEND_ADDRESS + ApiRoutes.loginForm, {
+  credentials: 'include',
   method: 'POST',
   body: JSON.stringify(profile),
   headers: {
@@ -44,7 +45,7 @@ export const profilePatchForm = async (id, profile) => fetch(BACKEND_ADDRESS + `
  * @param {string} id
  * @return {Promise}
  */
-export const profileGetForm = async (id) => fetch(BACKEND_ADDRESS + `${ApiRoutes.profileForm}/`, {
+export const profileGetForm = async () => fetch(BACKEND_ADDRESS + `${ApiRoutes.profileForm}/`, {
   method: 'GET',
   headers: {
     'Content-Type': 'application/json',
@@ -60,37 +61,37 @@ export const waitAnsFromServer = (prom, callError, callSuccess) => {
   timer = setTimeout(() => callError('Превышенно время ожидания сервера'), 5 * 1000);
 };
 
-export const getCookie = (name) => {
-  const matches = document.cookie.match(new RegExp(
-    // eslint-disable-next-line no-useless-escape
-    `(?:^|; )${name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1')}=([^;]*)`,
-  ));
-  return matches ? decodeURIComponent(matches[1]) : undefined;
-};
+// export const getCookie = (name) => {
+//   const matches = document.cookie.match(new RegExp(
+//     // eslint-disable-next-line no-useless-escape
+//     `(?:^|; )${name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1')}=([^;]*)`,
+//   ));
+//   return matches ? decodeURIComponent(matches[1]) : undefined;
+// };
 
-export const setCookie = (name, value, inputOptions = {}) => {
-  const options = {
-    path: '/',
-    // при необходимости добавьте другие значения по умолчанию
-    ...inputOptions,
-  };
+// export const setCookie = (name, value, inputOptions = {}) => {
+//   const options = {
+//     path: '/',
+//     // при необходимости добавьте другие значения по умолчанию
+//     ...inputOptions,
+//   };
 
-  if (options.expires instanceof Date) {
-    options.expires = options.expires.toUTCString();
-  }
+//   if (options.expires instanceof Date) {
+//     options.expires = options.expires.toUTCString();
+//   }
 
-  let updatedCookie = `${encodeURIComponent(name)}=${encodeURIComponent(value)}`;
+//   let updatedCookie = `${encodeURIComponent(name)}=${encodeURIComponent(value)}`;
 
-  Object.keys(options).forEach((optionKey) => {
-    updatedCookie += `; ${optionKey}`;
-    const optionValue = options[optionKey];
-    if (optionValue !== true) {
-      updatedCookie += `=${optionValue}`;
-    }
-  });
+//   Object.keys(options).forEach((optionKey) => {
+//     updatedCookie += `; ${optionKey}`;
+//     const optionValue = options[optionKey];
+//     if (optionValue !== true) {
+//       updatedCookie += `=${optionValue}`;
+//     }
+//   });
 
-  document.cookie = updatedCookie;
-};
+//   document.cookie = updatedCookie;
+// };
 
 /**
  * Запрос на сервер регистрации
