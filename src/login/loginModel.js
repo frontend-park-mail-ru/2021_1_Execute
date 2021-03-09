@@ -1,5 +1,5 @@
 import { correctLoginProfile } from '../utils/validationModule.js';
-import { loginForm } from '../utils/requestToServer.js';
+import { loginForm, setCookie } from '../utils/requestToServer.js';
 import LoginEvents from './loginEvents.js';
 
 export default class LoginModel {
@@ -20,7 +20,10 @@ export default class LoginModel {
       let timer;
       loginForm(profile)
         .then(
-          (val) => this.eventBus.call(LoginEvents.profile, val),
+          ({ id }) => {
+            setCookie('id', id);
+            this.eventBus.call(LoginEvents.profile);
+          },
         ).catch((err) => callError(err.error))
         .finally(() => clearTimeout(timer));
       timer = setTimeout(() => callError('Превышенно время ожидания сервера'), 5 * 1000);

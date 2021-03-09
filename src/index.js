@@ -11,6 +11,6 @@ const profileController = new ProfileController(router, root);
 router.addRoute('/', () => router.go('login'));
 router.addRoute('login', () => loginController.start());
 router.addRoute('registation', () => {});
-router.addRoute('profile', (profile) => profileController.start(profile));
+router.addRoute('profile', () => profileController.start());
 
 router.go(window.location.pathname);

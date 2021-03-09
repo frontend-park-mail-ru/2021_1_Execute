@@ -11,9 +11,13 @@ export default class ProfileView {
     this.eventBus = eventBus;
   }
 
-  render(root, profile) {
+  render(root) {
     // eslint-disable-next-line no-undef
-    root.innerHTML = Handlebars.templates.profile(profile);
+    const data = this.eventBus.call(ProfileEvent.getData);
+    if (!data.photo) {
+      data.photo = '/img/not-available.png';
+    }
+    root.innerHTML = Handlebars.templates.profile(data);
     this.findNeedElem();
     this.addEventListeners();
   }

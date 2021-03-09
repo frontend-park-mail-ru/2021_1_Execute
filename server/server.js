@@ -1,11 +1,9 @@
-// const fetch = require('node-fetch');
-
 const express = require('express');
 const body = require('body-parser');
 const cookie = require('cookie-parser');
 const morgan = require('morgan');
-const uuid = require('uuid/v4');
 const path = require('path');
+const { randomInt } = require('crypto');
 const { correctLoginProfile } = require('./validationModule.js');
 
 const app = express();
@@ -14,6 +12,7 @@ app.use(morgan('dev'));
 app.use(express.static(path.resolve(__dirname)));
 app.use(express.static(path.resolve(__dirname, '..', 'src')));
 app.use(express.static(path.resolve(__dirname, '..', 'img')));
+app.use(express.static(path.resolve(__dirname, '..')));
 app.use(body.json());
 app.use(cookie());
 
@@ -37,9 +36,9 @@ const users = {
 const ids = {};
 
 const ApiRoutes = {
-  loginForm: '/loginform',
+  loginForm: '/api/login',
   login: '/login',
-  profileForm: '/profileform',
+  profileForm: '/api/profile',
   profile: '/profile',
 };
 
@@ -53,12 +52,11 @@ app.post(ApiRoutes.loginForm, (req, res) => {
     return res.status(200).json({ error: 'Не верный E-Mail и/или пароль' });
   }
 
-  const id = uuid();
+  const id = randomInt(281474976710655);
   ids[id] = username;
-  const profile = { username, ...users[username] };
 
-  res.cookie('login', id, { expires: new Date(Date.now() + 1000 * 60 * 10) });
-  return res.status(200).json(profile);
+  // res.cookie('id', id, { expires: new Date(Date.now() + 1000 * 60 * 10) });
+  return res.status(200).json({ id });
 });
 
 app.post(ApiRoutes.profileForm, (req, res) => res.status(200).json({ message: 'Данные изменены' }));

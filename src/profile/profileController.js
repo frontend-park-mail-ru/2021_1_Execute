@@ -17,7 +17,7 @@ export default class ProfileController {
     this.view = new ProfileView(this.eventBus);
   }
 
-  start(profile) {
-    this.view.render(this.root, profile);
+  start() {
+    this.view.render(this.root);
   }
 }

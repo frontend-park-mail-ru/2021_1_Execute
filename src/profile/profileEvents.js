@@ -1,4 +1,5 @@
 export const ProfileEvent = {
+  getData: 'profile.model.clickGetData',
   clickChangeData: 'profile.model.clickChangeData',
   profileError: 'profile.view.profileError',
   profileSuccess: 'profile.view.profileSuccess',
