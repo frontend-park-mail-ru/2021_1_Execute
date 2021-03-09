@@ -1,8 +1,11 @@
+const BACKEND_ADDRESS = 'http://localhost:1323/api';
+
 export const ApiRoutes = {
-  loginForm: '/api/login',
+  loginForm: '/login',
   login: '/login',
-  profileForm: '/api/users',
+  profileForm: '/users',
   profile: '/profile',
+  registration: '/users',
 };
 
 /**
@@ -12,7 +15,7 @@ export const ApiRoutes = {
  * @param {string} profile.password
  * @return {Promise}
  */
-export const loginForm = async (profile) => fetch(ApiRoutes.loginForm, {
+export const loginForm = async (profile) => fetch(BACKEND_ADDRESS + ApiRoutes.loginForm, {
   method: 'POST',
   body: JSON.stringify(profile),
   headers: {
@@ -28,7 +31,7 @@ export const loginForm = async (profile) => fetch(ApiRoutes.loginForm, {
  * @param {string} profile.password
  * @return {Promise}
  */
-export const profilePatchForm = async (id, profile) => fetch(`${ApiRoutes.profileForm}/${id}`, {
+export const profilePatchForm = async (id, profile) => fetch(BACKEND_ADDRESS + `${ApiRoutes.profileForm}/${id}`, {
   method: 'POST',
   body: JSON.stringify(profile),
   headers: {
@@ -41,7 +44,7 @@ export const profilePatchForm = async (id, profile) => fetch(`${ApiRoutes.profil
  * @param {string} id
  * @return {Promise}
  */
-export const profileGetForm = async (id) => fetch(`${ApiRoutes.profileForm}/${id}`, {
+export const profileGetForm = async (id) => fetch(BACKEND_ADDRESS + `${ApiRoutes.profileForm}/${id}`, {
   method: 'GET',
   headers: {
     'Content-Type': 'application/json',
@@ -87,4 +90,23 @@ export const setCookie = (name, value, inputOptions = {}) => {
   });
 
   document.cookie = updatedCookie;
+};
+
+/**
+ * Запрос на сервер регистрации
+ * @param {Object} profile
+ * @param {string} profile.email
+ * @param {string} profile.username
+ * @param {string} profile.password
+ * @return {Promise}
+ */
+export const registrationForm = async (profile) => {
+  return fetch(BACKEND_ADDRESS + ApiRoutes.registration, {
+    credentials: 'include',
+    method: 'POST',
+    body: JSON.stringify(profile),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
 };

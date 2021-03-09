@@ -57,3 +57,23 @@ export const correctChangeProfile = (profile, callError) => {
   }
   return false;
 };
+
+/**
+ * Проверка корректности данных пользователя при регистрации
+ * @param {Object} profile
+ * @param {string} profile.email
+ * @param {string} profile.username
+ * @param {string} profile.password
+ * @param {string} profile.repeatPassword
+ * @return {boolean}
+ */
+export const correctRegistrationProfile = (profile) => typeof profile === 'object'
+ && profile !== null
+ && correctEmail(profile.email)
+ && correctUserName(profile.username)
+ && correctPassword(profile.repeatPassword)
+ && correctPassword(profile.password);
+
+export const passwordsAreTheSame = (profile) => typeof profile === 'object'
+&& profile !== null
+&& correctPassword(profile.repeatPassword) === correctPassword(profile.password);
