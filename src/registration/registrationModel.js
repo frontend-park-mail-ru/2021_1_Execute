@@ -36,7 +36,7 @@ export default class RegistrationModel {
           case 400:
             callError('BadRequest');
             break;
-          case 409: // - Conflict (пользователь с таким ником уже существует)
+          case 409:
             callError('Пользователь с таким email уже существует');
             break;
           default:
