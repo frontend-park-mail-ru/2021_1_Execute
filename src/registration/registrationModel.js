@@ -29,12 +29,12 @@ export default class RegistrationModel {
     }
     let timer;
     registrationForm(profile)
-    .then((req) => { return {status: req.status, obj: req.json()} })
+    .then((req) => { return {status: req.status, obj: req} })
       .then((response) => {
         switch (response.status) {
           case 200:
           case 308:
-            this.eventBus.call(RegistrationEvents.profile, response.obj);
+            this.eventBus.call(RegistrationEvents.profile);
             break;
           case 400:
             callError('BadRequest');

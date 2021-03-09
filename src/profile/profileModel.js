@@ -16,6 +16,7 @@ export default class ProfileModel {
   }
 
   getData() {
+    console.log(getCookie('id'));
     waitAnsFromServer(profileGetForm(getCookie('id')),
       (message) => this.eventBus.call(ProfileEvent.profileError, message),
       (val) => this.eventBus.call(ProfileEvent.profileSuccess, val.user));

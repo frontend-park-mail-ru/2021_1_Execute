@@ -1,11 +1,11 @@
 const BACKEND_ADDRESS = 'http://localhost:1323/api';
 
 export const ApiRoutes = {
-  loginForm: '/login',
+  loginForm: '/login/',
   login: '/login',
   profileForm: '/users',
   profile: '/profile',
-  registration: '/users',
+  registration: '/users/',
 };
 
 /**
@@ -44,7 +44,7 @@ export const profilePatchForm = async (id, profile) => fetch(BACKEND_ADDRESS + `
  * @param {string} id
  * @return {Promise}
  */
-export const profileGetForm = async (id) => fetch(BACKEND_ADDRESS + `${ApiRoutes.profileForm}/${id}`, {
+export const profileGetForm = async (id) => fetch(BACKEND_ADDRESS + `${ApiRoutes.profileForm}/`, {
   method: 'GET',
   headers: {
     'Content-Type': 'application/json',
@@ -104,9 +104,9 @@ export const setCookie = (name, value, inputOptions = {}) => {
   return fetch(BACKEND_ADDRESS + ApiRoutes.registration, {
     credentials: 'include',
     method: 'POST',
-    body: JSON.stringify(profile),
     headers: {
       'Content-Type': 'application/json',
     },
+    body: JSON.stringify(profile),
   });
 };

@@ -14,6 +14,7 @@ export default class ProfileView {
   render(root) {
     // eslint-disable-next-line no-undef
     const data = this.eventBus.call(ProfileEvent.getData);
+    console.log(data);
     if (!data.photo) {
       data.photo = '/img/not-available.png';
     }
