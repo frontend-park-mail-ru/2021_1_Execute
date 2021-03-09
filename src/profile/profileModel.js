@@ -16,7 +16,7 @@ export default class ProfileModel {
   }
 
   getData() {
-    waitAnsFromServer(profileGetForm(getCookie('id')),
+    waitAnsFromServer(profileGetForm(getCookie('id')).then((req) => req.json()),
       (message) => this.eventBus.call(ProfileEvent.profileError, message),
       (val) => this.eventBus.call(ProfileEvent.profileSuccess, val.user));
   }
@@ -24,7 +24,7 @@ export default class ProfileModel {
   changeData(profile) {
     const callError = (message) => this.eventBus.call(ProfileEvent.profileError, message);
     if (correctChangeProfile(profile, callError)) {
-      waitAnsFromServer(profilePatchForm(profile),
+      waitAnsFromServer(profilePatchForm(profile).then((req) => req.json()),
         callError,
         (val) => this.eventBus.call(ProfileEvent.profileSuccess, val));
     }

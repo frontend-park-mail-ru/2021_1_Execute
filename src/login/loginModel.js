@@ -19,6 +19,7 @@ export default class LoginModel {
     } else {
       let timer;
       loginForm(profile)
+        .then((req) => req.json())
         .then(
           ({ id }) => {
             setCookie('id', id);

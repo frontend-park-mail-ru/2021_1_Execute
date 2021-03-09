@@ -18,7 +18,7 @@ export const loginForm = async (profile) => fetch(ApiRoutes.loginForm, {
   headers: {
     'Content-Type': 'application/json',
   },
-}).then((req) => req.json());
+});
 
 /**
  * Запрос на сервер изменения профиля
@@ -34,7 +34,7 @@ export const profilePatchForm = async (id, profile) => fetch(`${ApiRoutes.profil
   headers: {
     'Content-Type': 'application/json',
   },
-}).then((req) => req.json());
+});
 
 /**
  * Запрос на сервер получения профиля
@@ -46,7 +46,7 @@ export const profileGetForm = async (id) => fetch(`${ApiRoutes.profileForm}/${id
   headers: {
     'Content-Type': 'application/json',
   },
-}).then((req) => req.json());
+});
 
 export const waitAnsFromServer = (prom, callError, callSuccess) => {
   let timer;
