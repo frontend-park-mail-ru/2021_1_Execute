@@ -34,3 +34,21 @@ export const correctLoginProfile = (profile) => typeof profile === 'object'
   && profile !== null
   && correctUserName(profile.username)
   && correctPassword(profile.password);
+
+/**
+ * Проверка корректности данных пользователя при регистрации
+ * @param {Object} profile
+ * @param {string} profile.username
+ * @param {string} profile.password
+ * @return {boolean}
+ */
+export const correctRegistrationProfile = (profile) => typeof profile === 'object'
+ && profile !== null
+ && correctEmail(profile.email)
+ && correctUserName(profile.username)
+ && correctPassword(profile.repeatPassword)
+ && correctPassword(profile.password);
+
+export const passwordsAreTheSame = (profile) => typeof profile === 'object'
+&& profile !== null
+&& correctPassword(profile.repeatPassword) === correctPassword(profile.password);
