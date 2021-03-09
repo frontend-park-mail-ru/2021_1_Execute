@@ -62,8 +62,6 @@ export const getCookie = (name) => {
     // eslint-disable-next-line no-useless-escape
     `(?:^|; )${name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1')}=([^;]*)`,
   ));
-  console.log(document.cookie);
-  console.log(matches);
   return matches ? decodeURIComponent(matches[1]) : undefined;
 };
 
