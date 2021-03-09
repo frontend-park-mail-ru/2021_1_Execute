@@ -9,6 +9,8 @@ export default class LoginView {
    */
   constructor(eventBus) {
     this.eventBus = eventBus;
+    this.eventBus.subscribe(RegistrationEvents.registrationError,
+      (message) => this.handleRegistrationError(message));
   }
 
   render(root) {
@@ -33,15 +35,15 @@ export default class LoginView {
   }
 
   addEventListeners() {
-    this.buttonEnter.addEventListener('click', () => this.eventBus.call(RegistrationEvents.clickEnter, {
-      email: this.inputUserEmail.value,
-      username: this.inputUserName.value,
-      password: this.inputPassword.value,
-      repeatPassword: this.inputRepeatPassword.value,
-    }));
+    this.buttonEnter.addEventListener('click', () => {
+      this.eventBus.call(RegistrationEvents.clickEnter, {
+        email: this.inputUserEmail.value,
+        username: this.inputUserName.value,
+        password: this.inputPassword.value,
+        repeatPassword: this.inputRepeatPassword.value,
+      });
+    });
     this.buttonGotoLogin.addEventListener('click', () => this.eventBus.call(RegistrationEvents.login));
-    this.eventBus.subscribe(RegistrationEvents.registrationError,
-      (message) => this.handleRegistrationError(message));
   }
 
   handleRegistrationError(message) {

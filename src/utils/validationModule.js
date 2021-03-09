@@ -38,8 +38,10 @@ export const correctLoginProfile = (profile) => typeof profile === 'object'
 /**
  * Проверка корректности данных пользователя при регистрации
  * @param {Object} profile
+ * @param {string} profile.email
  * @param {string} profile.username
  * @param {string} profile.password
+ * @param {string} profile.repeatPassword
  * @return {boolean}
  */
 export const correctRegistrationProfile = (profile) => typeof profile === 'object'

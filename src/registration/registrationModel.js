@@ -1,4 +1,6 @@
-import { correctRegistrationProfile, passwordsAreTheSame } from '../utils/validationModule.js';
+import {
+  correctRegistrationProfile, passwordsAreTheSame,
+} from '../utils/validationModule.js';
 import { registrationForm } from '../utils/requestToServer.js';
 import RegistrationEvents from './registrationEvents.js';
 
