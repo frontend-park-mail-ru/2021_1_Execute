@@ -1,4 +1,4 @@
-import './profile.handlebars.js';
+import Handlebars from './profile.handlebars.js';
 import { makeChecker, replaceCssClassForTwoSeconds, replaceObjectPropForTwoSeconds } from '../utils/temporaryReplacement.js';
 import { ProfileEvent, ProfileMessage } from './profileEvents.js';
 
