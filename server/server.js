@@ -26,6 +26,10 @@ app.get('/profile', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'src', 'index.html'));
 });
 
+app.get('/registration', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'src', 'index.html'));
+});
+
 const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
