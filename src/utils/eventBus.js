@@ -58,7 +58,6 @@ export default class EventBus {
       throw new Error('Invalid event name');
     }
     if (!this.events.has(eventName)) {
-      console.log(eventName);
       throw new Error('Missing handler');
     }
     this.events.get(eventName)(...data);

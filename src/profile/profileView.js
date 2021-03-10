@@ -22,6 +22,7 @@ export default class ProfileView {
     if (!data.user.photo) {
       data.user.photo = '/not-available.png';
     }
+    // eslint-disable-next-line no-undef
     this.root.innerHTML = Handlebars.templates.profile(data.user);
     this.findNeedElem();
     this.addEventListeners();
