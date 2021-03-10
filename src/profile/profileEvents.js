@@ -4,6 +4,7 @@ export const ProfileEvent = {
   profileError: 'profile.view.profileError',
   profileSuccess: 'profile.view.profileSuccess',
   login: 'login.controller.start',
+  renderData: 'profile.view.renderData',
 };
 
 export const ProfileMessage = {

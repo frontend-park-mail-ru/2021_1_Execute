@@ -45,12 +45,15 @@ export const profilePatchForm = async (id, profile) => fetch(BACKEND_ADDRESS + `
  * @param {string} id
  * @return {Promise}
  */
-export const profileGetForm = async () => fetch(BACKEND_ADDRESS + `${ApiRoutes.profileForm}/`, {
-  method: 'GET',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-}).then((req) => req.json());
+export const profileGetForm = async () => {
+  return fetch(BACKEND_ADDRESS + `${ApiRoutes.profileForm}/`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+  });
+};
 
 export const waitAnsFromServer = (prom, callError, callSuccess) => {
   let timer;

@@ -7,18 +7,19 @@ export default class ProfileView {
    * @param {!EventBus}
    * @return {!ProfileView}
    */
-  constructor(eventBus) {
+  constructor(eventBus, root) {
+    this.root = root
     this.eventBus = eventBus;
+    this.eventBus.subscribe(ProfileEvent.renderData, (data) => this.renderData(data));
   }
 
-  render(root) {
+  render() {
     // eslint-disable-next-line no-undef
-    const data = this.eventBus.call(ProfileEvent.getData);
-    console.log(data);
-    if (!data.photo) {
-      data.photo = '/img/not-available.png';
-    }
-    root.innerHTML = Handlebars.templates.profile(data);
+    this.eventBus.call(ProfileEvent.getData);
+  }
+
+  renderData(data) {
+    this.root.innerHTML = Handlebars.templates.profile(data);
     this.findNeedElem();
     this.addEventListeners();
   }

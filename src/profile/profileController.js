@@ -14,10 +14,10 @@ export default class ProfileController {
     this.eventBus = new EventBus();
     this.eventBus.subscribe(ProfileEvent.login, (profile) => router.go('/login', profile));
     this.model = new ProfileModel(this.eventBus);
-    this.view = new ProfileView(this.eventBus);
+    this.view = new ProfileView(this.eventBus, this.root);
   }
 
   start() {
-    this.view.render(this.root);
+    this.view.render();
   }
 }
