@@ -9,22 +9,30 @@ export default class LoginModel {
    */
   constructor(eventBus) {
     this.eventBus = eventBus;
-    this.eventBus.subscribe(LoginEvents.clickEnter,
-      (profile) => this.clickEnter(profile));
+    this.eventBus.subscribe(LoginEvents.clickEnter, (profile) => this.clickEnter(profile));
   }
 
   clickEnter(profile) {
-    const callError = (message = 'Не верный логин или пароль') => this.eventBus.call(LoginEvents.loginError, message);
+    const callError = (message = 'Неверная почта или пароль') => this.eventBus.call(LoginEvents.loginError, message);
     if (!correctLoginProfile(profile)) {
       callError();
     } else {
-      let timer;
-      const messageFromServer = loginForm(profile)
-        .then(
-          () => this.eventBus.call(LoginEvents.profile, messageFromServer),
-        ).catch((err) => callError(err.error))
-        .finally(() => clearTimeout(timer));
-      timer = setTimeout(() => callError('Превышенно время ожидания сервера'), 5 * 1000);
+      loginForm(profile)
+        .then((resp) => {
+          switch (resp.status) {
+            case 200:
+              this.eventBus.call(LoginEvents.profile);
+              break;
+            case 400:
+              callError('Неверный запрос');
+              break;
+            case 403:
+              callError();
+              break;
+            default:
+              callError('Неизвестная ошибка');
+          }
+        });
     }
   }
 }

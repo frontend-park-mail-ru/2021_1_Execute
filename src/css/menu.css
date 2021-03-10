@@ -31,6 +31,14 @@
   --btn-success-hover-text-color: white;
   --btn-success-active-bg-color: var(--green);
   --btn-success-active-text-color: white;
+  --btn-warning-pasive-bg-color: var(--btn-primary-bg-color);
+  --btn-warning-pasive-text-color: black;
+  --btn-warning-focus-bg-color: var(--yellow);
+  --btn-warning-focus-text-color: black;
+  --btn-warning-hover-bg-color: var(--yellow-dark);
+  --btn-warning-hover-text-color: white;
+  --btn-warning-active-bg-color: var(--yellow);
+  --btn-warning-active-text-color: white;
   --btn-error-pasive-bg-color: var(--red);
   --btn-error-pasive-text-color: black;
   --btn-error-hover-bg-color: var(--red-dark);
@@ -76,6 +84,10 @@ body {
 
 .menu-textbox-error {
   color: var(--red);
+}
+
+.menu-textbox-success {
+  color: var(--green);
 }
 
 .menu-textbox svg {
@@ -139,6 +151,31 @@ body {
   color: var(--btn-success-active-text-color);
   background: var(--btn-success-active-bg-color);
   border-color: var(--btn-success-active-bg-color);
+}
+
+.menu-btn-warning {
+  color: var(--btn-warning-pasive-text-color);
+  background: var(--btn-warning-pasive-bg-color);
+  border-color: var(--btn-warning-pasive-bg-color);
+}
+
+.menu-btn-warning:focus {
+  color: var(--btn-warning-focus-text-color);
+  background: var(--btn-warning-focus-bg-color);
+  border-color: var(--btn-warning-focus-bg-color);
+}
+
+.menu-btn-warning:hover {
+  color: var(--btn-warning-hover-text-color);
+  background: var(--btn-warning-hover-bg-color);
+  border-color: var(--btn-warning-hover-bg-color);
+}
+
+.menu-btn-warning:active {
+  transition: 0.1s;
+  color: var(--btn-warning-active-text-color);
+  background: var(--btn-warning-active-bg-color);
+  border-color: var(--btn-warning-active-bg-color);
 }
 
 .menu-btn-error {
