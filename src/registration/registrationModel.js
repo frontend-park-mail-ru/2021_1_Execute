@@ -29,7 +29,7 @@ export default class RegistrationModel {
     }
     let timer;
     registrationForm(profile)
-    .then((req) => { return {status: req.status, obj: req} })
+      .then((req) => ({ status: req.status, obj: req }))
       .then((response) => {
         switch (response.status) {
           case 200:

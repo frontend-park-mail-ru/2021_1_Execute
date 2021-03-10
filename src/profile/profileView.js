@@ -8,7 +8,7 @@ export default class ProfileView {
    * @return {!ProfileView}
    */
   constructor(eventBus, root) {
-    this.root = root
+    this.root = root;
     this.eventBus = eventBus;
     this.eventBus.subscribe(ProfileEvent.renderData, (data) => this.renderData(data));
   }
@@ -19,7 +19,7 @@ export default class ProfileView {
   }
 
   renderData(data) {
-    this.root.innerHTML = Handlebars.templates.profile(data);
+    this.root.innerHTML = Handlebars.templates.profile(data.user);
     this.findNeedElem();
     this.addEventListeners();
   }
@@ -27,8 +27,9 @@ export default class ProfileView {
   findNeedElem() {
     this.textboxUserName = document.getElementById('textbox-username');
     this.textboxPassword = document.getElementById('textbox-password');
+    this.textboxEmail = document.getElementById('textbox-e-mail');
     this.textboxRepeatPassword = document.getElementById('textbox-repeat-password');
-    this.inputEMail = document.getElementById('e-mail');
+    this.inputEmail = document.getElementById('e-mail');
     this.inputUserName = document.getElementById('username');
     this.inputPassword = document.getElementById('password');
     this.inputRepeatPassword = document.getElementById('repeat-password');
@@ -40,7 +41,7 @@ export default class ProfileView {
   addEventListeners() {
     this.buttonExit.addEventListener('click', () => this.eventBus.call(ProfileEvent.login));
     this.buttonChangeData.addEventListener('click', () => this.eventBus.call(ProfileEvent.clickChangeData, {
-      email: this.inputEMail.value,
+      email: this.inputEmail.value,
       username: this.inputUserName.value,
       password: this.inputPassword.value,
       repeatPassword: this.inputRepeatPassword.value,
@@ -62,12 +63,16 @@ export default class ProfileView {
         replaceCssClassForTwoSeconds(this.textboxPassword, ['menu-textbox-error'], [], this.checker.textboxPassword);
         replaceCssClassForTwoSeconds(this.textboxRepeatPassword, ['menu-textbox-error'], [], this.checker.textboxRepeatPassword);
         break;
+      case ProfileMessage.emailErrorValidation:
+        replaceCssClassForTwoSeconds(this.textboxEmail, ['menu-textbox-error'], [], this.checker.textboxEmail);
+        break;
       default:
     }
     replaceObjectPropForTwoSeconds(this.buttonChangeData, 'innerText', message, this.checker.buttonChangeData);
   }
 
   handleProfileSuccess({ message }) {
+    replaceCssClassForTwoSeconds(this.textboxEmail, ['menu-textbox-success'], [], this.checker.textboxEmail);
     replaceCssClassForTwoSeconds(this.textboxUserName, ['menu-textbox-success'], [], this.checker.textboxUserName);
     replaceCssClassForTwoSeconds(this.textboxPassword, ['menu-textbox-success'], [], this.checker.textboxPassword);
     replaceCssClassForTwoSeconds(this.textboxRepeatPassword, ['menu-textbox-success'], [], this.checker.textboxRepeatPassword);

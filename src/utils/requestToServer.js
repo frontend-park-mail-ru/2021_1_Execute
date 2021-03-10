@@ -32,28 +32,27 @@ export const loginForm = async (profile) => fetch(BACKEND_ADDRESS + ApiRoutes.lo
  * @param {string} profile.password
  * @return {Promise}
  */
-export const profilePatchForm = async (id, profile) => fetch(BACKEND_ADDRESS + `${ApiRoutes.profileForm}/${id}`, {
-  method: 'POST',
+export const profilePatchForm = async (profile) => fetch(`${BACKEND_ADDRESS}${ApiRoutes.profileForm}/`, {
+  method: 'PATCH',
   body: JSON.stringify(profile),
   headers: {
     'Content-Type': 'application/json',
   },
-}).then((req) => req.json());
+  credentials: 'include',
+});
 
 /**
  * Запрос на сервер получения профиля
  * @param {string} id
  * @return {Promise}
  */
-export const profileGetForm = async () => {
-  return fetch(BACKEND_ADDRESS + `${ApiRoutes.profileForm}/`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    credentials: 'include',
-  });
-};
+export const profileGetForm = async () => fetch(`${BACKEND_ADDRESS}${ApiRoutes.profileForm}/`, {
+  method: 'GET',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  credentials: 'include',
+});
 
 export const waitAnsFromServer = (prom, callError, callSuccess) => {
   let timer;
@@ -64,38 +63,6 @@ export const waitAnsFromServer = (prom, callError, callSuccess) => {
   timer = setTimeout(() => callError('Превышенно время ожидания сервера'), 5 * 1000);
 };
 
-// export const getCookie = (name) => {
-//   const matches = document.cookie.match(new RegExp(
-//     // eslint-disable-next-line no-useless-escape
-//     `(?:^|; )${name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1')}=([^;]*)`,
-//   ));
-//   return matches ? decodeURIComponent(matches[1]) : undefined;
-// };
-
-// export const setCookie = (name, value, inputOptions = {}) => {
-//   const options = {
-//     path: '/',
-//     // при необходимости добавьте другие значения по умолчанию
-//     ...inputOptions,
-//   };
-
-//   if (options.expires instanceof Date) {
-//     options.expires = options.expires.toUTCString();
-//   }
-
-//   let updatedCookie = `${encodeURIComponent(name)}=${encodeURIComponent(value)}`;
-
-//   Object.keys(options).forEach((optionKey) => {
-//     updatedCookie += `; ${optionKey}`;
-//     const optionValue = options[optionKey];
-//     if (optionValue !== true) {
-//       updatedCookie += `=${optionValue}`;
-//     }
-//   });
-
-//   document.cookie = updatedCookie;
-// };
-
 /**
  * Запрос на сервер регистрации
  * @param {Object} profile
@@ -104,13 +71,11 @@ export const waitAnsFromServer = (prom, callError, callSuccess) => {
  * @param {string} profile.password
  * @return {Promise}
  */
- export const registrationForm = async (profile) => {
-  return fetch(BACKEND_ADDRESS + ApiRoutes.registration, {
-    credentials: 'include',
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(profile),
-  });
-};
+export const registrationForm = async (profile) => fetch(BACKEND_ADDRESS + ApiRoutes.registration, {
+  credentials: 'include',
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify(profile),
+});

@@ -1,8 +1,8 @@
 import { correctChangeProfile } from '../utils/validationModule.js';
 import {
-  profilePatchForm, profileGetForm, waitAnsFromServer,
+  profilePatchForm, profileGetForm,
 } from '../utils/requestToServer.js';
-import { ProfileEvent } from './profileEvents.js';
+import { ProfileEvent, ProfileMessage } from './profileEvents.js';
 
 export default class ProfileModel {
   /**
@@ -16,36 +16,47 @@ export default class ProfileModel {
   }
 
   getData() {
-    //console.log(getCookie('id'));
     profileGetForm()
-    .then((resp) => {
-      switch (resp.status) {
-        case 200:
-          const data = resp.body
-          console.log(data);
-          this.eventBus.call(ProfileEvent.renderData, data);
-          break;
-        case 401:
-          this.eventBus.call(ProfileEvent.profileError, {message: 'Неавторизованный запрос'});
-          break;
-        case 404:
-          this.eventBus.call(ProfileEvent.profileError, {message: 'Пользователь не найден'});
-          break;
-        default:
-          this.eventBus.call(ProfileEvent.profileError, {message: 'Неизвестная ошибка'});
-      }
-    })
-    // waitAnsFromServer(profileGetForm(),
-    //   (message) => this.eventBus.call(ProfileEvent.profileError, message),
-    //   (val) => this.eventBus.call(ProfileEvent.profileSuccess, val.user));
+      .then((res) => ({ status: res.status, obj: res.json() }))
+      .then((resp) => {
+        switch (resp.status) {
+          case 200:
+            resp.obj.then((data) => {
+              this.eventBus.call(ProfileEvent.renderData, data);
+            });
+            break;
+          case 401:
+            this.eventBus.call(ProfileEvent.profileError, { message: 'Неавторизованный запрос' });
+            break;
+          case 404:
+            this.eventBus.call(ProfileEvent.profileError, { message: 'Пользователь не найден' });
+            break;
+          default:
+            this.eventBus.call(ProfileEvent.profileError, { message: 'Неизвестная ошибка' });
+        }
+      });
   }
 
   changeData(profile) {
     const callError = (message) => this.eventBus.call(ProfileEvent.profileError, message);
     if (correctChangeProfile(profile, callError)) {
-      waitAnsFromServer(profilePatchForm(profile),
-        callError,
-        (val) => this.eventBus.call(ProfileEvent.profileSuccess, val));
+      profilePatchForm(profile)
+        .then((resp) => {
+          switch (resp.status) {
+            case 200:
+              this.eventBus.call(ProfileEvent.profileSuccess, { message: ProfileMessage.success });
+              break;
+            case 403:
+              callError(ProfileMessage.forbidden);
+              break;
+            case 400:
+              callError(ProfileMessage.errorValidation);
+              break;
+            default:
+              callError(ProfileMessage.unknownError);
+              break;
+          }
+        });
     }
   }
 }

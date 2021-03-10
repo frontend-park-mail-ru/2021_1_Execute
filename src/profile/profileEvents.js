@@ -8,8 +8,13 @@ export const ProfileEvent = {
 };
 
 export const ProfileMessage = {
+  success: 'Данные изменены',
+  unknownError: 'Неизвестная ошибка',
+  errorValidation: 'Некорректные данные',
+  forbidden: 'Недостаточно прав',
+  emailNonUniq: 'Пользователь с такой почтой уже есть',
+  emailErrorValidation: 'Почта не корректна',
   usernameErrorValidation: 'Логин не корректный',
-  usernameErrorServer: 'Логин занят',
   passwordErrorValidation: 'Пароль не корректный',
   repeatPasswordErrorValidation: 'Пароли не совпали',
 };

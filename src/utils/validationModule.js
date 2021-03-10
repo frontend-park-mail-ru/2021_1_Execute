@@ -38,8 +38,9 @@ export const correctLoginProfile = (profile) => typeof profile === 'object'
   && correctPassword(profile.password);
 
 /**
-* Проверка корректности данных пользователя при логине
+* Проверка корректности данных пользователя при изменении профиля
 * @param {Object} profile
+* @param {string} profile.email
 * @param {string} profile.username
 * @param {string} profile.password
 * @param {string} profile.repeatPassword
@@ -48,14 +49,23 @@ export const correctLoginProfile = (profile) => typeof profile === 'object'
 export const correctChangeProfile = (profile, callError) => {
   if (!correctUserName(profile.username)) {
     callError(ProfileMessage.usernameErrorValidation);
-  } else if (!correctPassword(profile.password)) {
-    callError(ProfileMessage.passwordErrorValidation);
-  } else if (profile.password !== profile.repeatPassword) {
-    callError(ProfileMessage.repeatPasswordErrorValidation);
-  } else {
-    return true;
+    return false;
   }
-  return false;
+  if (!correctEmail(profile.email)) {
+    callError(ProfileMessage.emailErrorValidation);
+    return false;
+  }
+  if (profile.password !== '') {
+    if (!correctPassword(profile.password)) {
+      callError(ProfileMessage.passwordErrorValidation);
+      return false;
+    }
+    if (profile.password !== profile.repeatPassword) {
+      callError(ProfileMessage.repeatPasswordErrorValidation);
+      return false;
+    }
+  }
+  return true;
 };
 
 /**
