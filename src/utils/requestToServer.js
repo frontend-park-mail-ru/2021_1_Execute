@@ -6,7 +6,7 @@ export const ApiRoutes = {
   profileForm: '/users',
   profile: '/profile',
   registration: '/users/',
-  exit: '/logout/'
+  exit: '/logout/',
 };
 
 /**

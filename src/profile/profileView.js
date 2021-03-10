@@ -1,4 +1,4 @@
-import './profile.handlebars.js';
+import { Handlebars } from './profile.handlebars.js';
 import { makeChecker, replaceCssClassForTwoSeconds, replaceObjectPropForTwoSeconds } from '../utils/temporaryReplacement.js';
 import { ProfileEvent, ProfileMessage } from './profileEvents.js';
 
@@ -19,6 +19,9 @@ export default class ProfileView {
   }
 
   renderData(data) {
+    if (!data.user.photo) {
+      data.user.photo = '/not-available.png';
+    }
     this.root.innerHTML = Handlebars.templates.profile(data.user);
     this.findNeedElem();
     this.addEventListeners();
@@ -27,9 +30,9 @@ export default class ProfileView {
   findNeedElem() {
     this.textboxUserName = document.getElementById('textbox-username');
     this.textboxPassword = document.getElementById('textbox-password');
-    this.textboxEmail = document.getElementById('textbox-e-mail');
+    this.textboxEmail = document.getElementById('textbox-email');
     this.textboxRepeatPassword = document.getElementById('textbox-repeat-password');
-    this.inputEmail = document.getElementById('e-mail');
+    this.inputEmail = document.getElementById('email');
     this.inputUserName = document.getElementById('username');
     this.inputPassword = document.getElementById('password');
     this.inputRepeatPassword = document.getElementById('repeat-password');
