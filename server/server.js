@@ -1,31 +1,15 @@
 const express = require('express');
-const body = require('body-parser');
-const morgan = require('morgan');
 const path = require('path');
 
 const app = express();
 
-app.use(morgan('dev'));
 app.use(express.static(path.resolve(__dirname)));
 app.use(express.static(path.resolve(__dirname, '..', 'src')));
 app.use(express.static(path.resolve(__dirname, '..', 'img')));
 app.use(express.static(path.resolve(__dirname, '..')));
 app.use(express.static(path.resolve(__dirname, '..', '..')));
-app.use(body.json());
 
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'src', 'index.html'));
-});
-
-app.get('/login', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'src', 'index.html'));
-});
-
-app.get('/profile', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'src', 'index.html'));
-});
-
-app.get('/registration', (req, res) => {
+app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'src', 'index.html'));
 });
 

@@ -1,5 +1,5 @@
 export const BACKEND_ADDRESS = 'http://localhost:1323/';
-export const BACKEND_API_ADDRESS = BACKEND_ADDRESS + 'api';
+export const BACKEND_API_ADDRESS = `${BACKEND_ADDRESS}api`;
 // const BACKEND_ADDRESS = 'http://89.208.199.114:1323/api';
 
 export const ApiRoutes = {
@@ -44,14 +44,16 @@ export const exitRequest = async () => fetch(BACKEND_API_ADDRESS + ApiRoutes.exi
  * @param {string} profile.password
  * @return {Promise}
  */
-export const profilePatchForm = async (profile) => fetch(BACKEND_API_ADDRESS + ApiRoutes.profileForm, {
-  method: 'PATCH',
-  body: JSON.stringify(profile),
-  headers: {
-    'Content-Type': 'application/json',
+export const profilePatchForm = async (profile) => fetch(
+  BACKEND_API_ADDRESS + ApiRoutes.profileForm, {
+    method: 'PATCH',
+    body: JSON.stringify(profile),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
   },
-  credentials: 'include',
-});
+);
 
 /**
  * Запрос на сервер изменения аватара
@@ -98,11 +100,13 @@ export const waitAnsFromServer = (prom, callError, callSuccess) => {
  * @param {string} profile.password
  * @return {Promise}
  */
-export const registrationForm = async (profile) => fetch(BACKEND_API_ADDRESS + ApiRoutes.registration, {
-  credentials: 'include',
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
+export const registrationForm = async (profile) => fetch(
+  BACKEND_API_ADDRESS + ApiRoutes.registration, {
+    credentials: 'include',
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(profile),
   },
-  body: JSON.stringify(profile),
-});
+);

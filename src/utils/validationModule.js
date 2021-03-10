@@ -78,12 +78,12 @@ export const correctChangeProfile = (profile, callError) => {
  * @return {boolean}
  */
 export const correctRegistrationProfile = (profile) => typeof profile === 'object'
- && profile !== null
- && correctEmail(profile.email)
- && correctUserName(profile.username)
- && correctPassword(profile.repeatPassword)
- && correctPassword(profile.password);
+  && profile !== null
+  && correctEmail(profile.email)
+  && correctUserName(profile.username)
+  && correctPassword(profile.repeatPassword)
+  && correctPassword(profile.password);
 
 export const passwordsAreTheSame = (profile) => typeof profile === 'object'
-&& profile !== null
-&& correctPassword(profile.repeatPassword) === correctPassword(profile.password);
+  && profile !== null
+  && correctPassword(profile.repeatPassword) === correctPassword(profile.password);

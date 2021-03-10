@@ -73,11 +73,7 @@ export default class ProfileModel {
               callError(ProfileMessage.unknownError);
           }
         });
-      console.log(profile.avatar);
-      profileAvatarUpload(profile.avatar)
-        .then((resp) => {
-          console.log(resp);
-        });
+      profileAvatarUpload(profile.avatar);
     }
   }
 }

@@ -12,12 +12,16 @@ export default class ProfileController {
   constructor(router, root) {
     this.root = root;
     this.eventBus = new EventBus();
-    this.eventBus.subscribe(ProfileEvent.login, (profile) => router.go('/login', profile));
+    this.eventBus.subscribe(ProfileEvent.login, () => router.go('/login'));
     this.model = new ProfileModel(this.eventBus);
     this.view = new ProfileView(this.eventBus, this.root);
+    this.eventBus.subscribe(ProfileEvent.profileError,
+      (message) => this.view.handleProfileError(message));
+    this.eventBus.subscribe(ProfileEvent.profileSuccess,
+      (message) => this.view.handleProfileSuccess(message));
   }
 
   start() {
-    this.view.render();
+    this.eventBus.call(ProfileEvent.getData);
   }
 }
