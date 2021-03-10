@@ -35,7 +35,6 @@ export default class ProfileModel {
 
   getData() {
     profileGetForm()
-      .then((res) => ({ status: res.status, obj: res.json() }))
       .then((resp) => {
         switch (resp.status) {
           case 200:
