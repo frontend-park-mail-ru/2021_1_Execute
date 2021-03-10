@@ -1,3 +1,5 @@
+import { ProfileMessage } from '../profile/profileEvents.js';
+
 /**
  * Проверка корректности строки как имени пользователя
  * @param {string} username
@@ -32,5 +34,56 @@ export const correctPassword = (password) => typeof password === 'string'
  */
 export const correctLoginProfile = (profile) => typeof profile === 'object'
   && profile !== null
-  && correctUserName(profile.username)
+  && correctEmail(profile.email)
   && correctPassword(profile.password);
+
+/**
+* Проверка корректности данных пользователя при изменении профиля
+* @param {Object} profile
+* @param {string} profile.email
+* @param {string} profile.username
+* @param {string} profile.password
+* @param {string} profile.repeatPassword
+* @return {boolean}
+*/
+export const correctChangeProfile = (profile, callError) => {
+  if (!correctUserName(profile.username)) {
+    callError(ProfileMessage.usernameErrorValidation);
+    return false;
+  }
+  if (!correctEmail(profile.email)) {
+    callError(ProfileMessage.emailErrorValidation);
+    return false;
+  }
+  if (profile.password !== '') {
+    if (!correctPassword(profile.password)) {
+      callError(ProfileMessage.passwordErrorValidation);
+      return false;
+    }
+    if (profile.password !== profile.repeatPassword) {
+      callError(ProfileMessage.repeatPasswordErrorValidation);
+      return false;
+    }
+  }
+  return true;
+};
+
+/**
+ * Проверка корректности данных пользователя при регистрации
+ * @param {Object} profile
+ * @param {string} profile.email
+ * @param {string} profile.username
+ * @param {string} profile.password
+ * @param {string} profile.repeatPassword
+ * @return {boolean}
+ */
+export const correctRegistrationProfile = (profile) => typeof profile === 'object'
+  && profile !== null
+  && correctEmail(profile.email)
+  && correctUserName(profile.username)
+  && correctPassword(profile.repeatPassword)
+  && correctPassword(profile.password);
+
+export const passwordsAreTheSame = (profile) => typeof profile === 'object'
+  && profile !== null
+  && correctPassword(profile.repeatPassword) === correctPassword(profile.password);

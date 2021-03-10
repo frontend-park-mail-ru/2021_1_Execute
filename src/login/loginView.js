@@ -19,9 +19,9 @@ export default class LoginView {
   }
 
   findNeedElem() {
-    this.textboxUserName = document.getElementById('textbox-username');
+    this.textboxEmail = document.getElementById('textbox-email');
     this.textboxPassword = document.getElementById('textbox-password');
-    this.inputUserName = document.getElementById('username');
+    this.inputEmail = document.getElementById('email');
     this.inputPassword = document.getElementById('password');
     this.buttonEnter = document.getElementById('enter');
     this.buttonGotoRegistration = document.getElementById('goto-registration');
@@ -30,14 +30,14 @@ export default class LoginView {
 
   addEventListeners() {
     this.buttonEnter.addEventListener('click', () => this.eventBus.call(LoginEvents.clickEnter, {
-      username: this.inputUserName.value, password: this.inputPassword.value,
+      email: this.inputEmail.value, password: this.inputPassword.value,
     }));
     this.buttonGotoRegistration.addEventListener('click', () => this.eventBus.call(LoginEvents.registration));
     this.eventBus.subscribe(LoginEvents.loginError, (message) => this.handleLoginError(message));
   }
 
   handleLoginError(message) {
-    replaceCssClassForTwoSeconds(this.textboxUserName, ['menu-textbox-error'], [], this.checker.textboxUserName);
+    replaceCssClassForTwoSeconds(this.textboxEmail, ['menu-textbox-error'], [], this.checker.textboxEmail);
     replaceCssClassForTwoSeconds(this.textboxPassword, ['menu-textbox-error'], [], this.checker.textboxPassword);
     replaceCssClassForTwoSeconds(this.buttonEnter, ['menu-btn-error'], ['menu-btn-success'], this.checker.buttonEnter);
     replaceObjectPropForTwoSeconds(this.buttonEnter, 'innerText', message, this.checker.buttonEnter);
