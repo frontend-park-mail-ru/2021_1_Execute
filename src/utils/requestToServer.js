@@ -6,6 +6,7 @@ export const ApiRoutes = {
   profileForm: '/users',
   profile: '/profile',
   registration: '/users/',
+  exit: '/logout/'
 };
 
 /**
@@ -23,6 +24,14 @@ export const loginForm = async (profile) => fetch(BACKEND_ADDRESS + ApiRoutes.lo
     'Content-Type': 'application/json',
   },
 }).then((req) => req.json());
+
+export const exitRequest = async () => fetch(BACKEND_ADDRESS + ApiRoutes.exit, {
+  method: 'DELETE',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  credentials: 'include',
+});
 
 /**
  * Запрос на сервер изменения профиля

@@ -1,6 +1,6 @@
 import { correctChangeProfile } from '../utils/validationModule.js';
 import {
-  profilePatchForm, profileGetForm,
+  profilePatchForm, profileGetForm, exitRequest
 } from '../utils/requestToServer.js';
 import { ProfileEvent, ProfileMessage } from './profileEvents.js';
 
@@ -11,8 +11,26 @@ export default class ProfileModel {
    */
   constructor(eventBus) {
     this.eventBus = eventBus;
+    this.eventBus.subscribe(ProfileEvent.exit, () => this.exit());
     this.eventBus.subscribe(ProfileEvent.getData, () => this.getData());
     this.eventBus.subscribe(ProfileEvent.clickChangeData, (profile) => this.changeData(profile));
+  }
+
+  exit() {
+    const callError = (message) => this.eventBus.call(ProfileEvent.profileError, message);
+    exitRequest()
+    .then((resp) => {
+      switch (resp.status) {
+        case 200:
+          this.eventBus.call(ProfileEvent.login);
+          break;
+        case 401:
+          callError(ProfileMessage.forbidden);
+          break;
+        default:
+          callError(ProfileMessage.unknownError);
+      }
+    });
   }
 
   getData() {
@@ -54,7 +72,6 @@ export default class ProfileModel {
               break;
             default:
               callError(ProfileMessage.unknownError);
-              break;
           }
         });
     }

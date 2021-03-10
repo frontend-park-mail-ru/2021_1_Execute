@@ -39,7 +39,7 @@ export default class ProfileView {
   }
 
   addEventListeners() {
-    this.buttonExit.addEventListener('click', () => this.eventBus.call(ProfileEvent.login));
+    this.buttonExit.addEventListener('click', () => this.eventBus.call(ProfileEvent.exit));
     this.buttonChangeData.addEventListener('click', () => this.eventBus.call(ProfileEvent.clickChangeData, {
       email: this.inputEmail.value,
       username: this.inputUserName.value,

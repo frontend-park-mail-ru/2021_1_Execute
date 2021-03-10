@@ -5,6 +5,7 @@ export const ProfileEvent = {
   profileSuccess: 'profile.view.profileSuccess',
   login: 'login.controller.start',
   renderData: 'profile.view.renderData',
+  exit: 'profile.model.exit',
 };
 
 export const ProfileMessage = {
