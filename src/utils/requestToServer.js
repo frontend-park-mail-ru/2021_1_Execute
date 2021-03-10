@@ -1,4 +1,4 @@
-const BACKEND_ADDRESS = 'http://localhost:1323/api';
+const BACKEND_ADDRESS = 'http://89.208.199.114:1323/api';
 
 export const ApiRoutes = {
   loginForm: '/login/',
