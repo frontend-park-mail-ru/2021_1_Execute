@@ -1,0 +1,44 @@
+{
+  "name": "2021_1_execute",
+  "version": "1.0.0",
+  "description": "Frontend репозиторий",
+  "scripts": {
+    "lint": "eslint '**/*.js' && stylelint  '**/*.css' && echo '  LINT OK'",
+    "lint-fix": "eslint --fix '**/*.js' && stylelint --fix '**/*.css' && echo '  LINT OK'",
+    "stylelint": "stylelint '**/*.css'",
+    "eslint": "eslint '**/*.js'",
+    "template": "find . -name \"*.handlebars\" -exec handlebars {} -f {}.js \\;",
+    "start": "npm run template && node server/server.js"
+  },
+  "hooks": {
+    "pre-commit": "nmp run lint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/frontend-park-mail-ru/2021_1_Execute.git"
+  },
+  "author": "EXECUTE",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/frontend-park-mail-ru/2021_1_Execute/issues"
+  },
+  "homepage": "https://github.com/frontend-park-mail-ru/2021_1_Execute#readme",
+  "devDependencies": {
+    "eslint": "^7.20.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1",
+    "handlebars": "^4.7.7",
+    "husky": "^5.0.9",
+    "stylelint": "^13.10.0",
+    "stylelint-config-standard": "^20.0.0"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cookie-parser": "^1.4.4",
+    "debug": "^4.1.1",
+    "express": "^4.16.4",
+    "morgan": "^1.9.1",
+    "node-fetch": "^2.6.1",
+    "uuid": "^3.3.2"
+  }
+}
