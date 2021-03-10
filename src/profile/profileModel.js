@@ -44,7 +44,7 @@ export default class ProfileModel {
             });
             break;
           case 401:
-            this.eventBus.call(ProfileEvent.profileError, { message: 'Неавторизованный запрос' });
+            this.eventBus.call(ProfileEvent.login);
             break;
           case 404:
             this.eventBus.call(ProfileEvent.profileError, { message: 'Пользователь не найден' });

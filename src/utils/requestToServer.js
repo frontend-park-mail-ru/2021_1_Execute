@@ -1,9 +1,10 @@
+// const BACKEND_ADDRESS = 'http://localhost:1323/api';
 const BACKEND_ADDRESS = 'http://89.208.199.114:1323/api';
 
 export const ApiRoutes = {
   loginForm: '/login/',
-  login: '/login',
-  profileForm: '/users',
+  login: '/login/',
+  profileForm: '/users/',
   profile: '/profile',
   registration: '/users/',
   exit: '/logout/',
@@ -12,7 +13,7 @@ export const ApiRoutes = {
 /**
  * Запрос на сервер авторизации
  * @param {Object} profile
- * @param {string} profile.username
+ * @param {string} profile.email
  * @param {string} profile.password
  * @return {Promise}
  */
@@ -23,7 +24,7 @@ export const loginForm = async (profile) => fetch(BACKEND_ADDRESS + ApiRoutes.lo
   headers: {
     'Content-Type': 'application/json',
   },
-}).then((req) => req.json());
+});
 
 export const exitRequest = async () => fetch(BACKEND_ADDRESS + ApiRoutes.exit, {
   method: 'DELETE',
@@ -41,7 +42,7 @@ export const exitRequest = async () => fetch(BACKEND_ADDRESS + ApiRoutes.exit, {
  * @param {string} profile.password
  * @return {Promise}
  */
-export const profilePatchForm = async (profile) => fetch(`${BACKEND_ADDRESS}${ApiRoutes.profileForm}/`, {
+export const profilePatchForm = async (profile) => fetch(BACKEND_ADDRESS + ApiRoutes.profileForm, {
   method: 'PATCH',
   body: JSON.stringify(profile),
   headers: {
@@ -55,7 +56,7 @@ export const profilePatchForm = async (profile) => fetch(`${BACKEND_ADDRESS}${Ap
  * @param {string} id
  * @return {Promise}
  */
-export const profileGetForm = async () => fetch(`${BACKEND_ADDRESS}${ApiRoutes.profileForm}/`, {
+export const profileGetForm = async () => fetch(BACKEND_ADDRESS + ApiRoutes.profileForm, {
   method: 'GET',
   headers: {
     'Content-Type': 'application/json',

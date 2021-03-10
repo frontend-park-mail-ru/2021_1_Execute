@@ -17,15 +17,22 @@ export default class LoginModel {
     if (!correctLoginProfile(profile)) {
       callError();
     } else {
-      let timer;
       loginForm(profile)
-        .then(
-          () => {
-            this.eventBus.call(LoginEvents.profile);
-          },
-        ).catch((err) => callError(err.error))
-        .finally(() => clearTimeout(timer));
-      timer = setTimeout(() => callError('Превышенно время ожидания сервера'), 5 * 1000);
+        .then((resp) => {
+          switch (resp.status) {
+            case 200:
+              this.eventBus.call(LoginEvents.profile);
+              break;
+            case 400:
+              callError('Неверный запрос');
+              break;
+            case 403:
+              callError();
+              break;
+            default:
+              callError('Неизвестная ошибка');
+          }
+        });
     }
   }
 }
