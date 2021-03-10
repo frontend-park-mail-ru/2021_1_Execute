@@ -1,6 +1,5 @@
 const express = require('express');
 const body = require('body-parser');
-const cookie = require('cookie-parser');
 const morgan = require('morgan');
 const path = require('path');
 
@@ -11,8 +10,8 @@ app.use(express.static(path.resolve(__dirname)));
 app.use(express.static(path.resolve(__dirname, '..', 'src')));
 app.use(express.static(path.resolve(__dirname, '..', 'img')));
 app.use(express.static(path.resolve(__dirname, '..')));
+app.use(express.static(path.resolve(__dirname, '..', '..')));
 app.use(body.json());
-app.use(cookie());
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'src', 'index.html'));

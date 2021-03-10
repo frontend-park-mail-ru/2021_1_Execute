@@ -1,6 +1,6 @@
 import { correctChangeProfile } from '../utils/validationModule.js';
 import {
-  profilePatchForm, profileGetForm, exitRequest,
+  profilePatchForm, profileGetForm, exitRequest, profileAvatarUpload,
 } from '../utils/requestToServer.js';
 import { ProfileEvent, ProfileMessage } from './profileEvents.js';
 
@@ -38,7 +38,7 @@ export default class ProfileModel {
       .then((resp) => {
         switch (resp.status) {
           case 200:
-            resp.obj.then((data) => {
+            resp.json().then((data) => {
               this.eventBus.call(ProfileEvent.renderData, data);
             });
             break;
@@ -72,6 +72,11 @@ export default class ProfileModel {
             default:
               callError(ProfileMessage.unknownError);
           }
+        });
+      console.log(profile.avatar);
+      profileAvatarUpload(profile.avatar)
+        .then((resp) => {
+          console.log(resp);
         });
     }
   }

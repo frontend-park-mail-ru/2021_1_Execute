@@ -13,7 +13,7 @@ export default class LoginModel {
   }
 
   clickEnter(profile) {
-    const callError = (message = 'Не верная почта или пароль') => this.eventBus.call(LoginEvents.loginError, message);
+    const callError = (message = 'Неверная почта или пароль') => this.eventBus.call(LoginEvents.loginError, message);
     if (!correctLoginProfile(profile)) {
       callError();
     } else {

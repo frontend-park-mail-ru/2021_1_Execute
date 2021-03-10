@@ -6,6 +6,7 @@ export const ProfileEvent = {
   login: 'login.controller.start',
   renderData: 'profile.view.renderData',
   exit: 'profile.model.exit',
+  uploadAvatar: 'profile.model.exit',
 };
 
 export const ProfileMessage = {
