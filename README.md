@@ -13,7 +13,7 @@
 - [Екатерина Придиус](https://github.com/pringleskate)
 
 ## Ссылка на проект
-- [Статика (fork)](https://iu9-trello.netlify.app/src/login.html)
+- [Trello by execute](http://89.208.199.114:3000)
 
 ## Репозиторий бекенда
 - [Бекенд](https://github.com/go-park-mail-ru/2021_1_Execute)
