@@ -1,4 +1,5 @@
 .profile-avatar-big {
+  position: relative;
   width: 200px;
   height: 200px;
   border-radius: 100px;
@@ -22,7 +23,7 @@
 }
 
 .profile-avatar-big svg {
-  position: relative;
+  position: absolute;
   left: 50px;
   top: 50px;
   width: 100px;
