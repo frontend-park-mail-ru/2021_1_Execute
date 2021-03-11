@@ -19,8 +19,9 @@ export default class RegistrationModel {
     const callError = (message) => {
       this.eventBus.call(RegistrationEvents.registrationError, message);
     };
-    if (!correctRegistrationProfile(profile)) {
-      callError('Не корректный формат данных');
+    const validationError = correctRegistrationProfile(profile);
+    if (!validationError) {
+      callError(validationError);
       return;
     }
     if (!passwordsAreTheSame(profile)) {

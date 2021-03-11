@@ -75,14 +75,23 @@ export const correctChangeProfile = (profile, callError) => {
  * @param {string} profile.username
  * @param {string} profile.password
  * @param {string} profile.repeatPassword
- * @return {boolean}
+ * @return {string|null} Текст ошибки
  */
-export const correctRegistrationProfile = (profile) => typeof profile === 'object'
-  && profile !== null
-  && correctEmail(profile.email)
-  && correctUserName(profile.username)
-  && correctPassword(profile.repeatPassword)
-  && correctPassword(profile.password);
+export const correctRegistrationProfile = (profile) => {
+  if (typeof profile !== 'object' || profile === null) {
+    return 'Некорректный формат данных';
+  }
+  if (!correctEmail(profile.email)) {
+    return 'Некорректный email';
+  }
+  if (!correctUserName(profile.username)) {
+    return 'Некорректное имя пользователя (Английские буквы > 6)';
+  }
+  if (!correctPassword(profile.repeatPassword)) {
+    return 'Некорректный пароль';
+  }
+  return null;
+};
 
 export const passwordsAreTheSame = (profile) => typeof profile === 'object'
   && profile !== null
