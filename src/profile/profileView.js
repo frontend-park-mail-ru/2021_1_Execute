@@ -24,17 +24,17 @@ export default class ProfileView {
   }
 
   findNeedElem() {
-    this.textboxUserName = this.root.getElementById('textbox-username');
-    this.textboxPassword = this.root.getElementById('textbox-password');
-    this.textboxEmail = this.root.getElementById('textbox-email');
-    this.textboxRepeatPassword = this.root.getElementById('textbox-repeat-password');
-    this.inputAvatar = this.root.getElementById('avatar-input');
-    this.inputEmail = this.root.getElementById('email');
-    this.inputUserName = this.root.getElementById('username');
-    this.inputPassword = this.root.getElementById('password');
-    this.inputRepeatPassword = this.root.getElementById('repeat-password');
-    this.buttonExit = this.root.getElementById('exit');
-    this.buttonChangeData = this.root.getElementById('change-data');
+    this.textboxUserName = document.getElementById('textbox-username');
+    this.textboxPassword = document.getElementById('textbox-password');
+    this.textboxEmail = document.getElementById('textbox-email');
+    this.textboxRepeatPassword = document.getElementById('textbox-repeat-password');
+    this.inputAvatar = document.getElementById('avatar-input');
+    this.inputEmail = document.getElementById('email');
+    this.inputUserName = document.getElementById('username');
+    this.inputPassword = document.getElementById('password');
+    this.inputRepeatPassword = document.getElementById('repeat-password');
+    this.buttonExit = document.getElementById('exit');
+    this.buttonChangeData = document.getElementById('change-data');
     this.checker = makeChecker(this);
   }
 

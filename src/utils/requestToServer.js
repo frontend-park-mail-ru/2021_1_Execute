@@ -1,6 +1,4 @@
-export const BACKEND_ADDRESS = 'http://localhost:1323/';
-export const BACKEND_API_ADDRESS = `${BACKEND_ADDRESS}api`;
-// const BACKEND_ADDRESS = 'http://89.208.199.114:1323/api';
+const BACKEND_API_ADDRESS = 'http://89.208.199.114:1323/api';
 
 export const ApiRoutes = {
   loginForm: '/login/',
@@ -19,7 +17,7 @@ export const ApiRoutes = {
  * @param {string} profile.password
  * @return {Promise}
  */
-export const loginForm = async (profile) => fetch(BACKEND_API_ADDRESS + ApiRoutes.loginForm, {
+export const loginForm = (profile) => fetch(BACKEND_API_ADDRESS + ApiRoutes.loginForm, {
   credentials: 'include',
   method: 'POST',
   body: JSON.stringify(profile),
@@ -28,7 +26,7 @@ export const loginForm = async (profile) => fetch(BACKEND_API_ADDRESS + ApiRoute
   },
 });
 
-export const exitRequest = async () => fetch(BACKEND_API_ADDRESS + ApiRoutes.exit, {
+export const exitRequest = () => fetch(BACKEND_API_ADDRESS + ApiRoutes.exit, {
   method: 'DELETE',
   headers: {
     'Content-Type': 'application/json',
@@ -44,7 +42,7 @@ export const exitRequest = async () => fetch(BACKEND_API_ADDRESS + ApiRoutes.exi
  * @param {string} profile.password
  * @return {Promise}
  */
-export const profilePatchForm = async (profile) => fetch(
+export const profilePatchForm = (profile) => fetch(
   BACKEND_API_ADDRESS + ApiRoutes.profileForm, {
     method: 'PATCH',
     body: JSON.stringify(profile),
@@ -60,7 +58,7 @@ export const profilePatchForm = async (profile) => fetch(
  * @param {File} file
  * @return {Promise}
  */
-export const profileAvatarUpload = async (file) => {
+export const profileAvatarUpload = (file) => {
   const formData = new FormData();
   formData.append('file', file);
   fetch(BACKEND_API_ADDRESS + ApiRoutes.uploadAvatar, {
@@ -75,7 +73,7 @@ export const profileAvatarUpload = async (file) => {
  * @param {string} id
  * @return {Promise}
  */
-export const profileGetForm = async () => fetch(BACKEND_API_ADDRESS + ApiRoutes.profileForm, {
+export const profileGetForm = () => fetch(BACKEND_API_ADDRESS + ApiRoutes.profileForm, {
   method: 'GET',
   headers: {
     'Content-Type': 'application/json',
@@ -100,7 +98,7 @@ export const waitAnsFromServer = (prom, callError, callSuccess) => {
  * @param {string} profile.password
  * @return {Promise}
  */
-export const registrationForm = async (profile) => fetch(
+export const registrationForm = (profile) => fetch(
   BACKEND_API_ADDRESS + ApiRoutes.registration, {
     credentials: 'include',
     method: 'POST',

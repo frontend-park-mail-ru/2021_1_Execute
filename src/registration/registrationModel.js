@@ -7,7 +7,7 @@ import RegistrationEvents from './registrationEvents.js';
 export default class RegistrationModel {
   /**
    * @param {!EventBus}
-   * @return {!RegistrationView}
+   * @return {!RegistrationModel}
    */
   constructor(eventBus) {
     this.eventBus = eventBus;
@@ -28,7 +28,6 @@ export default class RegistrationModel {
       callError('Пароли не совпадают');
       return;
     }
-    let timer;
     registrationForm(profile)
       .then((req) => ({ status: req.status, obj: req }))
       .then((response) => {
@@ -46,8 +45,6 @@ export default class RegistrationModel {
           default:
             callError('Неизвестная ошибка');
         }
-      })
-      .finally(() => clearTimeout(timer));
-    timer = setTimeout(() => callError('Превышенно время ожидания сервера'), 5 * 1000);
+      });
   }
 }
