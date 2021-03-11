@@ -73,7 +73,12 @@ export default class ProfileModel {
               callError(ProfileMessage.unknownError);
           }
         });
-      profileAvatarUpload(profile.avatar);
+      profileAvatarUpload(profile.avatar)
+        .then((resp) => {
+          if (resp.status === 200) {
+            this.eventBus.call(ProfileEvent.getData);
+          }
+        });
     }
   }
 }

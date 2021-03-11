@@ -61,7 +61,7 @@ export const profilePatchForm = (profile) => fetch(
 export const profileAvatarUpload = (file) => {
   const formData = new FormData();
   formData.append('file', file);
-  fetch(BACKEND_API_ADDRESS + ApiRoutes.uploadAvatar, {
+  return fetch(BACKEND_API_ADDRESS + ApiRoutes.uploadAvatar, {
     method: 'POST',
     body: formData,
     credentials: 'include',
