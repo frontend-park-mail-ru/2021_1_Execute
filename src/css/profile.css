@@ -3,6 +3,7 @@
   width: 200px;
   height: 200px;
   border-radius: 100px;
+  outline: none;
 }
 
 .profile-avatar-big img {
@@ -17,7 +18,22 @@
   box-shadow: 0 0 10px;
 }
 
-.profile-avatar-big:hover img {
+.profile-avatar-big label {
+  position: absolute;
+  background-position: center center;
+  background-size: cover;
+  width: 200px;
+  height: 200px;
+  border-radius: 100px;
+  transition: 0.25s;
+  object-fit: cover;
+}
+
+.profile-avatar-big input {
+  display: none;
+}
+
+.profile-avatar-big:hover img, .profile-avatar-big label {
   border-radius: 15px;
   opacity: 0.75;
 }
