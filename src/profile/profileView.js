@@ -14,9 +14,6 @@ export default class ProfileView {
   }
 
   renderData(data) {
-    if (!data.user.avatarUrl) {
-      data.user.avatarUrl = '/not-available.png';
-    }
     // eslint-disable-next-line no-undef
     this.root.innerHTML = Handlebars.templates.profile(data.user);
     this.findNeedElem();
