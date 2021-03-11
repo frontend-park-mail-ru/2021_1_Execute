@@ -20,7 +20,7 @@ export default class RegistrationModel {
       this.eventBus.call(RegistrationEvents.registrationError, message);
     };
     const validationError = correctRegistrationProfile(profile);
-    if (!validationError) {
+    if (validationError) {
       callError(validationError);
       return;
     }

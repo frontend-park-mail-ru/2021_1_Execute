@@ -6,7 +6,7 @@ import { ProfileMessage } from '../profile/profileEvents.js';
  * @return {boolean}
  */
 export const correctUserName = (username) => typeof username === 'string'
-  && username.match(/^[a-zA-Z0-9]+.{6,16}$/) !== null;
+  && username.match(/^([a-zA-Z0-9а-яА-Я]+){3,16}$/) !== null;
 
 /**
  * Проверка корректности строки как e-mail
@@ -14,7 +14,7 @@ export const correctUserName = (username) => typeof username === 'string'
  * @return {boolean}
  */
 export const correctEmail = (email) => typeof email === 'string'
-  && email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)
+  && email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+$/)
   !== null;
 
 /**
@@ -85,9 +85,9 @@ export const correctRegistrationProfile = (profile) => {
     return 'Некорректный email';
   }
   if (!correctUserName(profile.username)) {
-    return 'Некорректное имя пользователя (Английские буквы > 6)';
+    return 'Некорректное имя пользователя (Буквы, цифры, >3)';
   }
-  if (!correctPassword(profile.repeatPassword)) {
+  if (!correctPassword(profile.password)) {
     return 'Некорректный пароль';
   }
   return null;
