@@ -75,7 +75,7 @@ export default class ProfileModel {
             callError(ProfileMessage.unknownError);
         }
       });
-    if (profile.avatar !== undefined) {
+    if (profile.avatar) {
       profileAvatarUpload(profile.avatar)
         .then((resp) => {
           if (resp.status === 200) {
