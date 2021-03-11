@@ -21,11 +21,11 @@ export default class ProfileView {
   }
 
   findNeedElem() {
+    this.inputAvatar = document.getElementById('avatar-input');
     this.textboxUserName = document.getElementById('textbox-username');
     this.textboxPassword = document.getElementById('textbox-password');
     this.textboxEmail = document.getElementById('textbox-email');
     this.textboxRepeatPassword = document.getElementById('textbox-repeat-password');
-    this.inputAvatar = document.getElementById('avatar-input');
     this.inputEmail = document.getElementById('email');
     this.inputUserName = document.getElementById('username');
     this.inputPassword = document.getElementById('password');
@@ -42,6 +42,8 @@ export default class ProfileView {
       username: this.inputUserName.value,
       password: this.inputPassword.value,
       repeatPassword: this.inputRepeatPassword.value,
+    }));
+    this.inputAvatar.addEventListener('change', () => this.eventBus.call(ProfileEvent.clickChangeAvatar, {
       avatar: this.inputAvatar.files[0],
     }));
   }

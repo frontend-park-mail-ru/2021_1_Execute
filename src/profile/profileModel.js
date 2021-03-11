@@ -14,6 +14,8 @@ export default class ProfileModel {
     this.eventBus.subscribe(ProfileEvent.exit, () => this.exit());
     this.eventBus.subscribe(ProfileEvent.getData, () => this.getData());
     this.eventBus.subscribe(ProfileEvent.clickChangeData, (profile) => this.changeData(profile));
+    this.eventBus.subscribe(ProfileEvent.clickChangeAvatar,
+      (profile) => this.changeAvatar(profile));
   }
 
   exit() {
@@ -75,13 +77,14 @@ export default class ProfileModel {
             callError(ProfileMessage.unknownError);
         }
       });
-    if (profile.avatar) {
-      profileAvatarUpload(profile.avatar)
-        .then((resp) => {
-          if (resp.status === 200) {
-            this.eventBus.call(ProfileEvent.getData);
-          }
-        });
-    }
+  }
+
+  changeAvatar({ avatar }) {
+    profileAvatarUpload(avatar)
+      .then((resp) => {
+        if (resp.status === 200) {
+          this.eventBus.call(ProfileEvent.getData);
+        }
+      });
   }
 }
