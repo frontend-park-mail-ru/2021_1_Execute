@@ -13,9 +13,9 @@ export default class LoginModel {
   }
 
   clickEnter(profile) {
-    const callError = (message = 'Неверная почта или пароль') => this.eventBus.call(LoginEvents.loginError, message);
+    const callError = (message) => this.eventBus.call(LoginEvents.loginError, message);
     if (!correctLoginProfile(profile)) {
-      callError();
+      callError('Неверная пара: почта, пароль');
     } else {
       loginForm(profile)
         .then((resp) => {
@@ -27,7 +27,7 @@ export default class LoginModel {
               callError('Неверный запрос');
               break;
             case 403:
-              callError();
+              callError('Неверная пара: почта, пароль');
               break;
             default:
               callError('Неизвестная ошибка');

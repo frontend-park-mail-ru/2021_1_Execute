@@ -6,7 +6,7 @@ import { ProfileMessage } from '../profile/profileEvents.js';
  * @return {boolean}
  */
 export const correctUserName = (username) => typeof username === 'string'
-  && username.match(/^[a-zA-Z0-9]+.{6,16}$/) !== null;
+  && username.match(/^([a-zA-Z0-9а-яА-Я]+){3,16}$/) !== null;
 
 /**
  * Проверка корректности строки как e-mail
@@ -14,7 +14,7 @@ export const correctUserName = (username) => typeof username === 'string'
  * @return {boolean}
  */
 export const correctEmail = (email) => typeof email === 'string'
-  && email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)
+  && email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+$/)
   !== null;
 
 /**
@@ -75,14 +75,23 @@ export const correctChangeProfile = (profile, callError) => {
  * @param {string} profile.username
  * @param {string} profile.password
  * @param {string} profile.repeatPassword
- * @return {boolean}
+ * @return {string|null} Текст ошибки
  */
-export const correctRegistrationProfile = (profile) => typeof profile === 'object'
-  && profile !== null
-  && correctEmail(profile.email)
-  && correctUserName(profile.username)
-  && correctPassword(profile.repeatPassword)
-  && correctPassword(profile.password);
+export const correctRegistrationProfile = (profile) => {
+  if (typeof profile !== 'object' || profile === null) {
+    return 'Некорректный формат данных';
+  }
+  if (!correctEmail(profile.email)) {
+    return 'Некорректный email';
+  }
+  if (!correctUserName(profile.username)) {
+    return 'Некорректное имя пользователя (Буквы, цифры, >3)';
+  }
+  if (!correctPassword(profile.password)) {
+    return 'Некорректный пароль';
+  }
+  return null;
+};
 
 export const passwordsAreTheSame = (profile) => typeof profile === 'object'
   && profile !== null
