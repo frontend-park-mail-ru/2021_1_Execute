@@ -95,4 +95,5 @@ export const correctRegistrationProfile = (profile) => {
 
 export const passwordsAreTheSame = (profile) => typeof profile === 'object'
   && profile !== null
-  && correctPassword(profile.repeatPassword) === correctPassword(profile.password);
+  && correctPassword(profile.repeatPassword) && correctPassword(profile.password)
+  && profile.repeatPassword === profile.password;
