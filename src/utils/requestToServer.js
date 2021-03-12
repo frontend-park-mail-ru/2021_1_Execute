@@ -1,4 +1,5 @@
 const BACKEND_API_ADDRESS = 'http://89.208.199.114:1323/api';
+// const BACKEND_API_ADDRESS = 'http://localhost:1323/api';
 
 export const ApiRoutes = {
   loginForm: '/login/',
@@ -61,7 +62,7 @@ export const profilePatchForm = (profile) => fetch(
 export const profileAvatarUpload = (file) => {
   const formData = new FormData();
   formData.append('file', file);
-  fetch(BACKEND_API_ADDRESS + ApiRoutes.uploadAvatar, {
+  return fetch(BACKEND_API_ADDRESS + ApiRoutes.uploadAvatar, {
     method: 'POST',
     body: formData,
     credentials: 'include',

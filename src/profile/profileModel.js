@@ -14,6 +14,8 @@ export default class ProfileModel {
     this.eventBus.subscribe(ProfileEvent.exit, () => this.exit());
     this.eventBus.subscribe(ProfileEvent.getData, () => this.getData());
     this.eventBus.subscribe(ProfileEvent.clickChangeData, (profile) => this.changeData(profile));
+    this.eventBus.subscribe(ProfileEvent.clickChangeAvatar,
+      (profile) => this.changeAvatar(profile));
   }
 
   exit() {
@@ -56,24 +58,33 @@ export default class ProfileModel {
 
   changeData(profile) {
     const callError = (message) => this.eventBus.call(ProfileEvent.profileError, message);
-    if (correctChangeProfile(profile, callError)) {
-      profilePatchForm(profile)
-        .then((resp) => {
-          switch (resp.status) {
-            case 200:
-              this.eventBus.call(ProfileEvent.profileSuccess, { message: ProfileMessage.success });
-              break;
-            case 403:
-              callError(ProfileMessage.forbidden);
-              break;
-            case 400:
-              callError(ProfileMessage.errorValidation);
-              break;
-            default:
-              callError(ProfileMessage.unknownError);
-          }
-        });
-      profileAvatarUpload(profile.avatar);
+    if (!correctChangeProfile(profile, callError)) {
+      return;
     }
+    profilePatchForm(profile)
+      .then((resp) => {
+        switch (resp.status) {
+          case 200:
+            this.eventBus.call(ProfileEvent.profileSuccess, { message: ProfileMessage.success });
+            break;
+          case 403:
+            callError(ProfileMessage.forbidden);
+            break;
+          case 400:
+            callError(ProfileMessage.errorValidation);
+            break;
+          default:
+            callError(ProfileMessage.unknownError);
+        }
+      });
+  }
+
+  changeAvatar(avatar) {
+    profileAvatarUpload(avatar)
+      .then((resp) => {
+        if (resp.status === 200) {
+          this.eventBus.call(ProfileEvent.getData);
+        }
+      });
   }
 }

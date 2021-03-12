@@ -14,9 +14,6 @@ export default class ProfileView {
   }
 
   renderData(data) {
-    if (!data.user.avatarUrl) {
-      data.user.avatarUrl = '/not-available.png';
-    }
     // eslint-disable-next-line no-undef
     this.root.innerHTML = Handlebars.templates.profile(data.user);
     this.findNeedElem();
@@ -24,11 +21,11 @@ export default class ProfileView {
   }
 
   findNeedElem() {
+    this.inputAvatar = document.getElementById('avatar-input');
     this.textboxUserName = document.getElementById('textbox-username');
     this.textboxPassword = document.getElementById('textbox-password');
     this.textboxEmail = document.getElementById('textbox-email');
     this.textboxRepeatPassword = document.getElementById('textbox-repeat-password');
-    this.inputAvatar = document.getElementById('avatar-input');
     this.inputEmail = document.getElementById('email');
     this.inputUserName = document.getElementById('username');
     this.inputPassword = document.getElementById('password');
@@ -45,8 +42,8 @@ export default class ProfileView {
       username: this.inputUserName.value,
       password: this.inputPassword.value,
       repeatPassword: this.inputRepeatPassword.value,
-      avatar: this.inputAvatar.files[0],
     }));
+    this.inputAvatar.addEventListener('change', () => this.eventBus.call(ProfileEvent.clickChangeAvatar, this.inputAvatar.files[0]));
   }
 
   handleProfileError(message) {
