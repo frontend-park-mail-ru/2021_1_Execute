@@ -79,7 +79,7 @@ export default class ProfileModel {
       });
   }
 
-  changeAvatar({ avatar }) {
+  changeAvatar(avatar) {
     profileAvatarUpload(avatar)
       .then((resp) => {
         if (resp.status === 200) {

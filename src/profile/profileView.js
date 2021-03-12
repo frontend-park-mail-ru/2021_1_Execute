@@ -43,9 +43,7 @@ export default class ProfileView {
       password: this.inputPassword.value,
       repeatPassword: this.inputRepeatPassword.value,
     }));
-    this.inputAvatar.addEventListener('change', () => this.eventBus.call(ProfileEvent.clickChangeAvatar, {
-      avatar: this.inputAvatar.files[0],
-    }));
+    this.inputAvatar.addEventListener('change', () => this.eventBus.call(ProfileEvent.clickChangeAvatar, this.inputAvatar.files[0]));
   }
 
   handleProfileError(message) {
