@@ -9,6 +9,12 @@ export const ApiRoutes = {
   uploadAvatar: '/upload/',
 };
 
+/**
+ * Создает POST запрос с телом JSON
+ * @param {object} data - становится телом в формате JSON
+ * @param {string} route - путь запроса
+ * @returns {Promise}
+ */
 const postJson = (data, route) => fetch(BACKEND_API_ADDRESS + route, {
   credentials: 'include',
   method: 'POST',
@@ -17,6 +23,13 @@ const postJson = (data, route) => fetch(BACKEND_API_ADDRESS + route, {
     'Content-Type': 'application/json',
   },
 });
+
+/**
+ * Создает PATCH запрос с телом JSON
+ * @param {object} data - становится телом в формате JSON
+ * @param {string} route - путь запроса
+ * @returns {Promise}
+ */
 const patchJson = (data, route) => fetch(BACKEND_API_ADDRESS + route, {
   credentials: 'include',
   method: 'PATCH',
@@ -26,6 +39,11 @@ const patchJson = (data, route) => fetch(BACKEND_API_ADDRESS + route, {
   },
 });
 
+/**
+ * Создает DELETE запрос без тела
+ * @param {string} route - путь запроса
+ * @returns {Promise}
+ */
 const deleteEmpty = (route) => fetch(BACKEND_API_ADDRESS + route, {
   credentials: 'include',
   method: 'DELETE',
@@ -34,6 +52,11 @@ const deleteEmpty = (route) => fetch(BACKEND_API_ADDRESS + route, {
   },
 });
 
+/**
+ * Создает GET запрос без тела
+ * @param {string} route - путь запроса
+ * @returns {Promise}
+ */
 const get = (route) => fetch(BACKEND_API_ADDRESS + route, {
   credentials: 'include',
   method: 'GET',
@@ -91,6 +114,7 @@ export const myProfileGet = () => get(ApiRoutes.profile);
 export const myProfileAvatarUpload = (file) => {
   const formData = new FormData();
   formData.append('file', file);
+
   return fetch(BACKEND_API_ADDRESS + ApiRoutes.uploadAvatar, {
     credentials: 'include',
     method: 'POST',
