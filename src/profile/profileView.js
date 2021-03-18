@@ -11,6 +11,8 @@ export default class ProfileView {
     this.root = root;
     this.eventBus = eventBus;
     this.eventBus.subscribe(ProfileEvent.renderData, (data) => this.renderData(data));
+    this.eventBus.subscribe(ProfileEvent.changeAvatarToBuffer,
+      (file) => this.changeAvatarToBuffer(file));
   }
 
   renderData(data) {
@@ -45,8 +47,6 @@ export default class ProfileView {
       repeatPassword: this.inputRepeatPassword.value,
     }));
     this.inputAvatar.addEventListener('change', () => this.eventBus.call(ProfileEvent.clickChangeAvatar, this.inputAvatar.files[0]));
-    this.eventBus.subscribe(ProfileEvent.changeAvatarToBuffer,
-      (file) => this.changeAvatarToBuffer(file));
   }
 
   /**

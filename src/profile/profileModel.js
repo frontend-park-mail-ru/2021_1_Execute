@@ -84,7 +84,7 @@ export default class ProfileModel {
    */
   changeAvatar(avatar) {
     const callError = (message) => this.eventBus.call(ProfileEvent.avatarError, message);
-    if (avatar.type.match(/\w+\//)[0] !== 'image/') {
+    if (avatar.type.startsWith('image/')) {
       callError(ProfileMessage.errorValidation);
       return;
     }
