@@ -1,6 +1,6 @@
 import { correctChangeProfile } from '../utils/validationModule.js';
 import {
-  profilePatchForm, profileGetForm, exitRequest, profileAvatarUpload,
+  myProfilePatch, myProfileGet, exit, myProfileAvatarUpload,
 } from '../utils/requestToServer.js';
 import { ProfileEvent, ProfileMessage } from './profileEvents.js';
 
@@ -20,7 +20,7 @@ export default class ProfileModel {
 
   exit() {
     const callError = (message) => this.eventBus.call(ProfileEvent.profileError, message);
-    exitRequest()
+    exit()
       .then((resp) => {
         switch (resp.status) {
           case 200:
@@ -36,7 +36,7 @@ export default class ProfileModel {
   }
 
   getData() {
-    profileGetForm()
+    myProfileGet()
       .then((resp) => {
         switch (resp.status) {
           case 200:
@@ -61,7 +61,7 @@ export default class ProfileModel {
     if (!correctChangeProfile(profile, callError)) {
       return;
     }
-    profilePatchForm(profile)
+    myProfilePatch(profile)
       .then((resp) => {
         switch (resp.status) {
           case 200:
@@ -88,12 +88,8 @@ export default class ProfileModel {
       callError(ProfileMessage.errorValidation);
       return;
     }
-    if (avatar.size > 2 * 1024 * 1024) {
-      callError(ProfileMessage.errorSize);
-      return;
-    }
     this.eventBus.call(ProfileEvent.changeAvatarToBuffer, avatar);
-    profileAvatarUpload(avatar)
+    myProfileAvatarUpload(avatar)
       .then((resp) => {
         if (resp.status === 415) {
           this.eventBus.call(ProfileEvent.changeAvatarToBuffer, null);
