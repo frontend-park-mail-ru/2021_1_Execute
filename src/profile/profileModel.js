@@ -79,11 +79,25 @@ export default class ProfileModel {
       });
   }
 
+  /**
+   * @param {File} avatar
+   */
   changeAvatar(avatar) {
+    const callError = (message) => this.eventBus.call(ProfileEvent.avatarError, message);
+    if (avatar.type.match(/\w+\//)[0] !== 'image/') {
+      callError(ProfileMessage.errorValidation);
+      return;
+    }
+    if (avatar.size > 2 * 1024 * 1024) {
+      callError(ProfileMessage.errorSize);
+      return;
+    }
+    this.eventBus.call(ProfileEvent.changeAvatarToBuffer, avatar);
     profileAvatarUpload(avatar)
       .then((resp) => {
-        if (resp.status === 200) {
-          this.eventBus.call(ProfileEvent.getData);
+        if (resp.status === 415) {
+          this.eventBus.call(ProfileEvent.changeAvatarToBuffer, null);
+          callError(ProfileMessage.errorFormatImg);
         }
       });
   }
