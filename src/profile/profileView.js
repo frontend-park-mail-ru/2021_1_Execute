@@ -11,6 +11,8 @@ export default class ProfileView {
     this.root = root;
     this.eventBus = eventBus;
     this.eventBus.subscribe(ProfileEvent.renderData, (data) => this.renderData(data));
+    this.eventBus.subscribe(ProfileEvent.changeAvatarToBuffer,
+      (file) => this.changeAvatarToBuffer(file));
   }
 
   renderData(data) {
@@ -21,6 +23,7 @@ export default class ProfileView {
   }
 
   findNeedElem() {
+    this.photoAvatar = document.getElementById('avatar-photo');
     this.inputAvatar = document.getElementById('avatar-input');
     this.textboxUserName = document.getElementById('textbox-username');
     this.textboxPassword = document.getElementById('textbox-password');
@@ -44,6 +47,18 @@ export default class ProfileView {
       repeatPassword: this.inputRepeatPassword.value,
     }));
     this.inputAvatar.addEventListener('change', () => this.eventBus.call(ProfileEvent.clickChangeAvatar, this.inputAvatar.files[0]));
+  }
+
+  /**
+   * @param {File} avatar
+   */
+  changeAvatarToBuffer(avatar) {
+    if (avatar) {
+      this.photoAvatar.onload = () => URL.revokeObjectURL(this.photoAvatar.src);
+      this.photoAvatar.src = URL.createObjectURL(avatar);
+    } else {
+      this.photoAvatar.src = '';
+    }
   }
 
   handleProfileError(message) {
