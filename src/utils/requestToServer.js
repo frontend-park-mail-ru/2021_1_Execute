@@ -1,5 +1,7 @@
-const BACKEND_API_ADDRESS = 'http://89.208.199.114:1323/api';
-// const BACKEND_API_ADDRESS = 'http://localhost:1323/api';
+const PORT = 1323;
+// Don't change or move FIRST Line
+const BACKEND_API_ADDRESS = `http://89.208.199.114:${PORT}/api`;
+// const BACKEND_API_ADDRESS = `http://localhost:${PORT}/api`;
 
 export const ApiRoutes = {
   loginForm: '/login/',
