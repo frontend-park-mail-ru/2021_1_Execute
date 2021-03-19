@@ -98,20 +98,20 @@ export const exit = () => deleteEmpty(ApiRoutes.exit);
  * @param {string} profile.password
  * @return {Promise}
  */
-export const myProfilePatch = (profile) => patchJson(profile, ApiRoutes.profile);
+export const profilePatch = (profile) => patchJson(profile, ApiRoutes.profile);
 
 /**
  * Запрос получения своего профиля на сервер
  * @return {Promise}
  */
-export const myProfileGet = () => get(ApiRoutes.profile);
+export const profileGet = () => get(ApiRoutes.profile);
 
 /**
  * Запрос изменения аватара
  * @param {File} file
  * @return {Promise}
  */
-export const myProfileAvatarUpload = (file) => {
+export const profileAvatarUpload = (file) => {
   const formData = new FormData();
   formData.append('file', file);
 

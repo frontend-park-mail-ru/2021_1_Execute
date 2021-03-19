@@ -15,8 +15,9 @@ export const ProfileEvent = {
 export const ProfileMessage = {
   success: 'Данные изменены',
   unknownError: 'Неизвестная ошибка',
+  profileNotFound: 'Пользователь не найден',
   errorValidation: 'Некорректные данные',
-  errorSize: 'Размер файла больше 2 MB',
+  errorSize: 'Размер файла больше 15 MB',
   errorFormatImg: 'Неверный формат изображения',
   forbidden: 'Недостаточно прав',
   emailNonUniq: 'Пользователь с такой почтой уже есть',
