@@ -1,8 +1,9 @@
 import {
   correctRegistrationProfile, passwordsAreTheSame,
 } from '../utils/validationModule.js';
-import { registration } from '../utils/requestToServer.js';
+import { registration, isAuthorized } from '../utils/requestToServer.js';
 import RegistrationEvents from './registrationEvents.js';
+import { ProfileEvent } from '../profile/profileEvents.js';
 
 export default class RegistrationModel {
   /**
@@ -13,6 +14,21 @@ export default class RegistrationModel {
     this.eventBus = eventBus;
     this.eventBus.subscribe(RegistrationEvents.clickEnter,
       (profile) => this.clickEnter(profile));
+    this.eventBus.subscribe(RegistrationEvents.checkAuthorization, () => this.checkAuthorization());
+  }
+
+  checkAuthorization() {
+    isAuthorized()
+      .then((resp) => {
+        switch (resp.status) {
+          case 200:
+            this.eventBus.call(RegistrationEvents.profile);
+            break;
+          default:
+            this.eventBus.call(RegistrationEvents.render);
+            break;
+        }
+      });
   }
 
   clickEnter(profile) {
