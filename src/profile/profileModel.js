@@ -1,6 +1,6 @@
 import { correctChangeProfile } from '../utils/validationModule.js';
 import {
-  profilePatchForm, profileGetForm, exitRequest, profileAvatarUpload,
+  profilePatch, profileGet, exit, profileAvatarUpload,
 } from '../utils/requestToServer.js';
 import { ProfileEvent, ProfileMessage } from './profileEvents.js';
 
@@ -20,7 +20,7 @@ export default class ProfileModel {
 
   exit() {
     const callError = (message) => this.eventBus.call(ProfileEvent.profileError, message);
-    exitRequest()
+    exit()
       .then((resp) => {
         switch (resp.status) {
           case 200:
@@ -36,7 +36,7 @@ export default class ProfileModel {
   }
 
   getData() {
-    profileGetForm()
+    profileGet()
       .then((resp) => {
         switch (resp.status) {
           case 200:
@@ -48,10 +48,11 @@ export default class ProfileModel {
             this.eventBus.call(ProfileEvent.login);
             break;
           case 404:
-            this.eventBus.call(ProfileEvent.profileError, { message: 'Пользователь не найден' });
+            this.eventBus.call(ProfileEvent.profileError,
+              { message: ProfileMessage.profileNotFound });
             break;
           default:
-            this.eventBus.call(ProfileEvent.profileError, { message: 'Неизвестная ошибка' });
+            this.eventBus.call(ProfileEvent.profileError, { message: ProfileMessage.unknownError });
         }
       });
   }
@@ -61,7 +62,7 @@ export default class ProfileModel {
     if (!correctChangeProfile(profile, callError)) {
       return;
     }
-    profilePatchForm(profile)
+    profilePatch(profile)
       .then((resp) => {
         switch (resp.status) {
           case 200:
@@ -88,7 +89,7 @@ export default class ProfileModel {
       callError(ProfileMessage.errorValidation);
       return;
     }
-    if (avatar.size > 2 * 1024 * 1024) {
+    if (avatar.size > 15 * 1024 * 1024) {
       callError(ProfileMessage.errorSize);
       return;
     }

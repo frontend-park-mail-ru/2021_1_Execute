@@ -1,5 +1,5 @@
 import { correctLoginProfile } from '../utils/validationModule.js';
-import { loginForm } from '../utils/requestToServer.js';
+import { login } from '../utils/requestToServer.js';
 import LoginEvents from './loginEvents.js';
 
 export default class LoginModel {
@@ -17,7 +17,7 @@ export default class LoginModel {
     if (!correctLoginProfile(profile)) {
       callError('Неверная пара: почта, пароль');
     } else {
-      loginForm(profile)
+      login(profile)
         .then((resp) => {
           switch (resp.status) {
             case 200:

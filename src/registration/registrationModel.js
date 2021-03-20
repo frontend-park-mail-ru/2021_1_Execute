@@ -1,7 +1,7 @@
 import {
   correctRegistrationProfile, passwordsAreTheSame,
 } from '../utils/validationModule.js';
-import { registrationForm } from '../utils/requestToServer.js';
+import { registration } from '../utils/requestToServer.js';
 import RegistrationEvents from './registrationEvents.js';
 
 export default class RegistrationModel {
@@ -28,7 +28,7 @@ export default class RegistrationModel {
       callError('Пароли не совпадают');
       return;
     }
-    registrationForm(profile)
+    registration(profile)
       .then((req) => ({ status: req.status, obj: req }))
       .then((response) => {
         switch (response.status) {
