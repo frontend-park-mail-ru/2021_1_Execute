@@ -15,10 +15,10 @@ export default class LoginController {
     this.eventBus.subscribe(LoginEvents.profile, () => router.go('/profile'));
     this.eventBus.subscribe(LoginEvents.registration, () => router.go('/registration'));
     this.model = new LoginModel(this.eventBus);
-    this.view = new LoginView(this.eventBus);
+    this.view = new LoginView(this.eventBus, root);
   }
 
   start() {
-    this.view.render(this.root);
+    this.eventBus.call(LoginEvents.checkAuthorization);
   }
 }
