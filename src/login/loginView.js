@@ -1,6 +1,12 @@
 import './login.handlebars.js';
-import { makeChecker, replaceCssClassForTwoSeconds, replaceObjectPropForTwoSeconds } from '../utils/temporaryReplacement.js';
-import LoginEvents from './loginEvents.js';
+import {
+  makeChecker,
+  replaceObjectPropForSecond, replaceCssClassForSecond,
+  replaceObjectPropForTwoSeconds, replaceCssClassForTwoSeconds,
+  replaceCssClassForInfinity,
+} from '../utils/temporaryReplacement.js';
+import { LoginEvents } from './loginEvents.js';
+import getNextMessage from '../utils/helperToView.js';
 
 export default class LoginView {
   /**
@@ -23,6 +29,7 @@ export default class LoginView {
     this.textboxPassword = document.getElementById('textbox-password');
     this.inputEmail = document.getElementById('email');
     this.inputPassword = document.getElementById('password');
+    this.messageAfterPassword = getNextMessage(this.inputPassword);
     this.buttonEnter = document.getElementById('enter');
     this.buttonGotoRegistration = document.getElementById('goto-registration');
     this.checker = makeChecker(this);
@@ -34,12 +41,20 @@ export default class LoginView {
     }));
     this.buttonGotoRegistration.addEventListener('click', () => this.eventBus.call(LoginEvents.registration));
     this.eventBus.subscribe(LoginEvents.loginError, (message) => this.handleLoginError(message));
+    this.eventBus.subscribe(LoginEvents.loginWait, (message) => this.handleLoginWait(message));
+  }
+
+  handleLoginWait(message) {
+    replaceCssClassForInfinity(this.textboxEmail, ['menu-textbox-wait'], [], this.checker.textboxEmail);
+    replaceCssClassForInfinity(this.textboxPassword, ['menu-textbox-wait'], [], this.checker.textboxPassword);
+    replaceCssClassForSecond(this.buttonEnter, ['menu-btn-wait'], ['menu-btn-success'], this.checker.buttonEnter);
+    replaceObjectPropForSecond(this.buttonEnter, 'disabled', true, this.checker.buttonEnter);
+    this.messageAfterPassword.innerHTML = message;
   }
 
   handleLoginError(message) {
     replaceCssClassForTwoSeconds(this.textboxEmail, ['menu-textbox-error'], [], this.checker.textboxEmail);
     replaceCssClassForTwoSeconds(this.textboxPassword, ['menu-textbox-error'], [], this.checker.textboxPassword);
-    replaceCssClassForTwoSeconds(this.buttonEnter, ['menu-btn-error'], ['menu-btn-success'], this.checker.buttonEnter);
-    replaceObjectPropForTwoSeconds(this.buttonEnter, 'innerText', message, this.checker.buttonEnter);
+    this.messageAfterPassword.innerHTML = message;
   }
 }

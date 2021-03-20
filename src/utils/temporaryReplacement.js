@@ -1,6 +1,22 @@
-function runNowAndAfterNSeconds(sriptNow, scriptAfter, n) {
+/**
+ * @param {Object} elem
+ * @param {?() => any} elem.bufScriptAfter
+ * @param {?NodeJS.Timeout} elem.timer
+ * @param {() => any} sriptNow
+ * @param {() => any} scriptAfter
+ * @param {!number} n
+ */
+function runNowAndAfterNSecondsOrReplace(elem, sriptNow, scriptAfter, n) {
+  if (!elem.bufScriptAfter) {
+    elem.bufScriptAfter = () => { };
+  }
+  clearTimeout(elem.timer);
+  elem.bufScriptAfter();
   sriptNow();
-  setTimeout(scriptAfter, n * 1000);
+  elem.bufScriptAfter = scriptAfter;
+  if (n !== Infinity) {
+    elem.timer = setTimeout(() => elem.bufScriptAfter(), n * 1000);
+  }
 }
 
 export const makeChecker = (obj) => Object.keys(obj).reduce((checker, key) => {
@@ -20,20 +36,32 @@ export const makeChecker = (obj) => Object.keys(obj).reduce((checker, key) => {
  * @param checker[nameProp].valueTR
  * @param {number} n
  */
-export const replaceObjectPropForNSec = (obj, nameProp, replacement, checker, n) => {
+export const replaceObjectPropForNSeconds = (obj, nameProp, replacement, checker, n) => {
   if (!checker[nameProp]) {
     checker[nameProp] = {};
   }
-  if (!checker[nameProp].blockTR) {
-    runNowAndAfterNSeconds(() => {
-      checker[nameProp].blockTR = true;
+  runNowAndAfterNSecondsOrReplace(checker[nameProp],
+    () => {
       checker[nameProp].valueTR = obj[nameProp];
       obj[nameProp] = replacement;
     }, () => {
       obj[nameProp] = checker[nameProp].valueTR;
-      checker[nameProp].blockTR = false;
     }, n);
-  }
+};
+
+/**
+ * Замена свойства объекта на предложенный на одну секунду
+ * @param {Object} obj
+ * @param {!string} nameProp
+ * @param obj[nameProp]
+ * @param replacement
+ * @param {Object} checker
+ * @param {Object} checker[nameProp]
+ * @param {boolean} checker[nameProp].blockTR
+ * @param checker[nameProp].valueTR
+ */
+export const replaceObjectPropForSecond = (obj, prop, replacement, checker) => {
+  replaceObjectPropForNSeconds(obj, prop, replacement, checker, 1);
 };
 
 /**
@@ -48,7 +76,23 @@ export const replaceObjectPropForNSec = (obj, nameProp, replacement, checker, n)
  * @param checker[nameProp].valueTR
  */
 export const replaceObjectPropForTwoSeconds = (obj, prop, replacement, checker) => {
-  replaceObjectPropForNSec(obj, prop, replacement, checker, 2);
+  replaceObjectPropForNSeconds(obj, prop, replacement, checker, 2);
+};
+
+/**
+ * Замена свойства объекта на предложенный навсегда (для реализации "возвращения" после следующего
+ * изменения)
+ * @param {Object} obj
+ * @param {!string} nameProp
+ * @param obj[nameProp]
+ * @param replacement
+ * @param {Object} checker
+ * @param {Object} checker[nameProp]
+ * @param {boolean} checker[nameProp].blockTR
+ * @param checker[nameProp].valueTR
+ */
+export const replaceObjectPropForInfinity = (obj, prop, replacement, checker) => {
+  replaceObjectPropForNSeconds(obj, prop, replacement, checker, Infinity);
 };
 
 /**
@@ -61,21 +105,31 @@ export const replaceObjectPropForTwoSeconds = (obj, prop, replacement, checker) 
  * @param {boolean} checker.add.blockTR
  * @param {number} n
  */
-export const replaceCssClassForNSec = (elem, classNamesAdd, classNamesDelete, checker, n) => {
+export const replaceCssClassForNSeconds = (elem, classNamesAdd, classNamesDelete, checker, n) => {
   if (!checker.add) {
     checker.add = {};
   }
-  if (!checker.add.blockTR) {
-    runNowAndAfterNSeconds(() => {
-      checker.add.blockTR = true;
+  runNowAndAfterNSecondsOrReplace(checker.add,
+    () => {
       elem.classList.remove(...classNamesDelete);
       elem.classList.add(...classNamesAdd);
     }, () => {
       elem.classList.remove(...classNamesAdd);
       elem.classList.add(...classNamesDelete);
-      checker.add.blockTR = false;
     }, n);
-  }
+};
+
+/**
+ * Замена CSS классов элемента на предложенные на одну секунду
+ * @param {HTMLElement} elem
+ * @param {!string[]} classNamesAdd
+ * @param {!string[]} classNamesDelete
+ * @param {Object} checker
+ * @param {Object} checker.add
+ * @param {boolean} checker.add.blockTR
+ */
+ export const replaceCssClassForSecond = (elem, classNamesAdd, classNamesDelete, checker) => {
+  replaceCssClassForNSeconds(elem, classNamesAdd, classNamesDelete, checker, 1);
 };
 
 /**
@@ -88,5 +142,19 @@ export const replaceCssClassForNSec = (elem, classNamesAdd, classNamesDelete, ch
  * @param {boolean} checker.add.blockTR
  */
 export const replaceCssClassForTwoSeconds = (elem, classNamesAdd, classNamesDelete, checker) => {
-  replaceCssClassForNSec(elem, classNamesAdd, classNamesDelete, checker, 2);
+  replaceCssClassForNSeconds(elem, classNamesAdd, classNamesDelete, checker, 2);
+};
+
+/**
+ * Замена CSS классов элемента на предложенные навсегда (для реализации "возвращения" после
+ * следующего изменения)
+ * @param {HTMLElement} elem
+ * @param {!string[]} classNamesAdd
+ * @param {!string[]} classNamesDelete
+ * @param {Object} checker
+ * @param {Object} checker.add
+ * @param {boolean} checker.add.blockTR
+ */
+export const replaceCssClassForInfinity = (elem, classNamesAdd, classNamesDelete, checker) => {
+  replaceCssClassForNSeconds(elem, classNamesAdd, classNamesDelete, checker, Infinity);
 };
