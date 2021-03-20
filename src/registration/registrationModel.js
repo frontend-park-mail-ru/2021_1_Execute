@@ -3,7 +3,6 @@ import {
 } from '../utils/validationModule.js';
 import { registration, isAuthorized } from '../utils/requestToServer.js';
 import RegistrationEvents from './registrationEvents.js';
-import { ProfileEvent } from '../profile/profileEvents.js';
 
 export default class RegistrationModel {
   /**
