@@ -131,12 +131,10 @@ body {
 }
 
 .menu-message {
-  width: calc(100% - 18px);
-  margin: 0 0 0 0;
-  padding: 8px 8px;
-  border: 1px solid;
+  width: 100%;
+  margin: 0 8px;
   border-radius: 5px;
-  text-align: center;
+  text-align: left;
   transition: 2s;
 }
 
@@ -150,7 +148,6 @@ body {
 .profile-avatar-big-error + .menu-father-message-error > .menu-message,
 .menu-textbox-error + .menu-father-message-error > .menu-message {
   border-color: var(--red-dark);
-  background-color: var(--red-light);
   color: var(--red-dark);
   transition: 0s;
 }
@@ -158,7 +155,6 @@ body {
 .profile-avatar-big-success + .menu-father-message-success > .menu-message,
 .menu-textbox-success + .menu-father-message-success > .menu-message {
   border-color: var(--green-dark);
-  background-color: var(--green-light);
   color: var(--green-dark);
   transition: 0s;
 }

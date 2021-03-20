@@ -128,7 +128,7 @@ export const replaceCssClassForNSeconds = (elem, classNamesAdd, classNamesDelete
  * @param {Object} checker.add
  * @param {boolean} checker.add.blockTR
  */
- export const replaceCssClassForSecond = (elem, classNamesAdd, classNamesDelete, checker) => {
+export const replaceCssClassForSecond = (elem, classNamesAdd, classNamesDelete, checker) => {
   replaceCssClassForNSeconds(elem, classNamesAdd, classNamesDelete, checker, 1);
 };
 

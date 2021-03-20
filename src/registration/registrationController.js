@@ -1,7 +1,7 @@
 import EventBus from '../utils/eventBus.js';
 import RegistrationModel from './registrationModel.js';
 import RegistrationView from './registrationView.js';
-import RegistrationEvents from './registrationEvents.js';
+import { RegistrationEvents } from './registrationEvents.js';
 
 export default class RegistrationController {
   /**

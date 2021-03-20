@@ -8,6 +8,6 @@ export const LoginEvents = {
 
 export const LoginMessage = {
   waitData: 'Ожидаем ответ от сервера',
-  errorValidation: 'Неверная пара: почта, пароль',
+  errorValidation: 'Неверная почта или пароль',
   unknownError: 'Неизвестная ошибка',
 };

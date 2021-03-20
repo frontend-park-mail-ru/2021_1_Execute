@@ -1,6 +1,12 @@
 import './registration.handlebars.js';
-import { makeChecker, replaceCssClassForTwoSeconds, replaceObjectPropForTwoSeconds } from '../utils/temporaryReplacement.js';
-import RegistrationEvents from './registrationEvents.js';
+import {
+  makeChecker,
+  replaceCssClassForSecond, replaceObjectPropForSecond,
+  replaceCssClassForTwoSeconds,
+  replaceCssClassForInfinity,
+} from '../utils/temporaryReplacement.js';
+import { RegistrationEvents, RegistrationMessage } from './registrationEvents.js';
+import getNextMessage from '../utils/helperToView.js';
 
 export default class LoginView {
   /**
@@ -9,6 +15,8 @@ export default class LoginView {
    */
   constructor(eventBus) {
     this.eventBus = eventBus;
+    this.eventBus.subscribe(RegistrationEvents.registrationWait,
+      (message) => this.handleRegistrationWait(message));
     this.eventBus.subscribe(RegistrationEvents.registrationError,
       (message) => this.handleRegistrationError(message));
   }
@@ -22,9 +30,13 @@ export default class LoginView {
 
   findNeedElem() {
     this.textboxUserEmail = document.getElementById('textbox-e-mail');
+    this.messageAfterEmail = getNextMessage(this.textboxUserEmail);
     this.textboxUserName = document.getElementById('textbox-username');
+    this.messageAfterUsername = getNextMessage(this.textboxUserName);
     this.textboxPassword = document.getElementById('textbox-password');
+    this.messageAfterPassword = getNextMessage(this.textboxPassword);
     this.textboxRepeatPassword = document.getElementById('textbox-repeat-password');
+    this.messageAfterRepeatPassword = getNextMessage(this.textboxRepeatPassword);
     this.inputUserEmail = document.getElementById('e-mail');
     this.inputUserName = document.getElementById('username');
     this.inputPassword = document.getElementById('password');
@@ -46,12 +58,35 @@ export default class LoginView {
     this.buttonGotoLogin.addEventListener('click', () => this.eventBus.call(RegistrationEvents.login));
   }
 
+  handleRegistrationWait(message) {
+    const allTextboxWait = ['textboxUserEmail', 'textboxUserName', 'textboxPassword', 'textboxRepeatPassword'];
+    allTextboxWait.forEach((nameTextbox) => replaceCssClassForInfinity(this[nameTextbox], ['menu-textbox-wait'], [], this.checker[nameTextbox]));
+
+    replaceCssClassForSecond(this.buttonEnter, ['menu-btn-wait'], ['menu-btn-success'], this.checker.buttonEnter);
+    replaceObjectPropForSecond(this.buttonEnter, 'disabled', true, this.checker.buttonEnter);
+    this.messageAfterRepeatPassword.innerHTML = message;
+  }
+
   handleRegistrationError(message) {
-    replaceCssClassForTwoSeconds(this.textboxUserEmail, ['menu-textbox-error'], [], this.checker.textboxUserEmail);
-    replaceCssClassForTwoSeconds(this.textboxUserName, ['menu-textbox-error'], [], this.checker.textboxUserName);
-    replaceCssClassForTwoSeconds(this.textboxPassword, ['menu-textbox-error'], [], this.checker.textboxPassword);
-    replaceCssClassForTwoSeconds(this.textboxRepeatPassword, ['menu-textbox-error'], [], this.checker.textboxRepeatPassword);
-    replaceCssClassForTwoSeconds(this.buttonEnter, ['menu-btn-error'], ['menu-btn-success'], this.checker.buttonEnter);
-    replaceObjectPropForTwoSeconds(this.buttonEnter, 'innerText', message, this.checker.buttonEnter);
+    switch (message) {
+      case RegistrationMessage.emailNonUniq:
+      case RegistrationMessage.emailErrorValidation:
+        replaceCssClassForTwoSeconds(this.textboxUserEmail, ['menu-textbox-error'], [], this.checker.textboxUserEmail);
+        this.messageAfterEmail.innerHTML = message;
+        break;
+      case RegistrationMessage.usernameErrorValidation:
+        replaceCssClassForTwoSeconds(this.textboxUserName, ['menu-textbox-error'], [], this.checker.textboxUserName);
+        this.messageAfterUsername.innerHTML = message;
+        break;
+      case RegistrationMessage.passwordErrorValidation:
+        replaceCssClassForTwoSeconds(this.textboxPassword, ['menu-textbox-error'], [], this.checker.textboxPassword);
+        this.messageAfterPassword.innerHTML = message;
+        break;
+      default:
+      case RegistrationMessage.repeatPasswordErrorValidation:
+        replaceCssClassForTwoSeconds(this.textboxRepeatPassword, ['menu-textbox-error'], [], this.checker.textboxRepeatPassword);
+        this.messageAfterRepeatPassword.innerHTML = message;
+        break;
+    }
   }
 }
