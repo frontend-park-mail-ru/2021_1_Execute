@@ -24,7 +24,7 @@ export default class LoginModel {
             this.eventBus.call(LoginEvents.render);
             break;
         }
-      })
+      });
   }
 
   clickEnter(profile) {
