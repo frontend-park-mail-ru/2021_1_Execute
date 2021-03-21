@@ -1,7 +1,7 @@
 import EventBus from '../utils/eventBus.js';
 import LoginModel from './loginModel.js';
 import LoginView from './loginView.js';
-import LoginEvents from './loginEvents.js';
+import { LoginEvents } from './loginEvents.js';
 
 export default class LoginController {
   /**

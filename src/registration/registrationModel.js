@@ -1,8 +1,6 @@
-import {
-  correctRegistrationProfile, passwordsAreTheSame,
-} from '../utils/validationModule.js';
+import { correctRegistrationProfile, passwordsAreTheSame } from '../utils/validationModule.js';
 import { registration, isAuthorized } from '../utils/requestToServer.js';
-import RegistrationEvents from './registrationEvents.js';
+import { RegistrationEvents, RegistrationMessage } from './registrationEvents.js';
 
 export default class RegistrationModel {
   /**
@@ -36,25 +34,25 @@ export default class RegistrationModel {
       return;
     }
     if (!passwordsAreTheSame(profile)) {
-      callError('Пароли не совпадают');
+      callError(RegistrationMessage.repeatPasswordErrorValidation);
       return;
     }
+    this.eventBus.call(RegistrationEvents.registrationWait, RegistrationMessage.waitData);
     registration(profile)
-      .then((req) => ({ status: req.status, obj: req }))
-      .then((response) => {
-        switch (response.status) {
+      .then((resp) => {
+        switch (resp.status) {
           case 200:
           case 308:
             this.eventBus.call(RegistrationEvents.profile);
             break;
           case 400:
-            callError('BadRequest');
+            callError(RegistrationMessage.errorValidation);
             break;
           case 409:
-            callError('Пользователь с таким email уже существует');
+            callError(RegistrationMessage.emailNonUniq);
             break;
           default:
-            callError('Неизвестная ошибка');
+            callError(`${RegistrationMessage.unknownError}: ${resp.status}`);
         }
       });
   }

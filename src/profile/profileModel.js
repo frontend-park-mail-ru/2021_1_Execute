@@ -15,27 +15,33 @@ export default class ProfileModel {
     this.eventBus.subscribe(ProfileEvent.getData, () => this.getData());
     this.eventBus.subscribe(ProfileEvent.clickChangeData, (profile) => this.changeData(profile));
     this.eventBus.subscribe(ProfileEvent.clickChangeAvatar,
-      (profile) => this.changeAvatar(profile));
+      (avatar, pushToServer) => this.changeAvatar(avatar, pushToServer));
   }
 
   exit() {
-    const callError = (message) => this.eventBus.call(ProfileEvent.profileError, message);
+    const callWait = (message) => this.eventBus.call(ProfileEvent.profileFormWait, message);
+    const callError = (message) => this.eventBus.call(ProfileEvent.profileFormError, message);
+    const callSuccess = () => this.eventBus.call(ProfileEvent.login);
+
+    callWait(ProfileMessage.waitData);
     exit()
       .then((resp) => {
         switch (resp.status) {
           case 200:
-            this.eventBus.call(ProfileEvent.login);
+            callSuccess();
             break;
           case 401:
             callError(ProfileMessage.forbidden);
             break;
           default:
-            callError(ProfileMessage.unknownError);
+            callError(`${ProfileMessage.unknownError}: ${resp.status}`);
         }
       });
   }
 
   getData() {
+    const callError = (message) => this.eventBus.call(ProfileEvent.profileFormError, message);
+
     profileGet()
       .then((resp) => {
         switch (resp.status) {
@@ -48,25 +54,28 @@ export default class ProfileModel {
             this.eventBus.call(ProfileEvent.login);
             break;
           case 404:
-            this.eventBus.call(ProfileEvent.profileError,
-              { message: ProfileMessage.profileNotFound });
+            callError(ProfileMessage.userUndefind);
             break;
           default:
-            this.eventBus.call(ProfileEvent.profileError, { message: ProfileMessage.unknownError });
+            callError(`${ProfileMessage.unknownError}: ${resp.status}`);
         }
       });
   }
 
   changeData(profile) {
-    const callError = (message) => this.eventBus.call(ProfileEvent.profileError, message);
+    const callWait = (message) => this.eventBus.call(ProfileEvent.profileFormWait, message);
+    const callError = (message) => this.eventBus.call(ProfileEvent.profileFormError, message);
+    const callSuccess = (message) => this.eventBus.call(ProfileEvent.profileFormSuccess, message);
+
     if (!correctChangeProfile(profile, callError)) {
       return;
     }
+    callWait(ProfileMessage.waitData);
     profilePatch(profile)
       .then((resp) => {
         switch (resp.status) {
           case 200:
-            this.eventBus.call(ProfileEvent.profileSuccess, { message: ProfileMessage.success });
+            callSuccess(ProfileMessage.success);
             break;
           case 403:
             callError(ProfileMessage.forbidden);
@@ -74,32 +83,56 @@ export default class ProfileModel {
           case 400:
             callError(ProfileMessage.errorValidation);
             break;
+          case 409:
+            callError(ProfileMessage.emailNonUniq);
+            break;
           default:
-            callError(ProfileMessage.unknownError);
+            callError(`${ProfileMessage.unknownError}: ${resp.status}`);
         }
       });
   }
 
   /**
    * @param {File} avatar
+   * @param {boolean} pushToServer
    */
-  changeAvatar(avatar) {
-    const callError = (message) => this.eventBus.call(ProfileEvent.avatarError, message);
+  changeAvatar(avatar, pushToServer = false) {
+    const callWait = (message) => this.eventBus.call(ProfileEvent.profileAvatarWait, message);
+    const callError = (message) => this.eventBus.call(ProfileEvent.profileAvatarError, message);
+    const callSuccess = (message) => this.eventBus.call(ProfileEvent.profileAvatarSuccess, message);
+
     if (!avatar.type.startsWith('image/')) {
+      this.eventBus.call(ProfileEvent.originalAvatarFromBuffer);
       callError(ProfileMessage.errorValidation);
       return;
     }
     if (avatar.size > 15 * 1024 * 1024) {
+      this.eventBus.call(ProfileEvent.originalAvatarFromBuffer);
       callError(ProfileMessage.errorSize);
       return;
     }
     this.eventBus.call(ProfileEvent.changeAvatarToBuffer, avatar);
-    profileAvatarUpload(avatar)
-      .then((resp) => {
-        if (resp.status === 415) {
-          this.eventBus.call(ProfileEvent.changeAvatarToBuffer, null);
-          callError(ProfileMessage.errorFormatImg);
-        }
-      });
+    if (pushToServer) {
+      callWait(ProfileMessage.waitData);
+      profileAvatarUpload(avatar)
+        .then((resp) => {
+          switch (resp.status) {
+            case 200:
+              this.eventBus.call(ProfileEvent.clearAvaterBuffer);
+              callSuccess(ProfileMessage.success);
+              break;
+            case 415:
+              this.eventBus.call(ProfileEvent.originalAvatarFromBuffer);
+              callError(ProfileMessage.errorFormatImg);
+              break;
+            default:
+              this.eventBus.call(ProfileEvent.originalAvatarFromBuffer);
+              callError(ProfileMessage.unknownError);
+              break;
+          }
+        });
+    } else {
+      callWait(ProfileMessage.waitAvatarСonfirmation);
+    }
   }
 }

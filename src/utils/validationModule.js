@@ -1,4 +1,5 @@
 import { ProfileMessage } from '../profile/profileEvents.js';
+import { RegistrationMessage } from '../registration/registrationEvents.js';
 
 /**
  * Проверка корректности строки как имени пользователя
@@ -79,21 +80,21 @@ export const correctChangeProfile = (profile, callError) => {
  */
 export const correctRegistrationProfile = (profile) => {
   if (typeof profile !== 'object' || profile === null) {
-    return 'Некорректный формат данных';
+    return RegistrationMessage.errorValidation;
   }
   if (!correctEmail(profile.email)) {
-    return 'Некорректный email';
+    return RegistrationMessage.emailErrorValidation;
   }
   if (!correctUserName(profile.username)) {
-    return 'Некорректное имя пользователя (Буквы, цифры, >3)';
+    return RegistrationMessage.usernameErrorValidation;
   }
   if (!correctPassword(profile.password)) {
-    return 'Некорректный пароль';
+    return RegistrationMessage.passwordErrorValidation;
   }
   return null;
 };
 
 export const passwordsAreTheSame = (profile) => typeof profile === 'object'
   && profile !== null
-  && correctPassword(profile.repeatPassword) && correctPassword(profile.password)
+  && correctPassword(profile.repeatPassword)
   && profile.repeatPassword === profile.password;

@@ -19,9 +19,10 @@
   --blue: #034395;
   --blue-bright: #3677ca;
   --blue-light: #5d8dca;
+  --grey-light: #95a5a6;
   --body-bg-color: #34495e;
   --box-bg-color: #ecf0f1;
-  --btn-primary-bg-color: #95a5a6;
+  --btn-primary-bg-color: var(--grey-light);
   --text-placeholder-color: #252525;
   --btn-success-pasive-bg-color: var(--btn-primary-bg-color);
   --btn-success-pasive-text-color: black;
@@ -74,7 +75,6 @@ body {
 
 .menu-textbox {
   width: 100%;
-  overflow: hidden;
   font-size: 20px;
   padding: 8px 0;
   margin: 8px 0;
@@ -96,7 +96,6 @@ body {
   float: left;
   text-align: center;
   margin: 3px 5px;
-  transition: none;
 }
 
 .menu-textbox input {
@@ -115,6 +114,46 @@ body {
 
 .menu-textbox:hover input::placeholder, .menu-textbox input:focus::placeholder {
   color: var(--text-placeholder-color);
+}
+
+.menu-father-message {
+  width: 100%;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease;
+}
+
+.call-message-wait + .menu-father-message,
+.call-message-error + .menu-father-message,
+.call-message-success + .menu-father-message {
+  max-height: 100px;
+  transition: max-height 0.7s ease;
+}
+
+.menu-message {
+  margin: 0 8px;
+  font-size: 14px;
+  border-radius: 5px;
+  text-align: left;
+  transition: 2s;
+}
+
+.call-message-wait + .menu-father-message > .menu-message {
+  border-color: var(--grey-light);
+  color: var(--grey-light);
+  transition: 0.25s;
+}
+
+.call-message-error + .menu-father-message > .menu-message {
+  border-color: var(--red-dark);
+  color: var(--red-dark);
+  transition: 0.25s;
+}
+
+.call-message-success + .menu-father-message > .menu-message {
+  border-color: var(--green-dark);
+  color: var(--green-dark);
+  transition: 0.25s;
 }
 
 .menu-btn {
