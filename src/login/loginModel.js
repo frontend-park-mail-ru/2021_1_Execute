@@ -1,5 +1,5 @@
 import { correctLoginProfile } from '../utils/validationModule.js';
-import { login } from '../utils/requestToServer.js';
+import { login, isAuthorized } from '../utils/requestToServer.js';
 import LoginEvents from './loginEvents.js';
 
 export default class LoginModel {
@@ -10,6 +10,17 @@ export default class LoginModel {
   constructor(eventBus) {
     this.eventBus = eventBus;
     this.eventBus.subscribe(LoginEvents.clickEnter, (profile) => this.clickEnter(profile));
+  }
+
+  checkAuthorization() {
+    isAuthorized()
+      .then((resp) => {
+        if (resp.status === 200) {
+          this.eventBus.call(LoginEvents.profile);
+        } else {
+          this.eventBus.call(LoginEvents.render);
+        }
+      });
   }
 
   clickEnter(profile) {

@@ -3,6 +3,7 @@ const RegistrationEvents = {
   registrationError: 'registration.view.registrationError',
   profile: 'profile.controller.start',
   login: 'login.controller.start',
+  render: 'registration.view.render',
 };
 
 export default RegistrationEvents;

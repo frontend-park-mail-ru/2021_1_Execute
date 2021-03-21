@@ -7,13 +7,15 @@ export default class LoginView {
    * @param {!EventBus}
    * @return {!LoginView}
    */
-  constructor(eventBus) {
+  constructor(eventBus, root) {
+    this.root = root;
     this.eventBus = eventBus;
+    this.eventBus.subscribe(LoginEvents.render, () => this.render());
   }
 
-  render(root) {
+  render() {
     // eslint-disable-next-line no-undef
-    root.innerHTML = Handlebars.templates.login();
+    this.root.innerHTML = Handlebars.templates.login();
     this.findNeedElem();
     this.addEventListeners();
   }

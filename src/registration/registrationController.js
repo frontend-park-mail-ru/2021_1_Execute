@@ -15,10 +15,10 @@ export default class RegistrationController {
     this.eventBus.subscribe(RegistrationEvents.profile, () => router.go('/profile'));
     this.eventBus.subscribe(RegistrationEvents.login, () => router.go('/login'));
     this.model = new RegistrationModel(this.eventBus);
-    this.view = new RegistrationView(this.eventBus);
+    this.view = new RegistrationView(this.eventBus, root);
   }
 
   start() {
-    this.view.render(this.root);
+    this.model.checkAuthorization();
   }
 }
