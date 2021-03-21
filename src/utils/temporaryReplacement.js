@@ -158,3 +158,43 @@ export const replaceCssClassForTwoSeconds = (elem, classNamesAdd, classNamesDele
 export const replaceCssClassForInfinity = (elem, classNamesAdd, classNamesDelete, checker) => {
   replaceCssClassForNSeconds(elem, classNamesAdd, classNamesDelete, checker, Infinity);
 };
+
+/**
+ * Замена CSS класса блока текста на типовой на две секунды
+ * @param {HTMLElement} elem
+ * @param {!string} type
+ * @param {Object} checker
+ */
+export const replaceTextboxCssClassForTwoSeconds = (elem, type, checker) => {
+  replaceCssClassForTwoSeconds(elem, [`menu-textbox-${type}`], [], checker);
+};
+
+/**
+ * Замена CSS класса блока текста на типовой навсегда
+ * @param {HTMLElement} elem
+ * @param {!string} type
+ * @param {Object} checker
+ */
+export const replaceTextboxCssClassForInfinity = (elem, type, checker) => {
+  replaceCssClassForInfinity(elem, [`menu-textbox-${type}`], [], checker);
+};
+
+/**
+ * Замена CSS класса блока текста на типовой и вызов сообщения того же типа на две секунды
+ * @param {HTMLElement} elem
+ * @param {!string} type
+ * @param {Object} checker
+ */
+export const replaceTextboxCssClassAndCallMessageForTwoSeconds = (elem, type, checker) => {
+  replaceCssClassForTwoSeconds(elem, [`menu-textbox-${type}`, `call-message-${type}`], [], checker);
+};
+
+/**
+ * Замена CSS класса блока текста на типовой и вызов сообщения того же типа навсегда
+ * @param {HTMLElement} elem
+ * @param {!string} type
+ * @param {Object} checker
+ */
+export const replaceTextboxCssClassAndCallMessageForInfinity = (elem, type, checker) => {
+  replaceCssClassForInfinity(elem, [`menu-textbox-${type}`, `call-message-${type}`], [], checker);
+};

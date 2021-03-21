@@ -1,12 +1,14 @@
 import './login.handlebars.js';
 import {
   makeChecker,
-  replaceCssClassForSecond, replaceObjectPropForSecond,
-  replaceCssClassForTwoSeconds,
-  replaceCssClassForInfinity,
+  replaceObjectPropForSecond,
+  replaceCssClassForSecond,
+  replaceTextboxCssClassForTwoSeconds,
+  replaceTextboxCssClassAndCallMessageForTwoSeconds,
+  replaceTextboxCssClassAndCallMessageForInfinity,
 } from '../utils/temporaryReplacement.js';
 import { LoginEvents } from './loginEvents.js';
-import getNextMessage from '../utils/helperToView.js';
+import { getNextMessage } from '../utils/helperToView.js';
 
 export default class LoginView {
   /**
@@ -45,17 +47,15 @@ export default class LoginView {
   }
 
   handleLoginWait(message) {
-    const allTextboxWait = ['textboxEmail', 'textboxPassword'];
-    allTextboxWait.forEach((nameTextbox) => replaceCssClassForInfinity(this[nameTextbox], ['menu-textbox-wait'], [], this.checker[nameTextbox]));
-
+    replaceTextboxCssClassAndCallMessageForInfinity(this.textboxPassword, 'wait', this.checker.textboxPassword);
+    this.messageAfterPassword.innerHTML = message;
     replaceCssClassForSecond(this.buttonEnter, ['menu-btn-wait'], ['menu-btn-success'], this.checker.buttonEnter);
     replaceObjectPropForSecond(this.buttonEnter, 'disabled', true, this.checker.buttonEnter);
-    this.messageAfterPassword.innerHTML = message;
   }
 
   handleLoginError(message) {
-    replaceCssClassForTwoSeconds(this.textboxEmail, ['menu-textbox-error'], [], this.checker.textboxEmail);
-    replaceCssClassForTwoSeconds(this.textboxPassword, ['menu-textbox-error'], [], this.checker.textboxPassword);
+    replaceTextboxCssClassForTwoSeconds(this.textboxEmail, 'error', this.checker.textboxEmail);
+    replaceTextboxCssClassAndCallMessageForTwoSeconds(this.textboxPassword, 'error', this.checker.textboxPassword);
     this.messageAfterPassword.innerHTML = message;
   }
 }

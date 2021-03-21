@@ -6,7 +6,7 @@ import {
   replaceCssClassForInfinity,
 } from '../utils/temporaryReplacement.js';
 import { RegistrationEvents, RegistrationMessage } from './registrationEvents.js';
-import getNextMessage from '../utils/helperToView.js';
+import { getNextMessage } from '../utils/helperToView.js';
 
 export default class LoginView {
   /**
@@ -30,16 +30,16 @@ export default class LoginView {
 
   findNeedElem() {
     this.textboxUserEmail = document.getElementById('textbox-e-mail');
-    this.messageAfterEmail = getNextMessage(this.textboxUserEmail);
     this.textboxUserName = document.getElementById('textbox-username');
-    this.messageAfterUsername = getNextMessage(this.textboxUserName);
     this.textboxPassword = document.getElementById('textbox-password');
-    this.messageAfterPassword = getNextMessage(this.textboxPassword);
     this.textboxRepeatPassword = document.getElementById('textbox-repeat-password');
-    this.messageAfterRepeatPassword = getNextMessage(this.textboxRepeatPassword);
     this.inputUserEmail = document.getElementById('e-mail');
     this.inputUserName = document.getElementById('username');
     this.inputPassword = document.getElementById('password');
+    this.messageAfterEmail = getNextMessage(this.textboxUserEmail);
+    this.messageAfterUsername = getNextMessage(this.textboxUserName);
+    this.messageAfterPassword = getNextMessage(this.textboxPassword);
+    this.messageAfterRepeatPassword = getNextMessage(this.textboxRepeatPassword);
     this.inputRepeatPassword = document.getElementById('repeat-password');
     this.buttonEnter = document.getElementById('enter');
     this.buttonGotoLogin = document.getElementById('goto-login');

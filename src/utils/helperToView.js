@@ -1,8 +1,10 @@
 /**
- * Запрос на сервер авторизации
- * @param {HTMLElement} elem
- * @return {HTMLElement}
+ * Вернуть следующий элемент, если это сообщение
+ * @param {Element} elem
+ * @return {Element|null}
  */
-const getNextMessage = (elem) => elem.nextElementSibling.firstElementChild;
+export const getNextMessage = (elem) => (elem.nextElementSibling
+  && elem.nextElementSibling.classList.contains('menu-father-message')
+  ? elem.nextElementSibling.firstElementChild : null);
 
 export default getNextMessage;

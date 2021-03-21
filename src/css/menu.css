@@ -123,40 +123,34 @@ body {
   transition: max-height 0.4s ease;
 }
 
-.profile-avatar-big-wait + .menu-father-message-wait, .menu-textbox-wait + .menu-father-message-wait,
-.profile-avatar-big-error + .menu-father-message-error, .menu-textbox-error + .menu-father-message-error,
-.profile-avatar-big-success + .menu-father-message-success, .menu-textbox-success + .menu-father-message-success {
+.call-message-wait + .menu-father-message,
+.call-message-error + .menu-father-message,
+.call-message-success + .menu-father-message {
   max-height: 100px;
   transition: max-height 0.7s ease;
 }
 
 .menu-message {
-  width: 100%;
   margin: 0 8px;
+  font-size: 14px;
   border-radius: 5px;
   text-align: left;
-  transition: 2s;
+  transition: 0.25s;
 }
 
-.profile-avatar-big-wait + .menu-father-message-wait > .menu-message,
-.menu-textbox-wait + .menu-father-message-wait > .menu-message {
+.call-message-wait + .menu-father-message > .menu-message {
   border-color: var(--grey-light);
   color: var(--grey-light);
-  transition: 0s;
 }
 
-.profile-avatar-big-error + .menu-father-message-error > .menu-message,
-.menu-textbox-error + .menu-father-message-error > .menu-message {
+.call-message-error + .menu-father-message > .menu-message {
   border-color: var(--red-dark);
   color: var(--red-dark);
-  transition: 0s;
 }
 
-.profile-avatar-big-success + .menu-father-message-success > .menu-message,
-.menu-textbox-success + .menu-father-message-success > .menu-message {
+.call-message-success + .menu-father-message > .menu-message {
   border-color: var(--green-dark);
   color: var(--green-dark);
-  transition: 0s;
 }
 
 .menu-btn {
