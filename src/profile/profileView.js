@@ -2,11 +2,12 @@ import './profile.handlebars.js';
 import {
   makeChecker,
   replaceObjectPropForSecond,
-  replaceCssClassForTwoSeconds,
-  replaceCssClassForInfinity,
-  replaceTextboxCssClassAndCallMessageForTwoSeconds,
-  replaceTextboxCssClassForTwoSeconds,
-  replaceCssClassForSecond,
+  replaceClassForTwoSeconds,
+  replaceClassForEver,
+  replaceTextboxClassAndMessageForTwoSeconds,
+  replaceTextboxClassForTwoSeconds,
+  replaceClassForSecond,
+  replaceTextboxClassAndMessageForEver,
 } from '../utils/temporaryReplacement.js';
 import { ProfileEvent, ProfileMessage } from './profileEvents.js';
 import { getNextMessage } from '../utils/helperToView.js';
@@ -112,56 +113,56 @@ export default class ProfileView {
   }
 
   handleProfileAvatarWait(message) {
-    replaceCssClassForInfinity(this.blockAvatar, ['call-message-wait'], [], this.checker.blockAvatar);
+    replaceClassForEver(this.blockAvatar, ['call-message-wait'], [], this.checker.blockAvatar);
     this.messageAfterAvatar.innerHTML = message;
   }
 
   handleProfileAvatarError(message) {
-    replaceCssClassForTwoSeconds(this.blockAvatar, ['call-message-error'], [], this.checker.blockAvatar);
+    replaceClassForTwoSeconds(this.blockAvatar, ['call-message-error'], [], this.checker.blockAvatar);
     this.messageAfterAvatar.innerHTML = message;
   }
 
   handleProfileAvatarSuccess(message) {
-    replaceCssClassForTwoSeconds(this.blockAvatar, ['call-message-success'], [], this.checker.blockAvatar);
+    replaceClassForTwoSeconds(this.blockAvatar, ['call-message-success'], [], this.checker.blockAvatar);
     this.messageAfterAvatar.innerHTML = message;
   }
 
   handleProfileFormWait(message) {
-    replaceTextboxCssClassAndCallMessageForTwoSeconds(this.textboxRepeatPassword, 'wait', this.checker.textboxRepeatPassword);
+    replaceTextboxClassAndMessageForEver(this.textboxRepeatPassword, 'wait', this.checker.textboxRepeatPassword);
     this.messageAfterRepeatPassword.innerHTML = message;
   }
 
   handleProfileFormError(message) {
-    replaceCssClassForSecond(this.textboxRepeatPassword,
+    replaceClassForSecond(this.textboxRepeatPassword,
       [], [], this.checker.textboxRepeatPassword);
     switch (message) {
       case ProfileMessage.emailErrorValidation:
       case ProfileMessage.emailNonUniq:
-        replaceTextboxCssClassAndCallMessageForTwoSeconds(this.textboxEmail, 'error', this.checker.textboxEmail);
+        replaceTextboxClassAndMessageForTwoSeconds(this.textboxEmail, 'error', this.checker.textboxEmail);
         this.messageAfterEmail.innerHTML = message;
         break;
       case ProfileMessage.usernameErrorValidation:
       case ProfileMessage.usernameErrorServer:
-        replaceTextboxCssClassAndCallMessageForTwoSeconds(this.textboxUserName, 'error', this.checker.textboxUserName);
+        replaceTextboxClassAndMessageForTwoSeconds(this.textboxUserName, 'error', this.checker.textboxUserName);
         this.messageAfterUsername.innerHTML = message;
         break;
       case ProfileMessage.passwordErrorValidation:
-        replaceTextboxCssClassAndCallMessageForTwoSeconds(this.textboxPassword, 'error', this.checker.textboxPassword);
+        replaceTextboxClassAndMessageForTwoSeconds(this.textboxPassword, 'error', this.checker.textboxPassword);
         this.messageAfterPassword.innerHTML = message;
         break;
       case ProfileMessage.repeatPasswordErrorValidation:
       default:
-        replaceTextboxCssClassAndCallMessageForTwoSeconds(this.textboxRepeatPassword, 'error', this.checker.textboxRepeatPassword);
+        replaceTextboxClassAndMessageForTwoSeconds(this.textboxRepeatPassword, 'error', this.checker.textboxRepeatPassword);
         this.messageAfterRepeatPassword.innerHTML = message;
         break;
     }
   }
 
   handleProfileFormSuccess(message) {
-    replaceTextboxCssClassForTwoSeconds(this.textboxEmail, 'success', this.checker.textboxEmail);
-    replaceTextboxCssClassForTwoSeconds(this.textboxUserName, 'success', this.checker.textboxUserName);
-    replaceTextboxCssClassForTwoSeconds(this.textboxPassword, 'success', this.checker.textboxPassword);
-    replaceTextboxCssClassAndCallMessageForTwoSeconds(this.textboxRepeatPassword, 'success', this.checker.textboxRepeatPassword);
+    replaceTextboxClassForTwoSeconds(this.textboxEmail, 'success', this.checker.textboxEmail);
+    replaceTextboxClassForTwoSeconds(this.textboxUserName, 'success', this.checker.textboxUserName);
+    replaceTextboxClassForTwoSeconds(this.textboxPassword, 'success', this.checker.textboxPassword);
+    replaceTextboxClassAndMessageForTwoSeconds(this.textboxRepeatPassword, 'success', this.checker.textboxRepeatPassword);
     this.messageAfterRepeatPassword.innerText = message;
   }
 }

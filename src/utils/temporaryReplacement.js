@@ -91,7 +91,7 @@ export const replaceObjectPropForTwoSeconds = (obj, prop, replacement, checker) 
  * @param {boolean} checker[nameProp].blockTR
  * @param checker[nameProp].valueTR
  */
-export const replaceObjectPropForInfinity = (obj, prop, replacement, checker) => {
+export const replaceObjectPropForEver = (obj, prop, replacement, checker) => {
   replaceObjectPropForNSeconds(obj, prop, replacement, checker, Infinity);
 };
 
@@ -105,7 +105,7 @@ export const replaceObjectPropForInfinity = (obj, prop, replacement, checker) =>
  * @param {boolean} checker.add.blockTR
  * @param {number} n
  */
-export const replaceCssClassForNSeconds = (elem, classNamesAdd, classNamesDelete, checker, n) => {
+export const replaceClassForNSeconds = (elem, classNamesAdd, classNamesDelete, checker, n) => {
   if (!checker.add) {
     checker.add = {};
   }
@@ -128,8 +128,8 @@ export const replaceCssClassForNSeconds = (elem, classNamesAdd, classNamesDelete
  * @param {Object} checker.add
  * @param {boolean} checker.add.blockTR
  */
-export const replaceCssClassForSecond = (elem, classNamesAdd, classNamesDelete, checker) => {
-  replaceCssClassForNSeconds(elem, classNamesAdd, classNamesDelete, checker, 1);
+export const replaceClassForSecond = (elem, classNamesAdd, classNamesDelete, checker) => {
+  replaceClassForNSeconds(elem, classNamesAdd, classNamesDelete, checker, 1);
 };
 
 /**
@@ -141,8 +141,8 @@ export const replaceCssClassForSecond = (elem, classNamesAdd, classNamesDelete, 
  * @param {Object} checker.add
  * @param {boolean} checker.add.blockTR
  */
-export const replaceCssClassForTwoSeconds = (elem, classNamesAdd, classNamesDelete, checker) => {
-  replaceCssClassForNSeconds(elem, classNamesAdd, classNamesDelete, checker, 2);
+export const replaceClassForTwoSeconds = (elem, classNamesAdd, classNamesDelete, checker) => {
+  replaceClassForNSeconds(elem, classNamesAdd, classNamesDelete, checker, 2);
 };
 
 /**
@@ -155,8 +155,8 @@ export const replaceCssClassForTwoSeconds = (elem, classNamesAdd, classNamesDele
  * @param {Object} checker.add
  * @param {boolean} checker.add.blockTR
  */
-export const replaceCssClassForInfinity = (elem, classNamesAdd, classNamesDelete, checker) => {
-  replaceCssClassForNSeconds(elem, classNamesAdd, classNamesDelete, checker, Infinity);
+export const replaceClassForEver = (elem, classNamesAdd, classNamesDelete, checker) => {
+  replaceClassForNSeconds(elem, classNamesAdd, classNamesDelete, checker, Infinity);
 };
 
 /**
@@ -165,8 +165,8 @@ export const replaceCssClassForInfinity = (elem, classNamesAdd, classNamesDelete
  * @param {!string} type
  * @param {Object} checker
  */
-export const replaceTextboxCssClassForTwoSeconds = (elem, type, checker) => {
-  replaceCssClassForTwoSeconds(elem, [`menu-textbox-${type}`], [], checker);
+export const replaceTextboxClassForTwoSeconds = (elem, type, checker) => {
+  replaceClassForTwoSeconds(elem, [`menu-textbox-${type}`], [], checker);
 };
 
 /**
@@ -175,8 +175,8 @@ export const replaceTextboxCssClassForTwoSeconds = (elem, type, checker) => {
  * @param {!string} type
  * @param {Object} checker
  */
-export const replaceTextboxCssClassForInfinity = (elem, type, checker) => {
-  replaceCssClassForInfinity(elem, [`menu-textbox-${type}`], [], checker);
+export const replaceTextboxClassForEver = (elem, type, checker) => {
+  replaceClassForEver(elem, [`menu-textbox-${type}`], [], checker);
 };
 
 /**
@@ -185,8 +185,8 @@ export const replaceTextboxCssClassForInfinity = (elem, type, checker) => {
  * @param {!string} type
  * @param {Object} checker
  */
-export const replaceTextboxCssClassAndCallMessageForTwoSeconds = (elem, type, checker) => {
-  replaceCssClassForTwoSeconds(elem, [`menu-textbox-${type}`, `call-message-${type}`], [], checker);
+export const replaceTextboxClassAndMessageForTwoSeconds = (elem, type, checker) => {
+  replaceClassForTwoSeconds(elem, [`menu-textbox-${type}`, `call-message-${type}`], [], checker);
 };
 
 /**
@@ -195,6 +195,6 @@ export const replaceTextboxCssClassAndCallMessageForTwoSeconds = (elem, type, ch
  * @param {!string} type
  * @param {Object} checker
  */
-export const replaceTextboxCssClassAndCallMessageForInfinity = (elem, type, checker) => {
-  replaceCssClassForInfinity(elem, [`menu-textbox-${type}`, `call-message-${type}`], [], checker);
+export const replaceTextboxClassAndMessageForEver = (elem, type, checker) => {
+  replaceClassForEver(elem, [`menu-textbox-${type}`, `call-message-${type}`], [], checker);
 };

@@ -2,10 +2,10 @@ import './login.handlebars.js';
 import {
   makeChecker,
   replaceObjectPropForSecond,
-  replaceCssClassForSecond,
-  replaceTextboxCssClassForTwoSeconds,
-  replaceTextboxCssClassAndCallMessageForTwoSeconds,
-  replaceTextboxCssClassAndCallMessageForInfinity,
+  replaceClassForSecond,
+  replaceTextboxClassForTwoSeconds,
+  replaceTextboxClassAndMessageForTwoSeconds,
+  replaceTextboxClassAndMessageForEver,
 } from '../utils/temporaryReplacement.js';
 import { LoginEvents } from './loginEvents.js';
 import { getNextMessage } from '../utils/helperToView.js';
@@ -41,7 +41,7 @@ export default class LoginView {
 
   addEventListeners() {
     this.buttonEnter.addEventListener('click', () => {
-      replaceCssClassForSecond(this.buttonEnter, ['menu-btn-wait'], ['menu-btn-success'], this.checker.buttonEnter);
+      replaceClassForSecond(this.buttonEnter, ['menu-btn-wait'], ['menu-btn-success'], this.checker.buttonEnter);
       replaceObjectPropForSecond(this.buttonEnter, 'disabled', true, this.checker.buttonEnter);
       this.eventBus.call(LoginEvents.clickEnter, {
         email: this.inputEmail.value, password: this.inputPassword.value,
@@ -51,13 +51,13 @@ export default class LoginView {
   }
 
   handleLoginWait(message) {
-    replaceTextboxCssClassAndCallMessageForInfinity(this.textboxPassword, 'wait', this.checker.textboxPassword);
+    replaceTextboxClassAndMessageForEver(this.textboxPassword, 'wait', this.checker.textboxPassword);
     this.messageAfterPassword.innerHTML = message;
   }
 
   handleLoginError(message) {
-    replaceTextboxCssClassForTwoSeconds(this.textboxEmail, 'error', this.checker.textboxEmail);
-    replaceTextboxCssClassAndCallMessageForTwoSeconds(this.textboxPassword, 'error', this.checker.textboxPassword);
+    replaceTextboxClassForTwoSeconds(this.textboxEmail, 'error', this.checker.textboxEmail);
+    replaceTextboxClassAndMessageForTwoSeconds(this.textboxPassword, 'error', this.checker.textboxPassword);
     this.messageAfterPassword.innerHTML = message;
   }
 }
