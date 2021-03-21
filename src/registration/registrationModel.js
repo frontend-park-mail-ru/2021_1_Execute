@@ -1,5 +1,5 @@
 import { correctRegistrationProfile, passwordsAreTheSame } from '../utils/validationModule.js';
-import { registrationForm } from '../utils/requestToServer.js';
+import { registration } from '../utils/requestToServer.js';
 import { RegistrationEvents, RegistrationMessage } from './registrationEvents.js';
 
 export default class RegistrationModel {
@@ -27,7 +27,7 @@ export default class RegistrationModel {
       return;
     }
     this.eventBus.call(RegistrationEvents.registrationWait, RegistrationMessage.waitData);
-    registrationForm(profile)
+    registration(profile)
       .then((resp) => {
         switch (resp.status) {
           case 200:

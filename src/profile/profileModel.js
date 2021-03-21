@@ -1,6 +1,6 @@
 import { correctChangeProfile } from '../utils/validationModule.js';
 import {
-  profilePatchForm, profileGetForm, exitRequest, profileAvatarUpload,
+  profilePatch, profileGet, exit, profileAvatarUpload,
 } from '../utils/requestToServer.js';
 import { ProfileEvent, ProfileMessage } from './profileEvents.js';
 
@@ -24,7 +24,7 @@ export default class ProfileModel {
     const callSuccess = () => this.eventBus.call(ProfileEvent.login);
 
     callWait(ProfileMessage.waitData);
-    exitRequest()
+    exit()
       .then((resp) => {
         switch (resp.status) {
           case 200:
@@ -42,7 +42,7 @@ export default class ProfileModel {
   getData() {
     const callError = (message) => this.eventBus.call(ProfileEvent.profileFormError, message);
 
-    profileGetForm()
+    profileGet()
       .then((resp) => {
         switch (resp.status) {
           case 200:
@@ -71,7 +71,7 @@ export default class ProfileModel {
       return;
     }
     callWait(ProfileMessage.waitData);
-    profilePatchForm(profile)
+    profilePatch(profile)
       .then((resp) => {
         switch (resp.status) {
           case 200:

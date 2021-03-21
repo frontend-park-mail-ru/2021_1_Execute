@@ -1,5 +1,5 @@
 import { correctLoginProfile } from '../utils/validationModule.js';
-import { loginForm } from '../utils/requestToServer.js';
+import { login } from '../utils/requestToServer.js';
 import { LoginEvents, LoginMessage } from './loginEvents.js';
 
 export default class LoginModel {
@@ -18,7 +18,7 @@ export default class LoginModel {
       callError(LoginMessage.errorValidation);
     } else {
       this.eventBus.call(LoginEvents.loginWait, LoginMessage.waitData);
-      loginForm(profile)
+      login(profile)
         .then((resp) => {
           switch (resp.status) {
             case 200:
