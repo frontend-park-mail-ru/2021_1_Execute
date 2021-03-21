@@ -19,6 +19,6 @@ export default class LoginController {
   }
 
   start() {
-    this.eventBus.call(LoginEvents.checkAuthorization);
+    this.model.checkAuthorization();
   }
 }

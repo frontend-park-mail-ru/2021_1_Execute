@@ -13,19 +13,15 @@ export default class RegistrationModel {
     this.eventBus = eventBus;
     this.eventBus.subscribe(RegistrationEvents.clickEnter,
       (profile) => this.clickEnter(profile));
-    this.eventBus.subscribe(RegistrationEvents.checkAuthorization, () => this.checkAuthorization());
   }
 
   checkAuthorization() {
     isAuthorized()
       .then((resp) => {
-        switch (resp.status) {
-          case 200:
-            this.eventBus.call(RegistrationEvents.profile);
-            break;
-          default:
-            this.eventBus.call(RegistrationEvents.render);
-            break;
+        if (resp.status === 200) {
+          this.eventBus.call(RegistrationEvents.profile);
+        } else {
+          this.eventBus.call(RegistrationEvents.render);
         }
       });
   }

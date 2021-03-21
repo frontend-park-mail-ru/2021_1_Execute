@@ -10,19 +10,15 @@ export default class LoginModel {
   constructor(eventBus) {
     this.eventBus = eventBus;
     this.eventBus.subscribe(LoginEvents.clickEnter, (profile) => this.clickEnter(profile));
-    this.eventBus.subscribe(LoginEvents.checkAuthorization, () => this.checkAuthorization());
   }
 
   checkAuthorization() {
     isAuthorized()
       .then((resp) => {
-        switch (resp.status) {
-          case 200:
-            this.eventBus.call(LoginEvents.profile);
-            break;
-          default:
-            this.eventBus.call(LoginEvents.render);
-            break;
+        if (resp.status === 200) {
+          this.eventBus.call(LoginEvents.profile);
+        } else {
+          this.eventBus.call(LoginEvents.render);
         }
       });
   }

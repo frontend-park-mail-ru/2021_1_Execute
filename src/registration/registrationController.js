@@ -19,6 +19,6 @@ export default class RegistrationController {
   }
 
   start() {
-    this.eventBus.call(RegistrationEvents.checkAuthorization);
+    this.model.checkAuthorization();
   }
 }
