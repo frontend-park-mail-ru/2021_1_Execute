@@ -1,5 +1,5 @@
 import { correctRegistrationProfile, passwordsAreTheSame } from '../utils/validationModule.js';
-import { registration } from '../utils/requestToServer.js';
+import { registration, isAuthorized } from '../utils/requestToServer.js';
 import { RegistrationEvents, RegistrationMessage } from './registrationEvents.js';
 
 export default class RegistrationModel {
@@ -11,6 +11,17 @@ export default class RegistrationModel {
     this.eventBus = eventBus;
     this.eventBus.subscribe(RegistrationEvents.clickEnter,
       (profile) => this.clickEnter(profile));
+  }
+
+  checkAuthorization() {
+    isAuthorized()
+      .then((resp) => {
+        if (resp.status === 200) {
+          this.eventBus.call(RegistrationEvents.profile);
+        } else {
+          this.eventBus.call(RegistrationEvents.render);
+        }
+      });
   }
 
   clickEnter(profile) {

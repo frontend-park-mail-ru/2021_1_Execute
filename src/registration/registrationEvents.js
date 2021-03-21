@@ -4,6 +4,7 @@ export const RegistrationEvents = {
   registrationWait: 'registration.view.registrationWait',
   profile: 'profile.controller.start',
   login: 'login.controller.start',
+  render: 'registration.view.render',
 };
 
 export const RegistrationMessage = {

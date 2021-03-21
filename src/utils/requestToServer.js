@@ -1,7 +1,7 @@
 const PORT = 1323;
 // Don't change or move FIRST Line
-const BACKEND_API_ADDRESS = `http://89.208.199.114:${PORT}/api`;
-// const BACKEND_API_ADDRESS = `http://localhost:${PORT}/api`;
+// const BACKEND_API_ADDRESS = `http://89.208.199.114:${PORT}/api`;
+const BACKEND_API_ADDRESS = `http://localhost:${PORT}/api`;
 
 export const ApiRoutes = {
   login: '/login/',
@@ -9,6 +9,7 @@ export const ApiRoutes = {
   registration: '/users/',
   exit: '/logout/',
   uploadAvatar: '/upload/',
+  authorized: '/authorized/',
 };
 
 /**
@@ -123,3 +124,9 @@ export const profileAvatarUpload = (file) => {
     body: formData,
   });
 };
+
+/**
+ * Запрос проверки авторизованности
+ * @param  {Promise}
+ */
+export const isAuthorized = () => get(ApiRoutes.authorized);

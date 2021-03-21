@@ -4,6 +4,7 @@ export const LoginEvents = {
   loginWait: 'login.view.loginWait',
   profile: 'profile.controller.start',
   registration: 'registration.controller.start',
+  render: 'login.view.render',
 };
 
 export const LoginMessage = {

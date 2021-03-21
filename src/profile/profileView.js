@@ -81,8 +81,10 @@ export default class ProfileView {
         password: this.inputPassword.value,
         repeatPassword: this.inputRepeatPassword.value,
       });
-      this.eventBus.call(ProfileEvent.clickChangeAvatar, this.inputAvatar.files[0],
-        this.photoAvatar.dataset.buffer);
+      if (this.photoAvatar.dataset.buffer) {
+        this.eventBus.call(ProfileEvent.clickChangeAvatar, this.inputAvatar.files[0], true);
+        this.inputAvatar.value = '';
+      }
     });
   }
 
