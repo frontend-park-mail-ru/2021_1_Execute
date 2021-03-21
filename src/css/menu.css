@@ -135,22 +135,25 @@ body {
   font-size: 14px;
   border-radius: 5px;
   text-align: left;
-  transition: 0.25s;
+  transition: 2s;
 }
 
 .call-message-wait + .menu-father-message > .menu-message {
   border-color: var(--grey-light);
   color: var(--grey-light);
+  transition: 0.25s;
 }
 
 .call-message-error + .menu-father-message > .menu-message {
   border-color: var(--red-dark);
   color: var(--red-dark);
+  transition: 0.25s;
 }
 
 .call-message-success + .menu-father-message > .menu-message {
   border-color: var(--green-dark);
   color: var(--green-dark);
+  transition: 0.25s;
 }
 
 .menu-btn {

@@ -34,7 +34,7 @@ export default class ProfileModel {
             callError(ProfileMessage.forbidden);
             break;
           default:
-            callError(ProfileMessage.unknownError);
+            callError(`${ProfileMessage.unknownError}: ${resp.status}`);
         }
       });
   }
@@ -57,7 +57,7 @@ export default class ProfileModel {
             callError(ProfileMessage.userUndefind);
             break;
           default:
-            callError(ProfileMessage.unknownError);
+            callError(`${ProfileMessage.unknownError}: ${resp.status}`);
         }
       });
   }
@@ -83,8 +83,11 @@ export default class ProfileModel {
           case 400:
             callError(ProfileMessage.errorValidation);
             break;
+          case 409:
+            callError(ProfileMessage.emailNonUniq);
+            break;
           default:
-            callError(ProfileMessage.unknownError);
+            callError(`${ProfileMessage.unknownError}: ${resp.status}`);
         }
       });
   }

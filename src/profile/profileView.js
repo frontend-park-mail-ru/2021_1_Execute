@@ -6,6 +6,7 @@ import {
   replaceCssClassForInfinity,
   replaceTextboxCssClassAndCallMessageForTwoSeconds,
   replaceTextboxCssClassForTwoSeconds,
+  replaceCssClassForSecond,
 } from '../utils/temporaryReplacement.js';
 import { ProfileEvent, ProfileMessage } from './profileEvents.js';
 import { getNextMessage } from '../utils/helperToView.js';
@@ -72,6 +73,7 @@ export default class ProfileView {
     this.inputAvatar.addEventListener('change', () => this.eventBus.call(ProfileEvent.clickChangeAvatar, this.inputAvatar.files[0]));
     this.buttonExit.addEventListener('click', () => this.eventBus.call(ProfileEvent.exit));
     this.buttonChangeData.addEventListener('click', () => {
+      replaceObjectPropForSecond(this.buttonChangeData, 'disabled', true, this.checker.buttonChangeData);
       this.eventBus.call(ProfileEvent.clickChangeData, {
         email: this.inputEmail.value,
         username: this.inputUserName.value,
@@ -125,14 +127,16 @@ export default class ProfileView {
   }
 
   handleProfileFormWait(message) {
-    replaceTextboxCssClassAndCallMessageForTwoSeconds(this.textboxRepeatPassword, 'error', this.checker.textboxRepeatPassword);
+    replaceTextboxCssClassAndCallMessageForTwoSeconds(this.textboxRepeatPassword, 'wait', this.checker.textboxRepeatPassword);
     this.messageAfterRepeatPassword.innerHTML = message;
-    replaceObjectPropForSecond(this.buttonChangeData, 'disabled', true, this.checker.buttonChangeData);
   }
 
   handleProfileFormError(message) {
+    replaceCssClassForSecond(this.textboxRepeatPassword,
+      [], [], this.checker.textboxRepeatPassword);
     switch (message) {
       case ProfileMessage.emailErrorValidation:
+      case ProfileMessage.emailNonUniq:
         replaceTextboxCssClassAndCallMessageForTwoSeconds(this.textboxEmail, 'error', this.checker.textboxEmail);
         this.messageAfterEmail.innerHTML = message;
         break;
@@ -146,10 +150,10 @@ export default class ProfileView {
         this.messageAfterPassword.innerHTML = message;
         break;
       case ProfileMessage.repeatPasswordErrorValidation:
+      default:
         replaceTextboxCssClassAndCallMessageForTwoSeconds(this.textboxRepeatPassword, 'error', this.checker.textboxRepeatPassword);
         this.messageAfterRepeatPassword.innerHTML = message;
         break;
-      default:
     }
   }
 

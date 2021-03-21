@@ -2,8 +2,7 @@ import './registration.handlebars.js';
 import {
   makeChecker,
   replaceCssClassForSecond, replaceObjectPropForSecond,
-  replaceCssClassForTwoSeconds,
-  replaceCssClassForInfinity,
+  replaceTextboxCssClassAndCallMessageForTwoSeconds,
 } from '../utils/temporaryReplacement.js';
 import { RegistrationEvents, RegistrationMessage } from './registrationEvents.js';
 import { getNextMessage } from '../utils/helperToView.js';
@@ -48,6 +47,8 @@ export default class LoginView {
 
   addEventListeners() {
     this.buttonEnter.addEventListener('click', () => {
+      replaceCssClassForSecond(this.buttonEnter, ['menu-btn-wait'], ['menu-btn-success'], this.checker.buttonEnter);
+      replaceObjectPropForSecond(this.buttonEnter, 'disabled', true, this.checker.buttonEnter);
       this.eventBus.call(RegistrationEvents.clickEnter, {
         email: this.inputUserEmail.value,
         username: this.inputUserName.value,
@@ -59,32 +60,30 @@ export default class LoginView {
   }
 
   handleRegistrationWait(message) {
-    const allTextboxWait = ['textboxUserEmail', 'textboxUserName', 'textboxPassword', 'textboxRepeatPassword'];
-    allTextboxWait.forEach((nameTextbox) => replaceCssClassForInfinity(this[nameTextbox], ['menu-textbox-wait'], [], this.checker[nameTextbox]));
-
-    replaceCssClassForSecond(this.buttonEnter, ['menu-btn-wait'], ['menu-btn-success'], this.checker.buttonEnter);
-    replaceObjectPropForSecond(this.buttonEnter, 'disabled', true, this.checker.buttonEnter);
+    replaceTextboxCssClassAndCallMessageForTwoSeconds(this.textboxRepeatPassword, 'wait', this.checker.textboxRepeatPassword);
     this.messageAfterRepeatPassword.innerHTML = message;
   }
 
   handleRegistrationError(message) {
+    replaceCssClassForSecond(this.textboxRepeatPassword,
+      [], [], this.checker.textboxRepeatPassword);
     switch (message) {
       case RegistrationMessage.emailNonUniq:
       case RegistrationMessage.emailErrorValidation:
-        replaceCssClassForTwoSeconds(this.textboxUserEmail, ['menu-textbox-error'], [], this.checker.textboxUserEmail);
+        replaceTextboxCssClassAndCallMessageForTwoSeconds(this.textboxUserEmail, 'error', this.checker.textboxUserEmail);
         this.messageAfterEmail.innerHTML = message;
         break;
       case RegistrationMessage.usernameErrorValidation:
-        replaceCssClassForTwoSeconds(this.textboxUserName, ['menu-textbox-error'], [], this.checker.textboxUserName);
+        replaceTextboxCssClassAndCallMessageForTwoSeconds(this.textboxUserName, 'error', this.checker.textboxUserName);
         this.messageAfterUsername.innerHTML = message;
         break;
       case RegistrationMessage.passwordErrorValidation:
-        replaceCssClassForTwoSeconds(this.textboxPassword, ['menu-textbox-error'], [], this.checker.textboxPassword);
+        replaceTextboxCssClassAndCallMessageForTwoSeconds(this.textboxPassword, 'error', this.checker.textboxPassword);
         this.messageAfterPassword.innerHTML = message;
         break;
       default:
       case RegistrationMessage.repeatPasswordErrorValidation:
-        replaceCssClassForTwoSeconds(this.textboxRepeatPassword, ['menu-textbox-error'], [], this.checker.textboxRepeatPassword);
+        replaceTextboxCssClassAndCallMessageForTwoSeconds(this.textboxRepeatPassword, 'error', this.checker.textboxRepeatPassword);
         this.messageAfterRepeatPassword.innerHTML = message;
         break;
     }

@@ -40,17 +40,19 @@ export default class LoginView {
   }
 
   addEventListeners() {
-    this.buttonEnter.addEventListener('click', () => this.eventBus.call(LoginEvents.clickEnter, {
-      email: this.inputEmail.value, password: this.inputPassword.value,
-    }));
+    this.buttonEnter.addEventListener('click', () => {
+      replaceCssClassForSecond(this.buttonEnter, ['menu-btn-wait'], ['menu-btn-success'], this.checker.buttonEnter);
+      replaceObjectPropForSecond(this.buttonEnter, 'disabled', true, this.checker.buttonEnter);
+      this.eventBus.call(LoginEvents.clickEnter, {
+        email: this.inputEmail.value, password: this.inputPassword.value,
+      });
+    });
     this.buttonGotoRegistration.addEventListener('click', () => this.eventBus.call(LoginEvents.registration));
   }
 
   handleLoginWait(message) {
     replaceTextboxCssClassAndCallMessageForInfinity(this.textboxPassword, 'wait', this.checker.textboxPassword);
     this.messageAfterPassword.innerHTML = message;
-    replaceCssClassForSecond(this.buttonEnter, ['menu-btn-wait'], ['menu-btn-success'], this.checker.buttonEnter);
-    replaceObjectPropForSecond(this.buttonEnter, 'disabled', true, this.checker.buttonEnter);
   }
 
   handleLoginError(message) {

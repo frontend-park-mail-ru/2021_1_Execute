@@ -28,9 +28,8 @@ export default class RegistrationModel {
     }
     this.eventBus.call(RegistrationEvents.registrationWait, RegistrationMessage.waitData);
     registrationForm(profile)
-      .then((req) => ({ status: req.status, obj: req }))
-      .then((response) => {
-        switch (response.status) {
+      .then((resp) => {
+        switch (resp.status) {
           case 200:
           case 308:
             this.eventBus.call(RegistrationEvents.profile);
@@ -42,7 +41,7 @@ export default class RegistrationModel {
             callError(RegistrationMessage.emailNonUniq);
             break;
           default:
-            callError(RegistrationMessage.unknownError);
+            callError(`${RegistrationMessage.unknownError}: ${resp.status}`);
         }
       });
   }
