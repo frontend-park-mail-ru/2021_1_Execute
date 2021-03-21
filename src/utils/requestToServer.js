@@ -9,6 +9,7 @@ export const ApiRoutes = {
   registration: '/users/',
   exit: '/logout/',
   uploadAvatar: '/upload/',
+  authorized: '/authorized/',
 };
 
 /**
@@ -123,3 +124,9 @@ export const profileAvatarUpload = (file) => {
     body: formData,
   });
 };
+
+/**
+ * Запрос проверки авторизованности
+ * @param  {Promise}
+ */
+export const isAuthorized = () => get(ApiRoutes.authorized);
