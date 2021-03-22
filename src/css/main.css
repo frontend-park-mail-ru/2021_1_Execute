@@ -2,10 +2,12 @@
   display: flex;
   width: 100%;
   min-width: 400px;
+  min-height: 100vh;
   flex-direction: column;
   align-content: space-between;
   align-items: center;
   align-self: flex-start;
+  background-color: white;
 }
 
 #root {
@@ -15,22 +17,46 @@
 }
 
 .header-container {
+  background-color: var(--body-bg-color);
   display: flex;
   width: 100%;
-  height: 6%;
+  height: 55px;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  align-self: center;
+  /* align-self: center; */
+  /* border-bottom: 1px solid; */
+}
+
+
+.header-user-avatar {
+  margin-left: auto;
 }
 
 #header-logo {
-  margin: 0 0 0 5px;
+  margin-right: auto;
 }
 
 #avatar-photo {
-  max-height: 60px;
-  max-width: 60px;
+  max-height: 55px;
+  max-width: 90px;
+}
+
+.header-login {
+  min-width: 75px;
+  height: 100%;
+}
+
+#enter {
+  margin: 10% 0 3% 0;
+}
+
+.add-desk {
+  min-width: 20%;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  margin-bottom: 20px;
 }
 
 .user-desks-container {
@@ -42,8 +68,9 @@
 }
 
 .user-desks-title, .all-desks-title {
-  margin: 5% 0 0 0;
-  align-self: center;
+  /* margin: 5% 0 0 0;
+  align-self: center; */
+  text-align: center;
 }
 
 .user-desks-grid {
@@ -56,12 +83,15 @@
 
 .user-desk {
   margin: 10px;
-  background-color: aliceblue;
-  flex-basis: 300px;
+  background-color: var(--body-bg-color);
+  color: aliceblue;
+  font-size: 40px;
+  flex-basis: 200px;
   height: 90px;
   box-shadow: 0 0 10px;
   border-radius: 5px;
   text-align: center;
+
 }
 
 .all-desks-container {
