@@ -1,6 +1,72 @@
-.main-container {
+.main-page-container {
   display: flex;
+  width: 100%;
+  min-width: 400px;
   flex-direction: column;
   align-content: space-between;
-  /* align-items: center; */
+  align-items: center;
+  align-self: flex-start;
+}
+
+#root {
+  display: flex;
+  align-self: flex-start;
+  width: 100vw;
+}
+
+.header-container {
+  display: flex;
+  width: 100%;
+  height: 6%;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  align-self: center;
+}
+
+#header-logo {
+  margin: 0 0 0 5px;
+}
+
+#avatar-photo {
+  max-height: 60px;
+  max-width: 60px;
+}
+
+.user-desks-container {
+  display: flex;
+  width: 100%;
+  justify-content: flex-start;
+  flex-direction: column;
+  /* align-items: space-around; */
+}
+
+.user-desks-title, .all-desks-title {
+  margin: 5% 0 0 0;
+  align-self: center;
+}
+
+.user-desks-grid {
+  margin: 2% 5% 5% 5%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.user-desk {
+  margin: 10px;
+  background-color: aliceblue;
+  flex-basis: 300px;
+  height: 90px;
+  box-shadow: 0 0 10px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.all-desks-container {
+  display: flex;
+  width: 100%;
+  justify-content: flex-start;
+  flex-direction: column;
 }
