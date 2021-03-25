@@ -57,6 +57,7 @@ export default class MainPageController {
   }
 
   start() {
+    // eslint-disable-next-line no-undef
     this.root.innerHTML = Handlebars.templates.mainPage(context);
   }
 }
