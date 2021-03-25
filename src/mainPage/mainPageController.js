@@ -1,30 +1,35 @@
 import EventBus from '../utils/eventBus.js';
-import './main.handlebars.js';
+import './mainPage.handlebars.js';
 
 const context = {
   authorized: true,
   userDesks: [
     {
-      id: 0,
-      name: '0',
+      id: 5,
+      name: 'dedeed',
+      description: 'hdhhdhdhwjhwd',
     },
     {
-      id: 1,
-      name: '1',
+      id: 6,
+      name: 'deldelk',
+      description: 'dliekkldele',
     },
     {
-      id: 2,
-      name: '2',
+      id: 7,
+      name: 'cdmc,mc,',
+      description: 'dkleldkelde',
     },
     {
-      id: 3,
-      name: '3',
+      id: 8,
+      name: 'dedemed',
+      description: 'dejhjdehjedhe',
     },
   ],
   allDesks: [
     {
       id: 0,
       name: '0',
+      description: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
     },
     {
       id: 1,
@@ -52,6 +57,6 @@ export default class MainPageController {
   }
 
   start() {
-    this.root.innerHTML = Handlebars.templates.main(context);
+    this.root.innerHTML = Handlebars.templates.mainPage(context);
   }
 }

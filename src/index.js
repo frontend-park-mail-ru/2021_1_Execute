@@ -1,7 +1,7 @@
 import LoginController from './login/loginController.js';
 import ProfileController from './profile/profileController.js';
 import RegistrationController from './registration/registrationController.js';
-import MainPageController from './main_page/mainPageController.js';
+import MainPageController from './mainPage/mainPageController.js';
 import Router from './utils/router.js';
 
 const root = document.getElementById('root');
