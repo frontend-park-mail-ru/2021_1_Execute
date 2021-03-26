@@ -1,0 +1,80 @@
+.header-container {
+  background-color: var(--body-bg-color);
+  display: flex;
+  width: 100%;
+  height: 55px;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  color: var(--box-bg-color);
+}
+
+.board-page {
+  width: 100vw;
+  height: 100vh;
+}
+
+.board-panel {
+  margin: 5px;
+  display: inline-block;
+}
+
+.board-name {
+  padding: 8px 16px;
+  margin-left: 5px;
+  border-radius: 3px;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.board {
+  background-color: cornflowerblue;
+  height: 100%;
+  width: 100%;
+  min-width: 210px;
+  padding: 8px;
+}
+
+.rows-container {
+  overflow: auto;
+  flex-direction: row,;
+  display: flex;
+}
+
+.row-name {
+  text-align: center;
+  margin-bottom: 5px;
+}
+
+.row {
+  min-width: 200px;
+  max-height: 100%;
+  height: fit-content;
+  margin: 5px;
+  background-color: rgba(255, 255, 255, 0.7);
+  padding: 10px;
+  border-radius: 5px;
+  display: block;
+}
+
+.tasks-container {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  overflow-x: hidden;
+  flex-direction: column;
+  display: flex;
+}
+
+.task {
+  width: 150px;
+  border-radius: 5px;
+  overflow-wrap: break-word;
+  padding: 10px;
+  margin: 5px;
+  background-color: white;
+}
+
+.add-card-button {
+  padding: 10px 10px 0 10px;
+  color: gray;
+  cursor: pointer;
+}
