@@ -16,3 +16,4 @@ router.addRoute('registration', () => registrationController.start());
 router.addRoute('profile', () => profileController.start());
 
 router.go(window.location.pathname);
+window.onpopstate = () => router.routes.call(window.location.pathname);
