@@ -28,6 +28,7 @@
   border-radius: 100px;
   transition: 0.25s;
   object-fit: cover;
+  cursor: pointer;
 }
 
 .profile-avatar-big input {

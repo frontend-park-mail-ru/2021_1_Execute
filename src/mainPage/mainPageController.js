@@ -1,5 +1,5 @@
-import EventBus from '../utils/eventBus.js';
 import './mainPage.handlebars.js';
+import EventBus from '../utils/eventBus.js';
 
 const context = {
   authorized: true,
@@ -16,6 +16,7 @@ const context = {
     },
     {
       id: 7,
+      image: '/32.jpg',
       name: 'cdmc,mc,',
       description: 'dkleldkelde',
     },
@@ -29,23 +30,21 @@ const context = {
     {
       id: 0,
       name: '0',
-      description: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+      description: 'Если ты видишь этот текст до конца, то это больша проблема, так как я не нашел нормального решения (не через какие-то древние костыли) как сделать обрезания многострочного текста',
     },
     {
       id: 1,
+      image: '/35.jpg',
       name: '1',
     },
     {
       id: 2,
-      name: '2',
     },
     {
       id: 3,
       name: '3',
-    },
-    {
-      id: 4,
-      name: '4',
+      image: '/white.png',
+      description: 'Тест тупо белого фона',
     },
   ],
 };

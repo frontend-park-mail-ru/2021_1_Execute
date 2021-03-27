@@ -1,12 +1,8 @@
 .main-page {
-  width: 100vw;
-  height: 100vh;
-}
-
-.main-page-container {
-  display: flex;
   width: 100%;
-  min-width: 400px;
+  height: 100vh;
+  display: flex;
+  min-width: 34px;
   min-height: 100%;
   flex-direction: column;
   align-content: space-between;
@@ -20,9 +16,46 @@
   width: 100%;
   height: 55px;
   flex-direction: row;
-  justify-content: center;
-  align-items: center;
   color: var(--box-bg-color);
+}
+
+.header-container-elem-left {
+  position: relative;
+  width: calc(100% / 3);
+  display: flex;
+  float: left;
+  height: 100%;
+}
+
+.header-container-elem-left > * {
+  position: absolute;
+  left: 0;
+}
+
+.header-container-elem-center {
+  width: calc(100% / 3);
+  min-width: min-content;
+  display: flex;
+  float: center;
+  height: 100%;
+}
+
+.header-container-elem-center > * {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.header-container-elem-right {
+  position: relative;
+  min-width: min-content;
+  width: calc(100% / 3);
+  display: flex;
+  height: 100%;
+}
+
+.header-container-elem-right > * {
+  position: absolute;
+  right: 0;
 }
 
 .header-logo {
@@ -38,16 +71,9 @@
   max-height: 100%;
 }
 
-.header-user-avatar {
-  height: 100%;
-  min-width: 10%;
-  margin-left: auto;
-  display: flex;
-  justify-content: flex-end;
-}
-
 #avatar-photo {
   max-height: 100%;
+  cursor: pointer;
 }
 
 .header-login {
@@ -71,6 +97,7 @@
 }
 
 .container-title {
+  font-weight: bold;
   text-align: center;
 }
 
@@ -79,43 +106,97 @@
   display: flex;
   justify-content: flex-start;
   flex-direction: column;
+  background-color: white;
+  transition: 0.25s;
 }
 
-.desks-grid {
-  margin: 2% 5% 5% 5%;
+.desks-container:hover {
+  background-color: var(--box-bg-color);
+}
+
+.desks-container-grid {
+  margin: 15px 5% 25px 5%;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-around;
 }
 
-.grid-desk {
+.grid-elem {
   width: 200px;
-  height: 90px;
+  height: 105px;
+  border-radius: 5px;
   margin: 10px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  background-color: var(--body-bg-color);
+  position: relative;
   box-shadow: 0 0 3px;
+}
+
+.grid-desk {
+  transition: 0.25s;
+  background-color: var(--body-bg-color);
+  cursor: pointer;
+}
+
+.grid-desk:hover {
+  filter: brightness(75%);
+}
+
+.grid-desk img {
+  filter: brightness(70%);
+  position: absolute;
+  width: 200px;
+  height: 105px;
   border-radius: 5px;
+  background-position: center center;
+  background-size: cover;
+  transition: 0.25s;
+  object-fit: cover;
+  z-index: 1;
 }
 
-.grid-desk-title {
-  margin: 0%;
-  padding: 0%;
+.grid-desk h4 {
+  font-size: 16px;
+  font-weight: bold;
+  padding: 6px 0;
+  margin: 0;
+  min-height: 16px;
+  width: auto;
   color: var(--box-bg-color);
-  font-size: 2em;
   text-align: center;
+  z-index: 2;
+  white-space: nowrap; /* Текст не переносится */
+  overflow: hidden; /* Обрезаем всё за пределами блока */
+  text-overflow: ellipsis; /* Добавляем многоточие */
 }
 
-.grid-desk-description {
-  max-height: 60%;
-  max-width: 95%;
-  margin: 10px 0 0 4px;
+.grid-desk p {
+  margin: 4px;
   overflow: hidden;
   word-break: break-all;
   align-self: flex-start;
   color: var(--box-bg-color);
-  font-size: 1em;
+  font-size: 16px;
+  z-index: 2;
+
+  /* Дальше написано оооочень древнее зло */
+  -webkit-line-clamp: 4; /* Число отображаемых строк */
+  display: -webkit-box; /* Включаем флексбоксы */
+  -webkit-box-orient: vertical; /* Вертикальная ориентация */
+}
+
+.grid-adddesk {
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  color: black;
+  background-color: var(--grey-bright);
+  transition: 0.25s;
+  cursor: pointer;
+}
+
+.grid-adddesk:hover {
+  filter: brightness(90%);
 }

@@ -1,58 +1,51 @@
 <div class="main-page">
 
-  {{#*inline "deskGrid" desks}}
-    <div class="desks-grid">
-          {{#each desks}}
-            <div class="grid-desk" id="{{this.id}}">
-              <div class="menu-textbox grid-desk-title">
-                {{this.name}}
-              </div>
-              <div class="grid-desk-description">
-                {{this.description}}
-              </div>
-            </div>
-          {{/each}}
-        </div>
+  {{#*inline "deskGrid" desks add-desk}}
+  <div class="desks-container-grid">
+    {{#each desks}}
+    <div class="grid-elem grid-desk" id="{{this.id}}">
+      <img src="{{this.image}}" onerror="this.style.display = 'none';">
+      <h4 class="menu-textbox">
+        {{this.name}}
+      </h4>
+      <p>
+        {{this.description}}
+      </p>
+    </div>
+    {{/each}}
+    {{#if add-desk}}
+    <div class="grid-elem grid-adddesk">Создать доску</div>
+    {{/if}}
+  </div>
   {{/inline}}
 
-  <div class="main-page-container">
-
-    <div class="header-container">
-      <div class="header-logo">
-        {{!-- <img id="logo-photo" class="" src="/logo.png"> --}}
-        <h1>LOGO</h1>
-      </div>
-
-      <div class="header-title">
-        <h1>HELLO</h1>
-      </div>
-
-      {{#if authorized}}
-        <div class="header-user-avatar">
-          <img id="avatar-photo" class="profile-avatar-photo" src="/not-available.png">
-        </div>
-      {{else}}
-        <div class="header-login">
-          <button id="enter" class="menu-btn menu-btn-success">Войти</button>
-        </div>
-      {{/if}}
+  <div class="header-container">
+    <div class="header-container-elem-left">
     </div>
 
-    {{#if authorized}}
-      <div class="add-desk">
-        <button id="add-desk-btn" class="menu-btn menu-btn-success">Create Desk</button>
-      </div>
+    <div class="header-container-elem-center">
+      <img id="logo-photo" src="/hello_removedbg.png">
+    </div>
 
-      <div class="user-desks desks-container">
-        <div class="container-title menu-textbox">USER DESKS</div>
-        {{> deskGrid desks=userDesks}}
-      </div>
-
-      <div class="all-desks desks-container">
-        <div class="container-title menu-textbox">ALL DESKS</div>
-        {{> deskGrid desks=allDesks}}
-      </div>
-    {{/if}}
-
+    <div class="header-container-elem-right">
+      {{#if authorized}}
+      <img id="avatar-photo" class="profile-avatar-photo" src="/not-available.png">
+      {{else}}
+      <button id="enter" class="menu-btn menu-btn-success">Войти</button>
+      {{/if}}
+    </div>
   </div>
+
+  {{#if authorized}}
+  <div class="user-desks desks-container">
+    <div class="container-title menu-textbox">Персональные доски</div>
+    {{> deskGrid desks=userDesks add-desk=true}}
+  </div>
+
+  <div class="all-desks desks-container">
+    <div class="container-title menu-textbox">ALL DESKS</div>
+    {{> deskGrid desks=allDesks add-desk=false}}
+  </div>
+  {{/if}}
+
 </div>
