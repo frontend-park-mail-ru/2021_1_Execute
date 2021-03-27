@@ -21,8 +21,18 @@ const context = {
       description: 'dkleldkelde',
     },
     {
+      id: 2,
+    },
+    {
+      id: 2,
+    },
+    {
+      id: 2,
+    },
+    {
       id: 8,
       name: 'dedemed',
+      image: '/fon1.jpg',
       description: 'dejhjdehjedhe',
     },
   ],
@@ -36,6 +46,18 @@ const context = {
       id: 1,
       image: '/35.jpg',
       name: '1',
+    },
+    {
+      id: 2,
+    },
+    {
+      id: 2,
+    },
+    {
+      id: 2,
+    },
+    {
+      id: 2,
     },
     {
       id: 2,
