@@ -15,8 +15,13 @@
 }
 
 .board-panel {
+  overflow: auto;
   margin: 5px;
   display: flex;
+}
+
+#add-row-btn {
+  cursor: pointer;
 }
 
 .board-panel-divider {
@@ -106,4 +111,55 @@
   color: gray;
   cursor: pointer;
 }
+
+.popup-container {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  align-items: center;
+  overflow-y: auto;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.popup-module {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  max-width: 615px;
+  height: fit-content;
+  margin: 10vh 0;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgb(0 0 0 / 15%);
+  background: white;
+}
+
+.task-header {
+  max-width: 555px;
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  flex-direction: column;
+  border-bottom: 1px solid black;
+  padding: 5px;
+  margin: 5px;
+}
+
+.task-row-name {
+  color: gray;
+  font-size: small;
+}
+
+.task-description {
+  max-width: 555px;
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  padding: 5px;
+  margin: 5px;
 }
