@@ -21,6 +21,8 @@
   --blue-light: #5d8dca;
   --grey-light: #95a5a6;
   --body-bg-color: #34495e;
+  --row-bg-color: rgba(255, 255, 255, 0.7);
+  --board-panel-buttons-bg: rgba(255, 255, 255, 0.5);
   --box-bg-color: #ecf0f1;
   --btn-primary-bg-color: var(--grey-light);
   --text-placeholder-color: #252525;
