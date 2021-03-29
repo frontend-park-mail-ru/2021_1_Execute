@@ -118,6 +118,9 @@
   background-color: var(--grey-bright);
   transition: 0.25s;
   cursor: pointer;
+  border: 2px dashed black;
+  width: calc(200px - 4px);
+  height: calc(105px - 4px);
 }
 
 .grid-adddesk:hover {
