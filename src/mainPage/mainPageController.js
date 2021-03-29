@@ -1,8 +1,8 @@
 import './mainPage.handlebars.js';
+import '../header/header.handlebars.js';
 import EventBus from '../utils/eventBus.js';
 
 const context = {
-  authorized: true,
   userDesks: [
     {
       id: 5,
@@ -69,6 +69,12 @@ const context = {
       description: 'Тест тупо белого фона',
     },
   ],
+  authorized: true,
+};
+
+const profile = {
+  avatarUrl: '/32.jpg',
+  authorized: context.authorized,
 };
 
 export default class MainPageController {
@@ -79,6 +85,8 @@ export default class MainPageController {
 
   start() {
     // eslint-disable-next-line no-undef
-    this.root.innerHTML = Handlebars.templates.mainPage(context);
+    this.root.innerHTML = Handlebars.templates.header(profile);
+    // eslint-disable-next-line no-undef
+    this.root.innerHTML += Handlebars.templates.mainPage(context);
   }
 }

@@ -1,5 +1,8 @@
 {{#*inline "deskGrid" desks add-desk}}
 <div class="desks-container-grid">
+  {{#if add-desk}}
+  <div class="grid-elem grid-adddesk">Создать доску</div>
+  {{/if}}
   {{#each desks}}
   <div class="grid-elem grid-desk" id="{{this.id}}">
     <img src="{{this.image}}" onerror="this.style.display = 'none';">
@@ -11,32 +14,8 @@
     </p>
   </div>
   {{/each}}
-  {{#if add-desk}}
-  <div class="grid-elem grid-adddesk">Создать доску</div>
-  {{/if}}
 </div>
 {{/inline}}
-
-<div class="header-container">
-  <div class="header-container-elem-left">
-  </div>
-
-  <picture class="header-container-elem-center">
-    <source style="display: none" media="(max-width: 505px)" srcset="/extinguisher_removedbg.png">
-    <img src="/hello_removedbg.png">
-  </picture>
-
-  <div class="header-container-elem-right">
-    {{#if authorized}}
-    {{!-- <img id="avatar-photo" class="profile-avatar-photo" src="/not-available.png"> --}}
-    <div class="profile-avatar-small">
-      <img id="avatar-photo" class="profile-avatar-photo" src="/32.jpg">
-    </div>
-    {{else}}
-    <button id="enter" class="menu-btn menu-btn-success">Войти</button>
-    {{/if}}
-  </div>
-</div>
 
 <div class="main-page">
   {{#if authorized}}
