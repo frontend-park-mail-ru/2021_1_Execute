@@ -1,32 +1,34 @@
+{{#*inline "desk" desk}}
+<div id="board-{{id}}" class="grid-elem grid-desk">
+  <img src="{{image}}" onerror="this.style.display = 'none';">
+  <h4 class="menu-textbox">
+    {{name}}
+  </h4>
+  <p>
+    {{description}}
+  </p>
+</div>
+{{/inline}}
+
 {{#*inline "deskGrid" desks add-desk}}
 <div class="desks-container-grid">
   {{#if add-desk}}
-  <div class="grid-elem grid-adddesk">Создать доску</div>
+  <div id="adddesk" class="grid-elem grid-adddesk">Создать доску</div>
   {{/if}}
   {{#each desks}}
-  <div class="grid-elem grid-desk" id="{{this.id}}">
-    <img src="{{this.image}}" onerror="this.style.display = 'none';">
-    <h4 class="menu-textbox">
-      {{this.name}}
-    </h4>
-    <p>
-      {{this.description}}
-    </p>
-  </div>
+  {{> desk desk=this}}
   {{/each}}
 </div>
 {{/inline}}
 
 <div class="main-page">
-  {{#if authorized}}
   <div class="user-desks desks-container">
     <div class="container-title menu-textbox">Персональные доски</div>
-    {{> deskGrid desks=userDesks add-desk=true}}
+    {{> deskGrid desks=Guest add-desk=true}}
   </div>
 
   <div class="all-desks desks-container">
     <div class="container-title menu-textbox">Остальные доски</div>
-    {{> deskGrid desks=allDesks add-desk=false}}
+    {{> deskGrid desks=Admin add-desk=false}}
   </div>
-  {{/if}}
 </div>

@@ -27,7 +27,6 @@
 .header-container-center {
   width: calc(100% / 3);
   display: flex;
-  vertical-align: middle;
   height: 100%;
 }
 
@@ -75,9 +74,4 @@
   min-width: 10%;
   height: 100%;
   margin-left: auto;
-}
-
-#enter {
-  margin: 0;
-  width: 100px;
 }

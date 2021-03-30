@@ -1,23 +1,14 @@
-export const ProfileEvent = {
-  getData: 'profile.model.clickGetData',
-  clickChangeData: 'profile.model.clickChangeData',
-  clickChangeAvatar: 'profile.model.clickChangeAvatar',
-  profileAvatarWait: 'profile.view.profileAvatarWait',
-  profileAvatarError: 'profile.view.profileAvatarError',
-  profileAvatarSuccess: 'profile.view.profileAvatarSuccess',
-  profileFormWait: 'profile.view.profileFormWait',
-  profileFormError: 'profile.view.profileFormError',
-  profileFormSuccess: 'profile.view.profileFormSuccess',
+export const MainPageEvent = {
+  getData: 'mainPage.model.getData',
+  profile: 'profile.controller.start',
   login: 'login.controller.start',
-  renderData: 'profile.view.renderData',
-  exit: 'profile.model.exit',
-  uploadAvatar: 'profile.model.exit',
-  changeAvatarToBuffer: 'profile.view.changeAvatarToBuffer',
-  originalAvatarFromBuffer: 'profile.view.originalAvatarFromBuffer',
-  clearAvatarBuffer: 'profile.view.clearAvatarBuffer',
+  renderData: 'mainPage.view.renderData',
+  clickAddDesk: 'mainPage.model.clickAddDesk',
+  renderNewBoard: 'mainPage.model.renderNewBoard',
+  clickButtonBoard: 'mainPage.model.clickButtonBoard',
 };
 
-export const ProfileMessage = {
+export const MainPageMessage = {
   waitAvatarСonfirmation: 'Нажмите кнопку «Изменить данные» что-бы применить изменение',
   waitData: 'Ожидаем ответ от сервера',
   success: 'Данные изменены',

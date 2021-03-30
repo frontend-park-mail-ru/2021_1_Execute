@@ -27,24 +27,12 @@
   transition: 0.25s;
 }
 
-/* .desks-container:hover {
-  background-color: var(--box-bg-color);
-} */
-
 .desks-container-grid {
-  margin: 15px 5% 25px 5%;
+  margin: 15px 5px 25px 5px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-around;
-}
-
-.add-desk {
-  min-width: 20%;
-  margin-bottom: 20px;
-  display: flex;
-  align-content: center;
-  justify-content: center;
 }
 
 .grid-elem {
@@ -74,7 +62,7 @@
   width: 200px;
   height: 105px;
   border-radius: 5px;
-  background-position: center center;
+  background-position: center;
   background-size: cover;
   transition: 0.25s;
   object-fit: cover;
@@ -125,4 +113,5 @@
 
 .grid-adddesk:hover {
   filter: brightness(90%);
+  color: red;
 }

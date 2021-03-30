@@ -12,7 +12,7 @@ const profileController = new ProfileController(router, root);
 const registrationController = new RegistrationController(router, root);
 const mainPageController = new MainPageController(router, root);
 
-router.addRoute('/', () => router.go('login'));
+router.addRoute('/', () => router.go('main'));
 router.addRoute('login', () => loginController.start());
 router.addRoute('registration', () => registrationController.start());
 router.addRoute('profile', () => profileController.start());
