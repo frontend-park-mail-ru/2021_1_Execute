@@ -15,21 +15,21 @@
 }
 
 .board-panel {
+  flex-wrap: wrap;
   overflow: auto;
-  margin: 5px;
+  margin: 0 5px;
   display: flex;
 }
 
-.board-panel-start {
+.board-panel-group {
   display: flex;
   align-items: center;
+  margin: 5px 0;
 }
 
 .board-panel-end {
   padding-right: 20px;
   margin-left: auto;
-  display: flex;
-  align-items: center;
 }
 
 #add-row-btn {
@@ -42,6 +42,7 @@
 }
 
 .board-panel-text-elem {
+  white-space: nowrap;
   display: flex;
   padding: 11px;
   text-align: center;
@@ -70,8 +71,6 @@
 
 .board {
   background-color: cornflowerblue;
-  height: 100%;
-  width: 100%;
   min-width: 210px;
   padding: 8px;
 }
