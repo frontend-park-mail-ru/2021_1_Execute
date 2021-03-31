@@ -21,6 +21,9 @@
 </div>
 {{/inline}}
 
+{{#if single}}
+{{> desk desk=this}}
+{{else}}
 <div class="main-page">
   <div class="user-desks desks-container">
     <div class="container-title menu-textbox">Персональные доски</div>
@@ -32,3 +35,4 @@
     {{> deskGrid desks=Admin add-desk=false}}
   </div>
 </div>
+{{/if}}

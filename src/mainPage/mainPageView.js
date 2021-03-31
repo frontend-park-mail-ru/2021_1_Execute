@@ -76,16 +76,15 @@ export default class MainPageView {
   }
 
   renderNewBoard(board) {
-    this.buttonAddDesk.after(document.createRange().createContextualFragment(
-      `<div id="board-${board.id}" class="grid-elem grid-desk">
-    <img src="${board.image}" onerror="this.style.display = 'none';">
-    <h4 class="menu-textbox">
-    ${board.name ?? ''}
-    </h4>
-    <p>
-    ${board.description ?? ''}
-    </p>
-  </div>`,
-    ));
+    const newDocumentFragmentButtonBoard = document.createRange().createContextualFragment(
+      // eslint-disable-next-line no-undef
+      Handlebars.templates.mainPage({ ...board, single: true }),
+    );
+    this.buttonAddDesk.after(newDocumentFragmentButtonBoard);
+    const newHTMLElementButtonBoard = this.buttonAddDesk.nextElementSibling;
+    this.buttonsBoards = [newHTMLElementButtonBoard, ...this.buttonsBoards];
+    newHTMLElementButtonBoard.addEventListener(
+      'click', () => this.eventBus.call(MainPageEvent.clickButtonBoard, newHTMLElementButtonBoard.id),
+    );
   }
 }

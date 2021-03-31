@@ -49,10 +49,12 @@ export default class MainPageModel {
   }
 
   clickButtonBoard(boardNameId) {
+    // eslint-disable-next-line no-console
     console.log('clickButtonBoard:', boardNameId, +boardNameId.slice(6), this);
   }
 
   clickAddDesk(name) {
+    // eslint-disable-next-line no-console
     console.log('clickAddDesk:', name, this);
     const callError = (message) => this.eventBus.call(MainPageEvent.boardsError, message);
 
