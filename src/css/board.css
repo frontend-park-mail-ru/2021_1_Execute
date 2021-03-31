@@ -73,6 +73,7 @@
   background-color: cornflowerblue;
   min-width: 210px;
   padding: 8px;
+  height: 100%;
 }
 
 .btn-favorite-selected {
