@@ -76,6 +76,14 @@
   padding: 8px;
 }
 
+.btn-favorite-selected {
+  fill: yellow;
+}
+
+.btn-favorite-unselected {
+  fill: black;
+}
+
 .rows-container {
   overflow: auto;
   flex-direction: row;
@@ -185,18 +193,7 @@
 }
 
 .close-icon-div {
-  display: flex;
-  align-content: center;
   position: absolute;
   top: 13px;
   right: 0;
-}
-
-.close-icon {
-  border-radius: 50%;
-  padding: 10px;
-}
-
-.close-icon-div :hover {
-  background: padding-box var(--btn-exit-hover);
 }
