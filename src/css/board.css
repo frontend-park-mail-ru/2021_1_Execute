@@ -20,28 +20,37 @@
   display: flex;
 }
 
+.board-panel-start {
+  display: flex;
+  align-items: center;
+}
+
+.board-panel-end {
+  padding-right: 20px;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+}
+
 #add-row-btn {
   cursor: pointer;
 }
 
 .board-panel-divider {
   border-left: 2px solid var(--board-panel-buttons-bg);
+  height: 100%;
 }
 
 .board-panel-text-elem {
-  display: inline-block;
+  display: flex;
   padding: 11px;
   text-align: center;
   border-radius: 3px;
   background-color: var(--board-panel-buttons-bg);
 }
 
-#board-panel-settings {
-  align-self: flex-end;
-}
-
 #additional-people-icon {
-  display: inline-block;
+  display: flex;
   background-color: var(--board-panel-buttons-bg);
   border-radius: 20px;
   text-align: center;
@@ -69,7 +78,7 @@
 
 .rows-container {
   overflow: auto;
-  flex-direction: row,;
+  flex-direction: row;
   display: flex;
 }
 
@@ -79,7 +88,7 @@
 }
 
 .row {
-  min-width: 180px;
+  min-width: 190px;
   max-height: 100%;
   height: fit-content;
   margin: 5px;
@@ -91,10 +100,12 @@
 
 .tasks-container {
   flex: 1 1 auto;
+  max-height: 80vh;
   overflow-y: auto;
   overflow-x: hidden;
   flex-direction: column;
   display: flex;
+  padding: 0, 10px;
 }
 
 .task {
@@ -102,7 +113,7 @@
   border-radius: 5px;
   overflow-wrap: break-word;
   padding: 10px;
-  margin: 5px;
+  margin: 5px 0;
   background-color: white;
 }
 
@@ -113,22 +124,17 @@
 }
 
 .popup-container {
-  display: flex;
-  flex-direction: column;
   position: absolute;
-  align-items: center;
   overflow-y: auto;
   top: 0;
   width: 100vw;
   height: 100vh;
+  padding: 5px;
   background-color: rgba(0, 0, 0, 0.3);
 }
 
 .popup-module {
-  display: flex;
-  flex-direction: column;
   flex-shrink: 0;
-  align-items: center;
   justify-content: flex-start;
   width: 100%;
   max-width: 615px;
