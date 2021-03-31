@@ -1,6 +1,5 @@
 import './mainPage.handlebars.js';
 import '../header/header.handlebars.js';
-import { makeChecker } from '../utils/temporaryReplacement.js';
 import { MainPageEvent } from './mainPageEvents.js';
 
 export default class MainPageView {
@@ -64,7 +63,6 @@ export default class MainPageView {
     this.buttonsBoards = boards.reduce((accum, board) => accum.concat(
       document.getElementById(`board-${board.id}`),
     ), []);
-    this.checker = makeChecker(this);
   }
 
   addEventListeners() {
