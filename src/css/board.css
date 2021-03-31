@@ -84,6 +84,11 @@
   fill: black;
 }
 
+.board-name {
+  font-size: x-large;
+  margin-bottom: 5px;
+}
+
 .rows-container {
   overflow: auto;
   flex-direction: row;
