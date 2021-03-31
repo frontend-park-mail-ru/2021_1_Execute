@@ -1,54 +1,88 @@
+{{#*inline "task" task}}
+<div id="task-{{id}}" class="task">
+    {{name}}
+</div>
+{{/inline}}
+
+{{#*inline "row" row}}
+<div class="row">
+    <div class="row-name">
+        {{name}}
+    </div>
+    <div class="tasks-container">
+        {{#each tasks}}
+            {{> task task=this}}
+        {{/each}}
+    </div>
+    <div id="add-card-to-{{id}}"class="add-card-button">
+        Добавить карточку
+    </div>
+</div>
+{{/inline}}
+
+{{#*inline "task-popup" task row}}
+<div class  ="popup-module menu-wrapper-column ">
+    <div class="popup-content">
+        <div class="close-icon-div btn-icon-div">
+            <svg class="btn-icon" viewBox="0 0 32 32" width="24" height="24"><defs><style>.cls-1{fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px;}</style>
+            </defs><title/><g><line class="cls-1" x1="7" x2="25" y1="7" y2="25"/><line class="cls-1" x1="7" x2="25" y1="25" y2="7"/></g></svg>
+        </div>
+        <div class="task-header">
+            <span class="span-textarea" role="textbox" contenteditable >{{task.name}}</span>
+            <div class="task-row-name">В колонке {{row.name}}</div>
+        </div>
+        <div class="task-description-heading">Описание:</div>
+        <span class="span-textarea" role="textbox" contenteditable>{{task.description}}</span>
+    </div>
+</div>
+{{/inline}}
+
+{{#*inline "board-popup" board}}
+<div class="popup-module menu-wrapper-column ">
+    <div class="popup-content">
+        <div class="close-icon-div btn-icon-div">
+            <svg class="btn-icon" viewBox="0 0 32 32" width="24" height="24"><defs><style>.cls-1{fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px;}</style>
+            </defs><title/><g id="cross"><line class="cls-1" x1="7" x2="25" y1="7" y2="25"/><line class="cls-1" x1="7" x2="25" y1="25" y2="7"/></g></svg>
+        </div>
+        <span class="span-textarea board-name" role="textbox" contenteditable >{{name}}</span>
+        <div class="task-description-heading">Описание доски:</div>
+        <span class="span-textarea" role="textbox" contenteditable>{{description}}</span>
+    </div>
+</div>
+{{/inline}}
+
+{{#*inline "avatars" avatars isMore counter}}
+{{#each avatars}}
+    <img class="rounded-avatar board-panel-element" src={{this.avatar}}>
+{{/each}}
+{{#if isMore}}
+<div id="additional-people-icon" class="board-panel-element">+{{counter}}</div>
+{{/if}}
+{{/inline}}
+
+
 <div class="board-page">
     <div class="header-container">
         Hello
     </div>
-    <div class="popup-container menu-wrapper-column menu-hidden "id=full-task-info>
-        <div class="popup-module menu-wrapper-column ">
-            <div class="popup-content">
-                <div class="close-icon-div btn-icon-div">
-                    <svg class="btn-icon" viewBox="0 0 32 32" width="24" height="24"><defs><style>.cls-1{fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px;}</style>
-                    </defs><title/><g id="cross"><line class="cls-1" x1="7" x2="25" y1="7" y2="25"/><line class="cls-1" x1="7" x2="25" y1="25" y2="7"/></g></svg>
-                </div>
-                <div class="task-header">
-                    <span class="span-textarea" role="textbox" contenteditable >Сделайте что-нибудь</span>
-                    <div class="task-row-name">В колонке ряд1</div>
-                </div>
-                <div class="task-description-heading">Описание:</div>
-                <span class="span-textarea" role="textbox" contenteditable>Такая вот задачка, очень интересная, сложная, не бэкенд, как раз для Димы, Дима решай, бери, мы тебя любим, не грусти</span>
-            </div>
-        </div>
-    </div>
-    <div class="popup-container menu-wrapper-column  menu-hidden"id=board-settings>
-        <div class="popup-module menu-wrapper-column ">
-            <div class="popup-content">
-                <div class="close-icon-div btn-icon-div">
-                    <svg class="btn-icon" viewBox="0 0 32 32" width="24" height="24"><defs><style>.cls-1{fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px;}</style>
-                    </defs><title/><g id="cross"><line class="cls-1" x1="7" x2="25" y1="7" y2="25"/><line class="cls-1" x1="7" x2="25" y1="25" y2="7"/></g></svg>
-                </div>
-                <span class="span-textarea board-name" role="textbox" contenteditable >Сделайте что-нибудь</span>
-                <div class="task-description-heading">Описание доски:</div>
-                <span class="span-textarea" role="textbox" contenteditable>Такая вот доска, очень интересная, сложная, не бэкенд, не фронт, просто вот такая доска, да</span>
-            </div>
-        </div>
+    <div class="popup-container menu-wrapper-column menu-hidden "id=popup-container>
+        {{!-- search id and past template --}}
     </div>
     <div class="board">
         <div class="board-panel">
             <div class="board-panel-group">
-                <div class="board-panel-text-elem  board-panel-element">BOarD wIth  CSS</div>
+                <div class="board-panel-text-elem  board-panel-element">{{board.name}}</div>
                 <div class=" board-panel-element board-panel-divider"></div>
             </div>
             <div class="board-panel-group">
-                <img class="rounded-avatar board-panel-element" src="../../img/32.jpg">
-                <img class="rounded-avatar board-panel-element" src="../../img/35.jpg">
-                <div id=additional-people-icon class="board-panel-element">+11</div>
-                <div class=" board-panel-element board-panel-divider"></div>
+                {{> avatars avatars=avatars.avatars isMore=avatars.isMore counter=avatars.counter}}
             </div>
             <div class="board-panel-group">
                 <div class="board-panel-element board-panel-text-elem ">Пригласить</div>          
                 <div id="btn-favorite" class="board-panel-element btn-icon-div">
                     <svg class="btn-icon" version="1.1" width="30" height="30"
 	                    viewBox="0 0 426.667 426.667" style="enable-background:new 0 0 426.667 426.667;" xml:space="preserve">
-                            <polygon id="btn-favorite-polygon" class="btn-favorite-selected" points="213.333,10.441 279.249,144.017 426.667,165.436 320,269.41 345.173,416.226 213.333,346.91 
+                            <polygon id="btn-favorite-polygon" class={{#if board.isStared}}"btn-favorite-selected"{{else}}"btn-favorite-unselected"{{/if}} points="213.333,10.441 279.249,144.017 426.667,165.436 320,269.41 345.173,416.226 213.333,346.91 
 	                            81.485,416.226 106.667,269.41 0,165.436 147.409,144.017 "/>
                     </svg>
                 </div>
@@ -72,127 +106,9 @@
             </div>
         </div>
         <div class="rows-container">
-            <div class="row">
-                <div class="row-name">
-                    row 1
-                </div>
-                <div class="tasks-container">
-                    <div class="task">
-                        lololo
-                    </div>
-                    <div class="add-card-button">
-                        Добавить карточку
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="row-name">
-                    row 2
-                </div>
-                <div class="tasks-container">
-                    <div class="task">
-                        lololo
-                    </div>
-                    <div class="task">
-                        lololo
-                    </div>
-                                    <div class="add-card-button">
-                    Добавить карточку
-                </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="row-name">
-                    row 3
-                </div>
-                <div class="tasks-container">
-                    <div class="task">
-                        lololo
-                    </div>
-                    <div class="task">
-                        lololo
-                    </div>
-                    <div class="task">
-                        lololo
-                    </div>
-                    <div class="task">
-                        lololosdfasdfasdfasdfasidfuasiudfipaosudfioasudiofusaiodufaiosdufioasudfoiasuopfiduasoipdufaps
-                    </div>
-                    <div class="task">
-                        lololo
-                    </div>
-                    <div class="task">
-                        lololo
-                    </div>
-                    <div class="task">
-                        lololo
-                    </div>
-                    <div class="task">
-                        lololo
-                    </div>
-                    <div class="task">
-                        lololo
-                    </div>
-                    <div class="task">
-                        lololosdfasdfasdfasdfasidfuasiudfipaosudfioasudiofusaiodufaiosdufioasudfoiasuopfiduasoipdufaps
-                    </div>
-                    <div class="task">
-                        lololo
-                    </div>
-                    <div class="task">
-                        lololo
-                    </div>
-                    <div class="task">
-                        lololo
-                    </div>
-                    <div class="task">
-                        lololo
-                    </div>
-                    <div class="task">
-                        lololo
-                    </div>
-                    <div class="task">
-                        lololosdfasdfasdfasdfasidfuasiudfipaosudfioasudiofusaiodufaiosdufioasudfoiasuopfiduasoipdufaps
-                    </div>
-                    <div class="task">
-                        lololo
-                    </div>
-                    <div class="task">
-                        lololo
-                    </div>
-                    <div class="task">
-                        lololo
-                    </div>
-                    <div class="task">
-                        lololo
-                    </div>
-                    <div class="task">
-                        lololo
-                    </div>
-                    <div class="task">
-                        lololosdfasdfasdfasdfasidfuasiudfipaosudfioasudiofusaiodufaiosdufioasudfoiasuopfiduasoipdufaps
-                    </div>
-                    <div class="task">
-                        lololo
-                    </div>
-                    <div class="task">
-                        lololo
-                    </div>
-                                    <div class="add-card-button">
-                    Добавить карточку
-                </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="row-name">
-                    row 4
-                </div>
-                <div class="tasks-container">
-                <div class="add-card-button">
-                    Добавить карточку
-                </div>
-                </div>
-            </div>
+            {{#each board.rows}}
+                {{> row row=this}}
+            {{/each}}
             <div class="row" id="add-row-btn">
                 <div class="row-name">
                     Добавить колонку
