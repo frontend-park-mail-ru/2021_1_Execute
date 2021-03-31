@@ -115,7 +115,7 @@
 .popup-container {
   display: flex;
   flex-direction: column;
-  position: fixed;
+  position: absolute;
   align-items: center;
   overflow-y: auto;
   top: 0;
@@ -139,27 +139,58 @@
   background: white;
 }
 
-.task-header {
+.popup-content {
+  position: relative;
   max-width: 555px;
   display: flex;
   justify-content: flex-start;
-  width: 100%;
   flex-direction: column;
+  width: 100%;
+  padding: 10px 5px;
+}
+
+.task-header {
+  max-width: 500px;
   border-bottom: 1px solid black;
+  padding: 10px 0;
+  margin: 0 0 5px 0;
+}
+
+.span-textarea {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  resize: none;
+  min-height: 20px;
+  line-height: 20px;
+  border: none;
   padding: 5px;
-  margin: 5px;
+  overflow-wrap: break-word;
 }
 
 .task-row-name {
+  padding: 5px;
   color: gray;
   font-size: small;
 }
 
-.task-description {
-  max-width: 555px;
-  display: flex;
-  justify-content: flex-start;
-  width: 100%;
-  padding: 5px;
+.task-description-heading {
   margin: 5px;
+}
+
+.close-icon-div {
+  display: flex;
+  align-content: center;
+  position: absolute;
+  top: 13px;
+  right: 0;
+}
+
+.close-icon {
+  border-radius: 50%;
+  padding: 10px;
+}
+
+.close-icon-div :hover {
+  background: padding-box var(--btn-exit-hover);
 }

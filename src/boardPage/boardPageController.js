@@ -10,5 +10,6 @@ export default class BoardPageController {
   start() {
     // eslint-disable-next-line no-undef
     this.root.innerHTML = Handlebars.templates.boardPage();
+    // todo Set overflow:hidden CSS attribute for <body> tag, when the popup is enabled and set it as auto when popup is disabled.
   }
 }
