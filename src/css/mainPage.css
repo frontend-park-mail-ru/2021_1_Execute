@@ -78,24 +78,18 @@
   width: auto;
   color: var(--box-bg-color);
   z-index: 2;
-  white-space: nowrap; /* Текст не переносится */
-  overflow: hidden; /* Обрезаем всё за пределами блока */
-  text-overflow: ellipsis; /* Добавляем многоточие */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .grid-desk-text {
   margin: 6px;
+  text-overflow: ellipsis;
   overflow: hidden;
-  word-break: break-all;
-  align-self: flex-start;
   color: var(--box-bg-color);
   font-size: 16px;
   z-index: 2;
-
-  /* Дальше написано оооочень древнее зло */
-  -webkit-line-clamp: 4; /* Число отображаемых строк */
-  display: -webkit-box; /* Включаем флексбоксы */
-  -webkit-box-orient: vertical; /* Вертикальная ориентация */
 }
 
 .grid-adddesk {
