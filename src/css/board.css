@@ -10,14 +10,14 @@
 }
 
 .board-page {
+  overflow: hidden;
   width: 100vw;
   height: 100vh;
 }
 
 .board-panel {
-  flex-wrap: wrap;
   overflow: auto;
-  margin: 0 5px;
+  margin: 0 5px 0 0;
   display: flex;
 }
 
@@ -113,7 +113,7 @@
 
 .tasks-container {
   flex: 1 1 auto;
-  max-height: 80vh;
+  max-height: calc(100vh - 190px);
   overflow-y: auto;
   overflow-x: hidden;
   flex-direction: column;

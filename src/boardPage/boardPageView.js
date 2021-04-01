@@ -9,7 +9,7 @@ export default class BoardPageView {
     this.root = root;
     this.eventBus = eventBus;
     this.eventBus.subscribe(BoardPageEvent.renderData,
-      (user, boards) => this.renderData(user, boards));
+      (user, board) => this.renderData(user, board));
     // todo subscribe to new events
   }
 
@@ -103,7 +103,7 @@ export default class BoardPageView {
     // this.root.innerHTML = Handlebars.templates.header(user);
 
     const avatars = this.getAvatars(board);
-    console.log(avatars, board);
+    console.log(board);
     // eslint-disable-next-line no-undef
     this.root.innerHTML = Handlebars.templates.boardPage({ board, avatars });
 
@@ -121,8 +121,8 @@ export default class BoardPageView {
     this.buttonsBoards = boards.reduce((accum, board) => accum.concat(
       document.getElementById(`board-${board.id}`),
     ), []);
-  }
-
+  } */
+/*
   addEventListeners() {
     this.photoAvatar.addEventListener('click', () => this.eventBus.call(BoardPageEvent.profile));
     this.buttonAddDesk.addEventListener('click', () => this.eventBus.call(

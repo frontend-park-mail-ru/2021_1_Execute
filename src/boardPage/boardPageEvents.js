@@ -4,6 +4,7 @@ export const BoardPageEvent = {
   login: 'login.controller.start',
   renderData: 'boardPage.view.renderData',
   clickButtonBoard: 'boardPage.model.clickButtonTask',
+  // todo add header error
 };
 
 export const BoardPageMessage = {

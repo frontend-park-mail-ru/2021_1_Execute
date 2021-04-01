@@ -10,6 +10,7 @@ export const ApiRoutes = {
   exit: '/logout/',
   uploadAvatar: '/upload/',
   authorized: '/authorized/',
+  getBoards: '/api/boards/',
 };
 
 /**
@@ -130,3 +131,250 @@ export const profileAvatarUpload = (file) => {
  * @param  {Promise}
  */
 export const isAuthorized = () => get(ApiRoutes.authorized);
+/**
+ * Запрос получения доски по id
+ * @param  {number} id
+ * @returns {Promise}
+ */
+// export const boardGetById = (id) => get(`${ApiRoutes.getBoards + id}/`);
+export const boardGetById = (id) => {
+  console.log(id, 'get');
+  return Promise.resolve({
+    status: 200,
+    json: () => ({
+      id,
+      isStared: true,
+      name: 'asdasdasnamename',
+      description: 'opisanielolopposumlorem',
+      users: {
+        owner: {
+          id: 1,
+          avatar: '../../img/32.jpg',
+        },
+        admins: [{
+          id: 1,
+          avatar: '../../img/32.jpg',
+        }],
+        members: [{
+          id: 1,
+          avatar: '../../img/32.jpg',
+        }, {
+          id: 1,
+          avatar: '../../img/32.jpg',
+        },
+        {
+          id: 1,
+          avatar: '../../img/32.jpg',
+        }, {
+          id: 1,
+          avatar: '../../img/32.jpg',
+        }],
+      },
+      rows: [
+        {
+          id: 0,
+          position: 0,
+          name: 'row1',
+          tasks: [
+            {
+              name: 'task1',
+              id: 2,
+              position: 0,
+            },
+          ],
+        },
+        {
+          id: 0,
+          position: 0,
+          name: 'row1',
+          tasks: [
+            {
+              name: 'task1',
+              id: 2,
+              position: 0,
+            },
+          ],
+        },
+        {
+          id: 0,
+          position: 0,
+          name: 'row1',
+          tasks: [
+            {
+              name: 'task1',
+              id: 2,
+              position: 0,
+            },
+          ],
+        },
+        {
+          id: 0,
+          position: 0,
+          name: 'row1',
+          tasks: [
+            {
+              name: 'task1',
+              id: 2,
+              position: 0,
+            },
+          ],
+        },
+        {
+          id: 0,
+          position: 0,
+          name: 'row1',
+          tasks: [
+            {
+              name: 'task1',
+              id: 2,
+              position: 0,
+            },
+          ],
+        },
+        {
+          id: 0,
+          position: 0,
+          name: 'row1',
+          tasks: [
+            {
+              name: 'task1',
+              id: 2,
+              position: 0,
+            },
+          ],
+        },
+        {
+          id: 0,
+          position: 0,
+          name: 'row1',
+          tasks: [
+            {
+              name: 'task1',
+              id: 2,
+              position: 0,
+            },
+          ],
+        },
+        {
+          id: 1,
+          position: 1,
+          name: 'row2',
+          tasks: [
+          ],
+        },
+        {
+          id: 2,
+          position: 2,
+          name: 'row2',
+          tasks: [
+            {
+              name: 'task1',
+              id: 2,
+              position: 0,
+            },
+            {
+              name: 'task2',
+              id: 3,
+              position: 1,
+            },
+            {
+              name: 'task3',
+              id: 4,
+              position: 2,
+            },
+            {
+              name: 'task4',
+              id: 5,
+              position: 3,
+            },
+            {
+              name: 'task5 tasktasktasktasktasktasktasktask',
+              id: 6,
+              position: 4,
+            },
+            {
+              name: 'task6',
+              id: 7,
+              position: 5,
+            },
+            {
+              name: 'task7',
+              id: 8,
+              position: 6,
+            },
+            {
+              name: 'task1',
+              id: 2,
+              position: 0,
+            },
+            {
+              name: 'task2',
+              id: 3,
+              position: 1,
+            },
+            {
+              name: 'task3',
+              id: 4,
+              position: 2,
+            },
+            {
+              name: 'task4',
+              id: 5,
+              position: 3,
+            },
+            {
+              name: 'task5 tasktasktasktasktasktasktasktask',
+              id: 6,
+              position: 4,
+            },
+            {
+              name: 'task6',
+              id: 7,
+              position: 5,
+            },
+            {
+              name: 'task7',
+              id: 8,
+              position: 6,
+            },
+            {
+              name: 'task1',
+              id: 2,
+              position: 0,
+            },
+            {
+              name: 'task2',
+              id: 3,
+              position: 1,
+            },
+            {
+              name: 'task3',
+              id: 4,
+              position: 2,
+            },
+            {
+              name: 'task4',
+              id: 5,
+              position: 3,
+            },
+            {
+              name: 'task5 tasktasktasktasktasktasktasktask',
+              id: 6,
+              position: 4,
+            },
+            {
+              name: 'task6',
+              id: 7,
+              position: 5,
+            },
+            {
+              name: 'task7',
+              id: 8,
+              position: 6,
+            },
+          ],
+        },
+      ],
+    }),
+  });
+};

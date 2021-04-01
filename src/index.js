@@ -16,6 +16,6 @@ router.addRoute('/', () => router.go('login'));
 router.addRoute('login', () => loginController.start());
 router.addRoute('registration', () => registrationController.start());
 router.addRoute('profile', () => profileController.start());
-router.addRoute('board', () => boardPageController.start());
+router.addRoute('board', (boardId = 3) => boardPageController.start(boardId));// fixme хардкод
 
 router.go(window.location.pathname);
