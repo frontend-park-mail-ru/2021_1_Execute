@@ -24,6 +24,19 @@
   height: 100%;
 }
 
+#logo {
+  background-repeat: no-repeat;
+  background-image: url("/hello_removedbg.png");
+  background-position: center;
+  background-size: contain;
+  height: 100%;
+  width: 100%;
+}
+
+@media (max-width: 505px) {
+  #logo { background-image: url("/extinguisher_removedbg.png"); }
+}
+
 .header-container-center-elem {
   margin-left: auto;
   margin-right: auto;
