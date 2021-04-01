@@ -18,12 +18,6 @@
   height: 100%;
 }
 
-.header-container-left-elem {
-  display: inline-block;
-  vertical-align: middle;
-  left: 0;
-}
-
 .header-container-center {
   width: calc(100% / 3);
   display: flex;

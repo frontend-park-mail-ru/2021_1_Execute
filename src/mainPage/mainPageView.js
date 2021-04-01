@@ -34,21 +34,18 @@ export default class MainPageView {
 
   /**
    * @param {user} user
-   * @param {board[]} boards
+   * @param {Object} boards
+   * @param {board[]} boards.Guest
+   * @param {board[]} boards.Member
+   * @param {board[]} boards.Admin
+   * @param {board[]} boards.Owner
    */
   renderData(user, boards) {
     // eslint-disable-next-line no-undef
     this.root.innerHTML = Handlebars.templates.header(user);
 
-    const accessBoards = boards.reduce((accum, board) => {
-      accum[board.access].push(board);
-      return accum;
-    }, {
-      Guest: [], Member: [], Admin: [], Owner: [],
-    });
-
     // eslint-disable-next-line no-undef
-    this.root.innerHTML += Handlebars.templates.mainPage(accessBoards);
+    this.root.innerHTML += Handlebars.templates.mainPage(boards);
 
     this.findNeedElem(boards);
     this.addEventListeners(boards);
@@ -59,7 +56,7 @@ export default class MainPageView {
    */
   findNeedElem(boards) {
     this.photoAvatar = document.getElementById('avatar-photo');
-    this.buttonAddDesk = document.getElementById('adddesk');
+    this.buttonAddBoard = document.getElementById('addBoard');
     this.buttonsBoards = boards.reduce((accum, board) => accum.concat(
       document.getElementById(`board-${board.id}`),
     ), []);
@@ -67,7 +64,7 @@ export default class MainPageView {
 
   addEventListeners() {
     this.photoAvatar.addEventListener('click', () => this.eventBus.call(MainPageEvent.profile));
-    this.buttonAddDesk.addEventListener('click', () => this.eventBus.call(MainPageEvent.clickAddDesk, 'Новая доска'));
+    this.buttonAddBoard.addEventListener('click', () => this.eventBus.call(MainPageEvent.clickAddBoard, 'Новая доска'));
     this.buttonsBoards.forEach((buttonBoard) => buttonBoard.addEventListener(
       'click', () => this.eventBus.call(MainPageEvent.clickButtonBoard, buttonBoard.id),
     ));
@@ -78,8 +75,8 @@ export default class MainPageView {
       // eslint-disable-next-line no-undef
       Handlebars.templates.mainPage({ ...board, single: true }),
     );
-    this.buttonAddDesk.after(newDocumentFragmentButtonBoard);
-    const newHTMLElementButtonBoard = this.buttonAddDesk.nextElementSibling;
+    this.buttonAddBoard.after(newDocumentFragmentButtonBoard);
+    const newHTMLElementButtonBoard = this.buttonAddBoard.nextElementSibling;
     this.buttonsBoards = [newHTMLElementButtonBoard, ...this.buttonsBoards];
     newHTMLElementButtonBoard.addEventListener(
       'click', () => this.eventBus.call(MainPageEvent.clickButtonBoard, newHTMLElementButtonBoard.id),

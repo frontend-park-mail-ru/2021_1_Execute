@@ -56,7 +56,7 @@
   filter: brightness(75%);
 }
 
-.grid-desk img {
+.grid-desk-background {
   filter: brightness(70%);
   position: absolute;
   width: 200px;
@@ -69,7 +69,7 @@
   z-index: 1;
 }
 
-.grid-desk h4 {
+.grid-desk-name {
   font-size: 16px;
   font-weight: bold;
   padding: 6px 6px;
@@ -83,7 +83,7 @@
   text-overflow: ellipsis; /* Добавляем многоточие */
 }
 
-.grid-desk p {
+.grid-desk-text {
   margin: 6px;
   overflow: hidden;
   word-break: break-all;

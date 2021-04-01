@@ -9,9 +9,19 @@ export default class MainPageModel {
   constructor(eventBus) {
     this.eventBus = eventBus;
     this.eventBus.subscribe(MainPageEvent.getData, () => this.getData());
-    this.eventBus.subscribe(MainPageEvent.clickAddDesk, (name) => this.clickAddDesk(name));
-    this.eventBus.subscribe(MainPageEvent.clickButtonBoard,
-      (boardId) => this.clickButtonBoard(boardId));
+    this.eventBus.subscribe(MainPageEvent.clickAddBoard, (name) => this.addBoard(name));
+    this.eventBus.subscribe(MainPageEvent.openBoard,
+      (boardId) => this.openBoard(boardId));
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  boardToViewFormat(boards) {
+    return boards.reduce((accum, board) => {
+      accum[board.access].push(board);
+      return accum;
+    }, {
+      Guest: [], Member: [], Admin: [], Owner: [],
+    });
   }
 
   getData() {
@@ -45,15 +55,12 @@ export default class MainPageModel {
               throw callBoardsError(`${MainPageEvent.unknownError}: ${resp.status}`);
           }
         }),
-    ]).then(([{ user }, { boards }]) => this.eventBus.call(MainPageEvent.renderData, user, boards));
+    ]).then(([{ user }, { boards }]) => {
+      this.eventBus.call(MainPageEvent.renderData, user, this.boardToViewFormat(boards));
+    });
   }
 
-  clickButtonBoard(boardNameId) {
-    // eslint-disable-next-line no-console
-    console.log('clickButtonBoard:', boardNameId, +boardNameId.slice(6), this);
-  }
-
-  clickAddDesk(name) {
+  addBoard(name) {
     // eslint-disable-next-line no-console
     console.log('clickAddDesk:', name, this);
     const callError = (message) => this.eventBus.call(MainPageEvent.boardsError, message);

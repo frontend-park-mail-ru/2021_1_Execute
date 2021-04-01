@@ -3,9 +3,9 @@ export const MainPageEvent = {
   profile: 'profile.controller.start',
   login: 'login.controller.start',
   renderData: 'mainPage.view.renderData',
-  clickAddDesk: 'mainPage.model.clickAddDesk',
+  clickAddBoard: 'mainPage.model.clickAddBoard',
   renderNewBoard: 'mainPage.model.renderNewBoard',
-  clickButtonBoard: 'mainPage.model.clickButtonBoard',
+  openBoard: 'mainPage.model.openBoard',
 };
 
 export const MainPageMessage = {};
