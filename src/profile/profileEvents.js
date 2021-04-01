@@ -14,7 +14,7 @@ export const ProfileEvent = {
   uploadAvatar: 'profile.model.exit',
   changeAvatarToBuffer: 'profile.view.changeAvatarToBuffer',
   originalAvatarFromBuffer: 'profile.view.originalAvatarFromBuffer',
-  clearAvaterBuffer: 'profile.view.clearAvaterBuffer',
+  clearAvatarBuffer: 'profile.view.clearAvatarBuffer',
 };
 
 export const ProfileMessage = {
