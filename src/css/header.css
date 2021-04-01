@@ -14,7 +14,6 @@
   position: relative;
   width: calc(100% / 3);
   display: flex;
-  float: left;
   height: 100%;
 }
 
