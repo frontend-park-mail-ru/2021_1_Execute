@@ -11,6 +11,7 @@ export const ApiRoutes = {
   uploadAvatar: '/upload/',
   authorized: '/authorized/',
   getBoards: '/api/boards/',
+  getTasks: '/api/tasks/',
 };
 
 /**
@@ -1696,6 +1697,23 @@ export const boardGetById = (id) => Promise.resolve({
   }),
 });
 
+// export const taskGetById = (id) => get(`${ApiRoutes.getTasks + id}/`);
+export const taskGetById = (id) => Promise.resolve({
+  status: 200,
+  json: () => ({
+    task: {
+      id,
+      name: 'Таска обыкновенная',
+      description: 'Описание необыкновенное, длинное, содержательное.Житель даль валюта. Инфекция ученый плясать упор гулять очередной четыре штаб. Выражение ведь советовать отражение.Висеть пересечь поговорить банк поставить.',
+      users: [
+        {
+          id: 0,
+          avatar: '../../img/32.jpg',
+        },
+      ],
+    },
+  }),
+});
 // export const boardsGet = () => get(ApiRoutes.getBoards);
 export const boardsGet = () => Promise.resolve({
   status: 200,

@@ -4,7 +4,11 @@ export const BoardPageEvent = {
   login: 'login.controller.start',
   renderData: 'boardPage.view.renderData',
   clickButtonBoard: 'boardPage.model.clickButtonTask',
-  // todo add header error
+  openSettings: 'boardPage.model.getBoard',
+  renderSettings: 'boardPage.model.renderSettings',
+  openTask: 'boardPage.model.getTask',
+  renderTask: 'boardPage.model.renderTask',
+  addToFavorite: 'boardPage.model.addToFavorite',
 };
 
 export const BoardPageMessage = {

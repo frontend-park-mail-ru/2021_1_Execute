@@ -1,3 +1,7 @@
+.root-while-popup {
+  overflow: hidden;
+}
+
 .board-page {
   overflow: hidden;
   width: 100vw;
@@ -103,7 +107,7 @@
 
 .tasks-container {
   flex: 1 1 auto;
-  max-height: calc(100vh - 205px);
+  max-height: calc(100vh - 215px);
   overflow-y: auto;
   overflow-x: hidden;
   flex-direction: column;

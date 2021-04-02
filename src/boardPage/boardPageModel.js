@@ -1,4 +1,4 @@
-import { profileGet, boardGetById } from '../utils/requestToServer.js';
+import { profileGet, boardGetById, taskGetById } from '../utils/requestToServer.js';
 import { BoardPageEvent } from './boardPageEvents.js';
 
 export default class BoardPageModel {
@@ -9,8 +9,10 @@ export default class BoardPageModel {
   constructor(eventBus) {
     this.eventBus = eventBus;
     this.eventBus.subscribe(BoardPageEvent.getData, (boardId) => this.getData(boardId));
-    this.eventBus.subscribe(BoardPageEvent.clickButtonBoard,
-      (boardId) => this.clickButtonBoard(boardId));
+    this.eventBus.subscribe(BoardPageEvent.openSettings,
+      () => this.getBoardForSettings());
+    this.eventBus.subscribe(BoardPageEvent.openTask, (id) => this.getTask(id));
+    this.eventBus.subscribe(BoardPageEvent.addToFavorite, () => this.addToFavorite());
   }
 
   getAvatarsForView(board) {
@@ -58,33 +60,32 @@ export default class BoardPageModel {
           }
         }),
     ]).then(([{ user }, { board }]) => {
+      this.board = board;
       const users = this.getAvatarsForView(board);
       this.eventBus.call(BoardPageEvent.renderData, user, board, users);
     });
   }
 
-  /* clickButtonBoard(boardNameId) {
-    console.log('clickButtonBoard:', boardNameId, +boardNameId.slice(6), this);
+  getBoardForSettings() {
+    this.eventBus.call(BoardPageEvent.renderSettings, this.board);
   }
 
-  clickAddDesk(name) {
-    console.log('clickAddDesk:', name, this);
-    const callError = (message) => this.eventBus.call(BoardPageEvent.boardsError, message);
-
-    boardCreate(name)
+  getTask(taskId) {
+    taskGetById(taskId)
       .then((resp) => {
         switch (resp.status) {
           case 200:
             return resp.json();
-          case 400:
-            throw this.eventBus.call(BoardPageEvent.unknownError);
           case 401:
             throw this.eventBus.call(BoardPageEvent.login);
           default:
-            throw callError(`${BoardPageEvent.unknownError}: ${resp.status}`);
+            throw this.eventBus.call(BoardPageEvent.boardError, `${BoardPageEvent.unknownError}: ${resp.status}`);
         }
       })
-      .then((board) => ({ ...board, name }))
-      .then((board) => this.eventBus.call(BoardPageEvent.renderNewBoard, board));
-  } */
+      .then((task) => this.eventBus.call(BoardPageEvent.renderTask, task));
+  }
+
+  addToFavorite() {
+    // todo
+  }
 }

@@ -1,6 +1,7 @@
 import './boardPage.handlebars.js';
 import '../header/header.handlebars.js';
 import './popupsTemplates/boardPopup.handlebars.js';
+import './popupsTemplates/taskPopup.handlebars.js';
 import { BoardPageEvent } from './boardPageEvents.js';
 
 export default class BoardPageView {
@@ -13,7 +14,9 @@ export default class BoardPageView {
     this.eventBus = eventBus;
     this.eventBus.subscribe(BoardPageEvent.renderData,
       (user, board, users) => this.renderData(user, board, users));
-    // todo subscribe to new events
+    this.eventBus.subscribe(BoardPageEvent.renderSettings,
+      (board) => this.renderPopup(board, false));
+    this.eventBus.subscribe(BoardPageEvent.renderTask, (task) => this.renderPopup(task, true));
   }
 
   /**
@@ -74,7 +77,6 @@ export default class BoardPageView {
   renderData(user, board, users) {
     // eslint-disable-next-line no-undef
     this.root.innerHTML = Handlebars.templates.header(user);
-    console.log(users);
     const maxAvatars = 4;
     const avatars = {};
     if (users.length > maxAvatars) {
@@ -101,36 +103,53 @@ export default class BoardPageView {
     this.buttonFavorite = document.getElementById('btn-favorite');
     this.buttonInvite = document.getElementById('invite-bnt');
     this.buttonAddRow = document.getElementById('add-row-btn');
-    // this.buttonsRows = (board.rows).reduce((accum, row) => accum.concat(
-    //   document.getElementById(`add-card-to-${row.id}`),
-    // ), []);
+    this.buttonsTask = document.getElementsByClassName('task');
+    Array.from(this.buttonsTask).forEach((element) => element.addEventListener('click', (e) => {
+      const id = parseInt(e.target.id.slice(('task-').length), 10);
+
+      if (!Number.isNaN(id)) {
+        this.eventBus.call(BoardPageEvent.openTask, id);
+      }
+    }));
     this.popupContainer = document.getElementById('popup-container');
   }
 
-  addEventListeners(board) {
+  addEventListeners() {
     this.photoAvatar.addEventListener('click', () => this.eventBus.call(BoardPageEvent.profile));
-    this.buttonSettings.addEventListener('click', () => this.openSettings(board));
-    // this.buttonAddDesk.addEventListener('click', () => this.eventBus.call(
-    //   BoardPageEvent.clickAddDesk, 'Новая доска',
-    // ));
-    // this.buttonsBoards.forEach((buttonBoard) => buttonBoard.addEventListener(
-    //   'click', () => this.eventBus.call(BoardPageEvent.clickButtonBoard, buttonBoard.id),
-    // ));
+    this.buttonSettings.addEventListener('click', () => this.eventBus.call(BoardPageEvent.openSettings));
+    this.buttonFavorite.addEventListener('click', () => this.addToFavorite());
   }
 
-  openSettings(board) {
+  renderPopup(data, isTask) {
+    if (isTask) {
+      // eslint-disable-next-line no-undef
+      this.popupContainer.innerHTML = Handlebars.templates.taskPopup(data);
+    } else {
+      // eslint-disable-next-line no-undef
+      this.popupContainer.innerHTML = Handlebars.templates.boardPopup(data);
+    }
     this.popupContainer.classList.remove('menu-hidden');
-    // eslint-disable-next-line no-undef
-    this.popupContainer.innerHTML = Handlebars.templates.boardPopup(board);
-    this.buttonCloseSettings = document.getElementById('btn-close');
-    this.buttonCloseSettings.addEventListener('click', () => this.closePopup());
+    document.body.classList.add('root-while-popup');
+
+    this.buttonClose = document.getElementById('btn-close');
+    this.buttonClose.addEventListener('click', () => this.closePopup());
   }
 
   closePopup() {
     this.popupContainer.innerHTML = '';
     this.popupContainer.classList.add('menu-hidden');
+    document.body.classList.remove('root-while-popup');
+  }
+
+  addToFavorite() {
+    const polygon = document.getElementById('btn-favorite-polygon');
+    if (polygon.classList.contains('btn-favorite-selected')) {
+      polygon.classList.remove('btn-favorite-selected');
+      polygon.classList.add('btn-favorite-unselected');
+    } else {
+      polygon.classList.remove('btn-favorite-unselected');
+      polygon.classList.add('btn-favorite-selected');
+    }
+    this.eventBus.call(BoardPageEvent.addToFavorite);
   }
 }
-
-/* todo Set overflow:hidden CSS attribute for <body> tag, when the popup is enabled and
-    set it as auto when popup is disabled. */
