@@ -108,7 +108,6 @@
 .tasks-container {
   flex: 1 1 auto;
   max-height: calc(100vh - 215px);
-
   overflow-y: auto;
   overflow-x: hidden;
   flex-direction: column;
@@ -175,7 +174,6 @@
 .span-textarea {
   display: block;
   width: auto;
-
   overflow: hidden;
   resize: none;
   min-height: 20px;
@@ -207,4 +205,3 @@
   padding: 10px 0;
   margin: 0 0 5px 0;
 }
-
