@@ -301,6 +301,7 @@ body {
 }
 
 .btn-icon-div {
+  cursor: pointer;
   display: flex;
   align-content: center;
 }
