@@ -6,9 +6,7 @@
 
 {{#*inline "row" row}}
 <div class="row">
-    <div class="row-name">
-        {{name}}
-    </div>
+        <span class="row-name span-textarea" role="textbox" contenteditable >{{name}}</span>
     <div class="tasks-container">
         {{#each tasks}}
             {{> task task=this}}
