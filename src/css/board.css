@@ -21,10 +21,6 @@
   margin-left: auto;
 }
 
-#add-row-btn {
-  cursor: pointer;
-}
-
 .board-panel-divider {
   border-left: 2px solid var(--board-panel-buttons-bg);
   height: 100%;
@@ -39,12 +35,18 @@
   background-color: var(--board-panel-buttons-bg);
 }
 
-#additional-people-icon {
+.additional-people-icon {
+  user-select: none;
   display: flex;
   background-color: var(--board-panel-buttons-bg);
   border-radius: 20px;
   text-align: center;
   padding: 11px;
+}
+
+.text-bnt {
+  cursor: pointer;
+  user-select: none;
 }
 
 .rounded-avatar {
@@ -109,6 +111,7 @@
 }
 
 .task {
+  cursor: pointer;
   align-self: center;
   width: 150px;
   border-radius: 5px;
@@ -122,6 +125,7 @@
   padding: 10px 10px 0 10px;
   color: gray;
   cursor: pointer;
+  user-select: none;
 }
 
 .popup-container {

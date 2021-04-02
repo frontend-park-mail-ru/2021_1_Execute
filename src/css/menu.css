@@ -292,3 +292,22 @@ body {
   flex-direction: column;
   align-items: center;
 }
+
+.menu-hidden {
+  display: none;
+}
+
+.btn-icon-div {
+  cursor: pointer;
+  display: flex;
+  align-content: center;
+}
+
+.btn-icon {
+  border-radius: 50%;
+  padding: 5px;
+}
+
+.btn-icon-div :hover {
+  background: padding-box var(--btn-exit-hover);
+}

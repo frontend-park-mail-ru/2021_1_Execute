@@ -56,7 +56,7 @@
     <img class="rounded-avatar board-panel-element" src={{this.avatar}}>
 {{/each}}
 {{#if isMore}}
-<div id="additional-people-icon" class="board-panel-element">+{{counter}}</div>
+<div id="additional-people-icon" class="additional-people-icon btn-icon-div board-panel-element">+{{counter}}</div>
 {{/if}}
 {{/inline}}
 
@@ -76,7 +76,7 @@
                 <div class=" board-panel-element board-panel-divider"></div>
             </div>
             <div class="board-panel-group">
-                <div class="board-panel-element board-panel-text-elem ">Пригласить</div>          
+                <div id="invite-bnt" class="board-panel-element board-panel-text-elem text-bnt">Пригласить</div>          
                 <div id="btn-favorite" class="board-panel-element btn-icon-div">
                     <svg class="btn-icon" version="1.1" width="30" height="30"
 	                    viewBox="0 0 426.667 426.667" style="enable-background:new 0 0 426.667 426.667;" xml:space="preserve">
@@ -107,7 +107,7 @@
             {{#each board.rows}}
                 {{> row row=this}}
             {{/each}}
-            <div class="row" id="add-row-btn">
+            <div class="row text-btn" id="add-row-btn">
                 <div class="row-name">
                     Добавить колонку
                 </div>
