@@ -128,20 +128,20 @@ export const profileAvatarUpload = (file) => {
 
 /**
  * Запрос проверки авторизованности
- * @param  {Promise}
+ * @return  {Promise}
  */
 export const isAuthorized = () => get(ApiRoutes.authorized);
+
 /**
  * Запрос получения доски по id
  * @param  {number} id
  * @returns {Promise}
  */
 // export const boardGetById = (id) => get(`${ApiRoutes.getBoards + id}/`);
-export const boardGetById = (id) => {
-  console.log(id, 'get');
-  return Promise.resolve({
-    status: 200,
-    json: () => ({
+export const boardGetById = (id) => Promise.resolve({
+  status: 200,
+  json: () => ({
+    board: {
       id,
       isStared: true,
       name: 'asdasdasnamename',
@@ -375,6 +375,127 @@ export const boardGetById = (id) => {
           ],
         },
       ],
-    }),
-  });
-};
+    },
+  }),
+});
+
+// export const boardsGet = () => get(ApiRoutes.getBoards);
+export const boardsGet = () => Promise.resolve({
+  status: 200,
+  json: () => ({
+    boards: [
+      {
+        id: 5,
+        access: 'Guest',
+        isStared: false,
+        name: 'dedeed',
+        description: 'hdhhdhdhwjhwd',
+      },
+      {
+        id: 6,
+        access: 'Guest',
+        isStared: false,
+        name: 'deldelk',
+        description: 'dliekkldele',
+      },
+      {
+        id: 7,
+        access: 'Guest',
+        isStared: false,
+        image: '/32.jpg', // ?? для примера, что уже есть фон у карточек
+        name: 'cdmc,mc,',
+        description: 'dkleldkelde',
+      },
+      {
+        id: 20,
+        access: 'Guest',
+        isStared: false,
+        name: '',
+        description: '',
+      },
+      {
+        id: 21,
+        access: 'Guest',
+        isStared: false,
+        name: '',
+        description: '',
+      },
+      {
+        id: 22,
+        access: 'Guest',
+        isStared: false,
+        name: '',
+        description: '',
+      },
+      {
+        id: 8,
+        access: 'Guest',
+        isStared: false,
+        image: '/fon1.jpg',
+        name: 'dedemed',
+        description: 'dejhjdehjedhe',
+      },
+      {
+        id: 0,
+        access: 'Admin',
+        isStared: false,
+        name: '0',
+        description: 'Если ты видишь этот текст до конца, то это больша проблема, так как я не нашел нормального решения (не через какие-то древние костыли) как сделать обрезания многострочного текста',
+      },
+      {
+        id: 1,
+        access: 'Admin',
+        isStared: false,
+        image: '/35.jpg',
+        name: '1',
+      },
+      {
+        id: 26,
+        access: 'Admin',
+        isStared: false,
+        name: '',
+        description: '',
+      },
+      {
+        id: 27,
+        access: 'Admin',
+        isStared: false,
+        name: '',
+        description: '',
+      },
+      {
+        id: 28,
+        access: 'Admin',
+        isStared: false,
+        name: '',
+        description: '',
+      },
+      {
+        id: 29,
+        access: 'Admin',
+        isStared: false,
+        name: '',
+        description: '',
+      },
+      {
+        id: 3,
+        access: 'Admin',
+        isStared: false,
+        image: '/white.png',
+        name: '3',
+        description: 'Тест тупо белого фона',
+      },
+    ],
+  }),
+});
+
+/**
+ * @param {!string} name
+ */
+// export const boardCreate = () => postJson(name, ApiRoutes.getBoards);
+export const boardCreate = () => Promise.resolve({
+  status: 200,
+  json: () => ({
+    id: 666,
+  }),
+});

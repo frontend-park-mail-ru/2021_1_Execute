@@ -100,12 +100,11 @@ export default class BoardPageView {
 
   renderData(user, board) {
     // eslint-disable-next-line no-undef
-    // this.root.innerHTML = Handlebars.templates.header(user);
+    this.root.innerHTML = Handlebars.templates.header(user);
 
     const avatars = this.getAvatars(board);
-    console.log(board);
     // eslint-disable-next-line no-undef
-    this.root.innerHTML = Handlebars.templates.boardPage({ board, avatars });
+    this.root.innerHTML += Handlebars.templates.boardPage({ board, avatars });
 
     // this.findNeedElem(boards);
     // this.addEventListeners(boards);

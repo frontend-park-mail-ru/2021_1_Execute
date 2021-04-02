@@ -1,0 +1,111 @@
+.main-page {
+  width: 100vw;
+  height: calc(100vh - 55px);
+  display: flex;
+  min-width: 340px;
+  min-height: 100%;
+  flex-direction: column;
+  align-content: space-between;
+  align-items: center;
+  background-color: white;
+  overflow: auto;
+  user-select: none;
+}
+
+.container-title {
+  font-weight: bold;
+  text-align: center;
+}
+
+.desks-container {
+  max-width: 1000px;
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  background-color: white;
+  transition: 0.25s;
+}
+
+.desks-container-grid {
+  margin: 15px 5px 25px 5px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.grid-elem {
+  width: 200px;
+  height: 105px;
+  border-radius: 5px;
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  position: relative;
+}
+
+.grid-desk {
+  transition: 0.25s;
+  background-color: var(--body-bg-color);
+  cursor: pointer;
+}
+
+.grid-desk:hover {
+  filter: brightness(75%);
+}
+
+.grid-desk-background {
+  filter: brightness(70%);
+  position: absolute;
+  width: 200px;
+  height: 105px;
+  border-radius: 5px;
+  background-position: center;
+  background-size: cover;
+  transition: 0.25s;
+  object-fit: cover;
+  z-index: 1;
+}
+
+.grid-desk-name {
+  font-size: 16px;
+  font-weight: bold;
+  padding: 6px 6px;
+  margin: 0;
+  min-height: 16px;
+  width: auto;
+  color: var(--box-bg-color);
+  z-index: 2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.grid-desk-text {
+  margin: 6px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  color: var(--box-bg-color);
+  font-size: 16px;
+  z-index: 2;
+}
+
+.grid-adddesk {
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  color: black;
+  background-color: var(--grey-bright);
+  transition: 0.25s;
+  cursor: pointer;
+  border: 2px dashed black;
+  width: calc(200px - 4px);
+  height: calc(105px - 4px);
+}
+
+.grid-adddesk:hover {
+  filter: brightness(90%);
+  color: red;
+}

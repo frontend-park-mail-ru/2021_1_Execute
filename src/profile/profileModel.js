@@ -118,7 +118,7 @@ export default class ProfileModel {
         .then((resp) => {
           switch (resp.status) {
             case 200:
-              this.eventBus.call(ProfileEvent.clearAvaterBuffer);
+              this.eventBus.call(ProfileEvent.clearAvatarBuffer);
               callSuccess(ProfileMessage.success);
               break;
             case 415:
