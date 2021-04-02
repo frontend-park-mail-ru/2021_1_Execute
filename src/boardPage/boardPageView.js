@@ -1,3 +1,5 @@
+import './boardPage.handlebars.js';
+import '../header/header.handlebars.js';
 import { BoardPageEvent } from './boardPageEvents.js';
 
 export default class BoardPageView {
