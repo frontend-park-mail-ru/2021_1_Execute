@@ -51,11 +51,11 @@
 </div>
 {{/inline}}
 
-{{#*inline "avatars" avatars isMore counter}}
+{{#*inline "avatars" avatars counter}}
 {{#each avatars}}
     <img class="rounded-avatar board-panel-element" src={{this.avatar}}>
 {{/each}}
-{{#if isMore}}
+{{#if counter }}
 <div id="additional-people-icon" class="additional-people-icon btn-icon-div board-panel-element">+{{counter}}</div>
 {{/if}}
 {{/inline}}
@@ -72,7 +72,7 @@
                 <div class=" board-panel-element board-panel-divider"></div>
             </div>
             <div class="board-panel-group">
-                {{> avatars avatars=avatars.avatars isMore=avatars.isMore counter=avatars.counter}}
+                {{> avatars avatars=avatars.avatars counter=avatars.counter}}
                 <div class=" board-panel-element board-panel-divider"></div>
             </div>
             <div class="board-panel-group">
