@@ -20,37 +20,6 @@
 </div>
 {{/inline}}
 
-{{#*inline "task-popup" task row}}
-<div class  ="popup-module menu-wrapper-column ">
-    <div class="popup-content">
-        <div class="close-icon-div btn-icon-div">
-            <svg class="btn-icon" viewBox="0 0 32 32" width="24" height="24"><defs><style>.cls-1{fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px;}</style>
-            </defs><title/><g><line class="cls-1" x1="7" x2="25" y1="7" y2="25"/><line class="cls-1" x1="7" x2="25" y1="25" y2="7"/></g></svg>
-        </div>
-        <div class="task-header">
-            <span class="span-textarea" role="textbox" contenteditable >{{task.name}}</span>
-            <div class="task-row-name">В колонке {{row.name}}</div>
-        </div>
-        <div class="task-description-heading">Описание:</div>
-        <span class="span-textarea" role="textbox" contenteditable>{{task.description}}</span>
-    </div>
-</div>
-{{/inline}}
-
-{{#*inline "board-popup" board}}
-<div class="popup-module menu-wrapper-column ">
-    <div class="popup-content">
-        <div class="close-icon-div btn-icon-div">
-            <svg class="btn-icon" viewBox="0 0 32 32" width="24" height="24"><defs><style>.cls-1{fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px;}</style>
-            </defs><title/><g id="cross"><line class="cls-1" x1="7" x2="25" y1="7" y2="25"/><line class="cls-1" x1="7" x2="25" y1="25" y2="7"/></g></svg>
-        </div>
-        <span class="span-textarea board-name" role="textbox" contenteditable >{{name}}</span>
-        <div class="task-description-heading">Описание доски:</div>
-        <span class="span-textarea" role="textbox" contenteditable>{{description}}</span>
-    </div>
-</div>
-{{/inline}}
-
 {{#*inline "avatars" avatars counter}}
 {{#each avatars}}
     <img class="rounded-avatar board-panel-element" src={{this.avatar}}>
@@ -62,7 +31,7 @@
 
 
 <div class="board-page">
-    <div class="popup-container menu-wrapper-column menu-hidden "id=popup-container>
+    <div class="popup-container menu-wrapper-column menu-hidden "id='popup-container'>
         {{!-- search id and past template --}}
     </div>
     <div class="board">

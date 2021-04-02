@@ -1,5 +1,6 @@
 import './boardPage.handlebars.js';
 import '../header/header.handlebars.js';
+import './popupsTemplates/boardPopup.handlebars.js';
 import { BoardPageEvent } from './boardPageEvents.js';
 
 export default class BoardPageView {
@@ -11,7 +12,7 @@ export default class BoardPageView {
     this.root = root;
     this.eventBus = eventBus;
     this.eventBus.subscribe(BoardPageEvent.renderData,
-      (user, board) => this.renderData(user, board));
+      (user, board, users) => this.renderData(user, board, users));
     // todo subscribe to new events
   }
 
@@ -68,73 +69,67 @@ export default class BoardPageView {
   /**
      * @param {user} user
      * @param {board} board
+     * @param {user[]} users Участники доски
      */
-
-  /**
-     * Returns avatars format for template
-     * @param {board} board
-     * @returns {Object}
-     */
-  getAvatars(board) {
-    const maxAvatars = 5;
-    if (!(board && board.users && board.users.owner && board.users.admins && board.users.members)) {
-      return {
-        avatars: [],
-        isMore: false,
-        counter: 0,
-      };
-    }
-    let avatars = [board.users.owner];
-    avatars = avatars.concat(board.users.admins, board.users.members);
-    if (avatars.length > maxAvatars) {
-      return {
-        avatars: avatars.slice(0, maxAvatars),
-        isMore: true,
-        counter: avatars.length - maxAvatars,
-      };
-    }
-    return {
-      avatars,
-      isMore: false,
-      counter: 0,
-    };
-  }
-
-  renderData(user, board) {
+  renderData(user, board, users) {
     // eslint-disable-next-line no-undef
     this.root.innerHTML = Handlebars.templates.header(user);
-
-    const avatars = this.getAvatars(board);
+    console.log(users);
+    const maxAvatars = 4;
+    const avatars = {};
+    if (users.length > maxAvatars) {
+      avatars.avatars = users.slice(0, maxAvatars);
+      avatars.counter = users.length - maxAvatars;
+    } else {
+      avatars.avatars = users;
+      avatars.counter = 0;
+    }
     // eslint-disable-next-line no-undef
     this.root.innerHTML += Handlebars.templates.boardPage({ board, avatars });
 
-    // this.findNeedElem(boards);
-    // this.addEventListeners(boards);
+    this.findNeedElem();
+    this.addEventListeners(board);
   }
 
   /**
-     * @param {board[]} boards
+     * @param {board} board
      */
-  /*
-  findNeedElem(boards) {
+
+  findNeedElem() {
     this.photoAvatar = document.getElementById('avatar-photo');
-    this.buttonAddDesk = document.getElementById('adddesk');
-    this.buttonsBoards = boards.reduce((accum, board) => accum.concat(
-      document.getElementById(`board-${board.id}`),
-    ), []);
-  } */
-/*
-  addEventListeners() {
-    this.photoAvatar.addEventListener('click', () => this.eventBus.call(BoardPageEvent.profile));
-    this.buttonAddDesk.addEventListener('click', () => this.eventBus.call(
-        BoardPageEvent.clickAddDesk, 'Новая доска'));
-    this.buttonsBoards.forEach((buttonBoard) => buttonBoard.addEventListener(
-      'click', () => this.eventBus.call(BoardPageEvent.clickButtonBoard, buttonBoard.id),
-    ));
+    this.buttonSettings = document.getElementById('board-panel-settings');
+    this.buttonFavorite = document.getElementById('btn-favorite');
+    this.buttonInvite = document.getElementById('invite-bnt');
+    this.buttonAddRow = document.getElementById('add-row-btn');
+    // this.buttonsRows = (board.rows).reduce((accum, row) => accum.concat(
+    //   document.getElementById(`add-card-to-${row.id}`),
+    // ), []);
+    this.popupContainer = document.getElementById('popup-container');
   }
 
-  renderNewBoard(board) {
-  } */
+  addEventListeners(board) {
+    this.photoAvatar.addEventListener('click', () => this.eventBus.call(BoardPageEvent.profile));
+    this.buttonSettings.addEventListener('click', () => this.openSettings(board));
+    // this.buttonAddDesk.addEventListener('click', () => this.eventBus.call(
+    //   BoardPageEvent.clickAddDesk, 'Новая доска',
+    // ));
+    // this.buttonsBoards.forEach((buttonBoard) => buttonBoard.addEventListener(
+    //   'click', () => this.eventBus.call(BoardPageEvent.clickButtonBoard, buttonBoard.id),
+    // ));
+  }
+
+  openSettings(board) {
+    this.popupContainer.classList.remove('menu-hidden');
+    // eslint-disable-next-line no-undef
+    this.popupContainer.innerHTML = Handlebars.templates.boardPopup(board);
+    this.buttonCloseSettings = document.getElementById('btn-close');
+    this.buttonCloseSettings.addEventListener('click', () => this.closePopup());
+  }
+
+  closePopup() {
+    this.popupContainer.innerHTML = '';
+    this.popupContainer.classList.add('menu-hidden');
+  }
 }
 
 /* todo Set overflow:hidden CSS attribute for <body> tag, when the popup is enabled and

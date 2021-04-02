@@ -13,6 +13,17 @@ export default class BoardPageModel {
       (boardId) => this.clickButtonBoard(boardId));
   }
 
+  getAvatarsForView(board) {
+    if (!(board && board.users && board.users.owner && board.users.admins && board.users.members)) {
+      return {
+        avatars: [],
+        counter: 0,
+      };
+    }
+    const avatars = [board.users.owner];
+    return avatars.concat(board.users.admins, board.users.members);
+  }
+
   getData(boardId) {
     this.boardId = boardId;
 
@@ -39,7 +50,6 @@ export default class BoardPageModel {
         .then((resp) => {
           switch (resp.status) {
             case 200:
-              console.log(resp, 'resp');
               return resp.json();
             case 401:
               throw this.eventBus.call(BoardPageEvent.login);
@@ -48,8 +58,8 @@ export default class BoardPageModel {
           }
         }),
     ]).then(([{ user }, { board }]) => {
-      console.log(board, 'respq');
-      this.eventBus.call(BoardPageEvent.renderData, user, board);
+      const users = this.getAvatarsForView(board);
+      this.eventBus.call(BoardPageEvent.renderData, user, board, users);
     });
   }
 
