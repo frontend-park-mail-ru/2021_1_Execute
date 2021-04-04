@@ -141,7 +141,7 @@ export const isAuthorized = () => get(ApiRoutes.authorized);
 // export const boardGetById = (id) => get(`${ApiRoutes.getBoards + id}/`);
 export const boardGetById = (id) => Promise.resolve({
   status: 200,
-  json: () => ({
+  json: () => Promise.resolve({
     board: {
       id,
       isStared: true,
@@ -152,10 +152,7 @@ export const boardGetById = (id) => Promise.resolve({
           id: 1,
           avatar: '../../img/32.jpg',
         },
-        admins: [{
-          id: 1,
-          avatar: '../../img/32.jpg',
-        }],
+        admins: [],
         members: [{
           id: 1,
           avatar: '../../img/32.jpg',
@@ -1700,7 +1697,7 @@ export const boardGetById = (id) => Promise.resolve({
 // export const taskGetById = (id) => get(`${ApiRoutes.getTasks + id}/`);
 export const taskGetById = (id) => Promise.resolve({
   status: 200,
-  json: () => ({
+  json: () => Promise.resolve({
     task: {
       id,
       name: 'Таска обыкновенная',
