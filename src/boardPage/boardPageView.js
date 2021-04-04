@@ -20,72 +20,63 @@ export default class BoardPageView {
   }
 
   /**
-     * @typedef {Object} board
-     * @property {boolean} isStared
-     * @property {string} name
-     * @property {string} description
-     * @property {row[]} rows
-     * @property {users} users
-     */
+   * @typedef {Object} board
+   * @property {boolean} isStared
+   * @property {string} name
+   * @property {string} description
+   * @property {row[]} rows
+   * @property {users} users
+   */
 
   /**
-     * @typedef {Object} users
-     * @param {participant} owner
-     * @param {participant[]} admins
-     * @param {participant[]} members
-     */
+   * @typedef {Object} users
+   * @param {participant} owner
+   * @param {participant[]} admins
+   * @param {participant[]} members
+   */
 
   /**
-     * @typedef {Object} participant
-     * @param {number} id
-     * @property {string} avatar
-     */
+   * @typedef {Object} participant
+   * @param {number} id
+   * @property {string} avatar
+   */
 
   /**
-     * @typedef {Object} user
-     * @property {string} username
-     * @property {string} email
-     * @property {string} avatar
-     */
+   * @typedef {Object} user
+   * @property {string} username
+   * @property {string} email
+   * @property {string} avatar
+   */
 
   /**
-     * @typedef {Object} row
-     * @param {number} id
-     * @param {number} position
-     * @param {string} name
-     * @param {taskOutter[]} tasks
-     */
+   * @typedef {Object} row
+   * @param {number} id
+   * @param {number} position
+   * @param {string} name
+   * @param {taskOutter[]} tasks
+   */
 
   /**
-     * @typedef taskOutter
-     * @param {string} name
-     * @param {number} id
-     * @param {number} position
-     */
+   * @typedef taskOutter
+   * @param {string} name
+   * @param {number} id
+   * @param {number} position
+   */
 
   /**
-     * @typedef task
-     * @param {string} name
-     * @param {string} description
-     */
+   * @typedef task
+   * @param {string} name
+   * @param {string} description
+   */
 
   /**
-     * @param {user} user
-     * @param {board} board
-     * @param {user[]} users Участники доски
-     */
-  renderData(user, board, users) {
+   * @param {user} user
+   * @param {board} board
+   * @param {user[]} avatars Данные для панели с аватарками
+   */
+  renderData(user, board, avatars) {
     // eslint-disable-next-line no-undef
     this.root.innerHTML = Handlebars.templates.header(user);
-    const maxAvatars = 4;
-    const avatars = {};
-    if (users.length > maxAvatars) {
-      avatars.avatars = users.slice(0, maxAvatars);
-      avatars.counter = users.length - maxAvatars;
-    } else {
-      avatars.avatars = users;
-      avatars.counter = 0;
-    }
     // eslint-disable-next-line no-undef
     this.root.innerHTML += Handlebars.templates.boardPage({ board, avatars });
 
@@ -104,8 +95,8 @@ export default class BoardPageView {
     this.buttonInvite = document.getElementById('invite-bnt');
     this.buttonAddRow = document.getElementById('add-row-btn');
     this.buttonsTask = document.getElementsByClassName('task');
-    Array.from(this.buttonsTask).forEach((element) => element.addEventListener('click', (e) => {
-      const id = parseInt(e.target.id.slice(('task-').length), 10);
+    [...this.buttonsTask].forEach((element) => element.addEventListener('click', (e) => {
+      const id = parseInt(e.currentTarget.id.replace('task-', ''), 10);
 
       if (!Number.isNaN(id)) {
         this.eventBus.call(BoardPageEvent.openTask, id);
@@ -117,13 +108,14 @@ export default class BoardPageView {
   addEventListeners() {
     this.photoAvatar.addEventListener('click', () => this.eventBus.call(BoardPageEvent.profile));
     this.buttonSettings.addEventListener('click', () => this.eventBus.call(BoardPageEvent.openSettings));
-    this.buttonFavorite.addEventListener('click', () => this.addToFavorite());
+    this.buttonFavorite.addEventListener('click', this.addToFavorite);
   }
 
   renderPopup(data, isTask) {
     if (isTask) {
       // eslint-disable-next-line no-undef
       this.popupContainer.innerHTML = Handlebars.templates.taskPopup(data);
+      // todo вынести таску в отдельную модель
     } else {
       // eslint-disable-next-line no-undef
       this.popupContainer.innerHTML = Handlebars.templates.boardPopup(data);
@@ -143,13 +135,8 @@ export default class BoardPageView {
 
   addToFavorite() {
     const polygon = document.getElementById('btn-favorite-polygon');
-    if (polygon.classList.contains('btn-favorite-selected')) {
-      polygon.classList.remove('btn-favorite-selected');
-      polygon.classList.add('btn-favorite-unselected');
-    } else {
-      polygon.classList.remove('btn-favorite-unselected');
-      polygon.classList.add('btn-favorite-selected');
-    }
+    polygon.classList.toggle('btn-favorite-selected');
+    polygon.classList.toggle('btn-favorite-unselected');
     this.eventBus.call(BoardPageEvent.addToFavorite);
   }
 }

@@ -12,7 +12,7 @@ export default class BoardPageModel {
     this.eventBus.subscribe(BoardPageEvent.openSettings,
       () => this.getBoardForSettings());
     this.eventBus.subscribe(BoardPageEvent.openTask, (id) => this.getTask(id));
-    this.eventBus.subscribe(BoardPageEvent.addToFavorite, () => this.addToFavorite());
+    this.eventBus.subscribe(BoardPageEvent.addToFavorite, this.addToFavorite);
   }
 
   getAvatarsForView(board) {
@@ -22,8 +22,17 @@ export default class BoardPageModel {
         counter: 0,
       };
     }
-    const avatars = [board.users.owner];
-    return avatars.concat(board.users.admins, board.users.members);
+    const users = [board.users.owner, ...board.users.admins, ...board.users.members];
+    const maxAvatars = 3;
+    const avatars = {};
+    if (users.length > maxAvatars) {
+      avatars.avatars = users.slice(0, maxAvatars);
+      avatars.counter = users.length - maxAvatars;
+    } else {
+      avatars.avatars = users;
+      avatars.counter = 0;
+    }
+    return avatars;
   }
 
   getData(boardId) {
