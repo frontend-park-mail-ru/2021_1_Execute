@@ -1,19 +1,37 @@
+.root-while-popup {
+  overflow: hidden;
+}
+
 .board-page {
   overflow: hidden;
   width: 100vw;
-  height: calc(100vh - 55px);
+  height: calc(100vh - var(--header-height));
+
+  --board-panel-group-height: 45px;
+  --board-panel-padding: 8px;
+  --board-panel-height: calc(var(--board-panel-padding) + var(--board-panel-group-height));
+}
+
+.board {
+  display: flex;
+  overflow: hidden;
+  flex-direction: column;
+  background-color: cornflowerblue;
+  min-width: 210px;
+  height: calc(100vh - var(--header-height));
 }
 
 .board-panel {
-  overflow: auto;
-  margin: 0 5px 0 0;
+  padding: var(--board-panel-padding);
   display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 
 .board-panel-group {
+  height: var(--board-panel-group-height);
   display: flex;
   align-items: center;
-  margin: 5px 0;
 }
 
 .board-panel-end {
@@ -60,13 +78,6 @@
   margin-left: 5px;
 }
 
-.board {
-  background-color: cornflowerblue;
-  min-width: 210px;
-  padding: 8px;
-  height: 100%;
-}
-
 .btn-favorite-selected {
   fill: yellow;
 }
@@ -84,45 +95,45 @@
   overflow-x: auto;
   flex-direction: row;
   display: flex;
+  padding-left: 8px;
+  padding-bottom: 10px;
+  height: calc(100% - var(--board-panel-height));
+}
+
+.row {
+  width: 210px;
+  max-height: 100%;
+  height: fit-content;
+  flex: 0 0 auto;
+  margin: 0 5px;
+  background-color: var(--row-bg-color);
+  border-radius: 5px;
 }
 
 .row-name {
   text-align: center;
-  margin-bottom: 5px;
-}
-
-.row {
-  min-width: 190px;
-  height: fit-content;
-  margin: 5px;
-  background-color: var(--row-bg-color);
-  padding: 10px;
-  border-radius: 5px;
-  display: block;
+  margin: 10px 5px;
+  flex: 0 0 auto;
 }
 
 .tasks-container {
-  flex: 1 1 auto;
-  max-height: calc(100vh - 205px);
   overflow-y: auto;
   overflow-x: hidden;
-  flex-direction: column;
-  display: flex;
 }
 
 .task {
   cursor: pointer;
   align-self: center;
-  width: 150px;
+  width: 160px;
   border-radius: 5px;
   overflow-wrap: break-word;
   padding: 10px;
-  margin: 5px 0;
+  margin: 5px;
   background-color: white;
 }
 
 .add-card-button {
-  padding: 10px 10px 0 10px;
+  padding: 10px;
   color: gray;
   cursor: pointer;
   user-select: none;
@@ -169,7 +180,7 @@
 
 .span-textarea {
   display: block;
-  width: 100%;
+  width: auto;
   overflow: hidden;
   resize: none;
   min-height: 20px;
@@ -193,4 +204,11 @@
   position: absolute;
   top: 13px;
   right: 0;
+}
+
+.popup-board-header {
+  max-width: 500px;
+  border-bottom: 1px solid black;
+  padding: 10px 0;
+  margin: 0 0 5px 0;
 }

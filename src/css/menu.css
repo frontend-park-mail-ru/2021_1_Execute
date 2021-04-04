@@ -22,8 +22,11 @@
   --grey-light: #95a5a6;
   --grey-bright: #eaf0f0c9;
   --body-bg-color: #34495e;
+  --row-bg-color: rgba(255, 255, 255, 0.7);
+  --board-panel-buttons-bg: rgba(255, 255, 255, 0.5);
   --box-bg-color: #ecf0f1;
   --btn-primary-bg-color: var(--grey-light);
+  --btn-exit-hover: rgba(172, 172, 172, 0.5);
   --text-placeholder-color: #252525;
   --btn-success-pasive-bg-color: var(--btn-primary-bg-color);
   --btn-success-pasive-text-color: black;
@@ -49,6 +52,8 @@
   --btn-error-active-text-color: white;
 
   margin-right: calc(100vw - 100%);
+
+  --header-height: 55px;
 }
 
 body {
