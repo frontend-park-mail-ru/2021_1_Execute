@@ -17,6 +17,10 @@ export default class BoardPageView {
     this.eventBus.subscribe(BoardPageEvent.renderSettings,
       (board) => this.renderPopup(board, false));
     this.eventBus.subscribe(BoardPageEvent.renderTask, (task) => this.renderPopup(task, true));
+    this.eventBus.subscribe(BoardPageEvent.boardError,
+      (message) => this.boardErrorHandler(message));
+    this.eventBus.subscribe(BoardPageEvent.headerError,
+      (message) => this.boardErrorHandler(message));
   }
 
   /**
@@ -96,7 +100,7 @@ export default class BoardPageView {
     this.buttonAddRow = document.getElementById('add-row-btn');
     this.buttonsTask = document.getElementsByClassName('task');
     [...this.buttonsTask].forEach((element) => element.addEventListener('click', (e) => {
-      const id = parseInt(e.currentTarget.id.replace('task-', ''), 10);
+      const id = parseInt(e.currentTarget.id?.replace('task-', ''), 10);
 
       if (!Number.isNaN(id)) {
         this.eventBus.call(BoardPageEvent.openTask, id);
@@ -138,5 +142,10 @@ export default class BoardPageView {
     polygon.classList.toggle('btn-favorite-selected');
     polygon.classList.toggle('btn-favorite-unselected');
     this.eventBus.call(BoardPageEvent.addToFavorite);
+  }
+
+  boardErrorHandler(message) {
+    // eslint-disable-next-line no-alert
+    alert(message);
   }
 }

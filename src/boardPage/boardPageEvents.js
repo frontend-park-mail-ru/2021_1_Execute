@@ -9,8 +9,12 @@ export const BoardPageEvent = {
   openTask: 'boardPage.model.getTask',
   renderTask: 'boardPage.model.renderTask',
   addToFavorite: 'boardPage.model.addToFavorite',
+  boardError: 'boardPage.view.boardErrorHandler',
+  headerError: 'boardPage.view.headerErrorHandler',
 };
 
 export const BoardPageMessage = {
   success: 'Данные изменены',
+  unknownError: 'Неизвестная ошибка',
+  userUndefined: 'Пользователь не найден',
 };

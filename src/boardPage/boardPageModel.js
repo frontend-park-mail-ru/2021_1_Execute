@@ -1,5 +1,5 @@
 import { profileGet, boardGetById, taskGetById } from '../utils/requestToServer.js';
-import { BoardPageEvent } from './boardPageEvents.js';
+import { BoardPageEvent, BoardPageMessage } from './boardPageEvents.js';
 
 export default class BoardPageModel {
   /**
@@ -15,6 +15,15 @@ export default class BoardPageModel {
     this.eventBus.subscribe(BoardPageEvent.addToFavorite, this.addToFavorite);
   }
 
+  /**
+   * Возвращяет обработанный список аватарок
+   * @param {Object} board
+   * @param {Object} board.users
+   * @param {Object} board.users.owner
+   * @param {Object} board.users.admins
+   * @param {Object} board.users.members
+   * @returns {Object} Объект с массивом аватарок и количеством скрытых аватарок
+   */
   getAvatarsForView(board) {
     if (!(board && board.users && board.users.owner && board.users.admins && board.users.members)) {
       return {
@@ -50,12 +59,15 @@ export default class BoardPageModel {
             case 200:
               return resp.json();
             case 401:
-              throw this.eventBus.call(BoardPageEvent.login);
+              this.eventBus.call(BoardPageEvent.login);
+              break;
             case 404:
-              throw callProfileError(BoardPageEvent.userUndefind);
+              callProfileError(BoardPageMessage.userUndefind);
+              break;
             default:
-              throw callProfileError(`${BoardPageEvent.unknownError}: ${resp.status}`);
+              callProfileError(`${BoardPageMessage.unknownError}: ${resp.status}`);
           }
+          return undefined;
         }),
       boardGetById(boardId)
         .then((resp) => {
@@ -63,12 +75,17 @@ export default class BoardPageModel {
             case 200:
               return resp.json();
             case 401:
-              throw this.eventBus.call(BoardPageEvent.login);
+              this.eventBus.call(BoardPageEvent.login);
+              break;
             default:
-              throw callBoardError(`${BoardPageEvent.unknownError}: ${resp.status}`);
+              callBoardError(`${BoardPageMessage.unknownError}: ${resp.status}`);
           }
+          return undefined;
         }),
     ]).then(([{ user }, { board }]) => {
+      if (!user || !board) {
+        return;
+      }
       this.board = board;
       const users = this.getAvatarsForView(board);
       this.eventBus.call(BoardPageEvent.renderData, user, board, users);
@@ -84,14 +101,15 @@ export default class BoardPageModel {
       .then((resp) => {
         switch (resp.status) {
           case 200:
-            return resp.json();
+            resp.json().then((task) => this.eventBus.call(BoardPageEvent.renderTask, task));
+            break;
           case 401:
-            throw this.eventBus.call(BoardPageEvent.login);
+            this.eventBus.call(BoardPageEvent.login);
+            break;
           default:
-            throw this.eventBus.call(BoardPageEvent.boardError, `${BoardPageEvent.unknownError}: ${resp.status}`);
+            this.eventBus.call(BoardPageEvent.boardError, `${BoardPageEvent.unknownError}: ${resp.status}`);
         }
-      })
-      .then((task) => this.eventBus.call(BoardPageEvent.renderTask, task));
+      });
   }
 
   addToFavorite() {

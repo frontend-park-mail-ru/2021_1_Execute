@@ -20,6 +20,6 @@ export default class BoardPageController {
   }
 
   start(boardId) {
-    this.eventBus.call(BoardPageEvent.getData, boardId);
+    this.model.getData(boardId);
   }
 }
