@@ -24,6 +24,8 @@
 .board-panel {
   padding: var(--board-panel-padding);
   display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 
 .board-panel-group {
