@@ -4,7 +4,7 @@
   background-color: var(--body-bg-color);
   display: flex;
   width: 100vw;
-  height: 55px;
+  height: var(--header-height);
   flex-direction: row;
   color: var(--box-bg-color);
   z-index: 100;

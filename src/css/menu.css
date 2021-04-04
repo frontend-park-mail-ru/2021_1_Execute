@@ -52,6 +52,8 @@
   --btn-error-active-text-color: white;
 
   margin-right: calc(100vw - 100%);
+
+  --header-height: 55px;
 }
 
 body {

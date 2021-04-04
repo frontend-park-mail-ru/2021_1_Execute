@@ -101,7 +101,7 @@ export default class BoardPageModel {
       .then((resp) => {
         switch (resp.status) {
           case 200:
-            resp.json().then((task) => this.eventBus.call(BoardPageEvent.renderTask, task));
+            this.eventBus.call(BoardPageEvent.renderTask, resp.json());
             break;
           case 401:
             this.eventBus.call(BoardPageEvent.login);

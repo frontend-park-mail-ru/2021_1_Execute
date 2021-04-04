@@ -5,9 +5,9 @@
 {{/inline}}
 
 {{#*inline "row" row}}
-<div class="row">
+<div class="row menu-wrapper-column">
         <span class="row-name span-textarea" role="textbox" contenteditable >{{name}}</span>
-    <div class="tasks-container">
+    <div class="tasks-container menu-wrapper-column">
         {{#each tasks}}
             {{> task task=this}}
         {{/each}}
@@ -73,7 +73,7 @@
             {{#each board.rows}}
                 {{> row row=this}}
             {{/each}}
-            <div class="row text-btn" id="add-row-btn">
+            <div class="row text-btn menu-wrapper-column" id="add-row-btn">
                 <div class="row-name">
                     Добавить колонку
                 </div>
