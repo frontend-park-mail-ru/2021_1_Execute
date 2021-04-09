@@ -51,7 +51,6 @@ export default class BoardPageModel {
    * @param {number} boardId
    */
   getData(boardId) {
-    console.log(this, boardId);
     this.eventBus.call(BoardPageEvent.renderData);
 
     const callError = (error) => this.eventBus
