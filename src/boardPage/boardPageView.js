@@ -17,10 +17,11 @@ export default class BoardPageView {
     this.eventBus.subscribe(BoardPageEvent.renderSettings,
       (board) => this.renderPopup(board, false));
     this.eventBus.subscribe(BoardPageEvent.renderTask, (task) => this.renderPopup(task, true));
-    this.eventBus.subscribe(BoardPageEvent.boardError,
-      (message) => this.boardErrorHandler(message));
+    this.eventBus.subscribe(BoardPageEvent.renderNewRow, (row) => this.renderNewRow(row));
     this.eventBus.subscribe(BoardPageEvent.headerError,
-      (message) => this.boardErrorHandler(message));
+      (...all) => this.boardErrorBoard(...all));
+    this.eventBus.subscribe(BoardPageEvent.boardError,
+      (...all) => this.boardErrorBoard(...all));
   }
 
   /**
@@ -61,36 +62,33 @@ export default class BoardPageView {
    */
 
   /**
-   * @typedef taskOutter
+   * @typedef {Object} taskOutter
    * @param {string} name
    * @param {number} id
    * @param {number} position
    */
 
   /**
-   * @typedef task
+   * @typedef {Object} task
    * @param {string} name
    * @param {string} description
    */
 
   /**
-   * @param {user} user
-   * @param {board} board
-   * @param {user[]} avatars Данные для панели с аватарками
+   * @param {?user} user
+   * @param {?board} board
+   * @param {?user[]} avatars Данные для панели с аватарками
+   * @param {?Object} error
    */
-  renderData(user, board, avatars) {
+  renderData(user, board, avatars, error) {
     // eslint-disable-next-line no-undef
     this.root.innerHTML = Handlebars.templates.header(user);
     // eslint-disable-next-line no-undef
-    this.root.innerHTML += Handlebars.templates.boardPage({ board, avatars });
+    this.root.innerHTML += Handlebars.templates.boardPage({ board, avatars, error });
 
     this.findNeedElem();
-    this.addEventListeners(board);
+    this.addEventListeners();
   }
-
-  /**
-     * @param {board} board
-     */
 
   findNeedElem() {
     this.photoAvatar = document.getElementById('avatar-photo');
@@ -98,21 +96,18 @@ export default class BoardPageView {
     this.buttonFavorite = document.getElementById('btn-favorite');
     this.buttonInvite = document.getElementById('invite-bnt');
     this.buttonAddRow = document.getElementById('add-row-btn');
-    this.buttonsTask = document.getElementsByClassName('task');
-    [...this.buttonsTask].forEach((element) => element.addEventListener('click', (e) => {
-      const id = parseInt(e.currentTarget.id?.replace('task-', ''), 10);
-
-      if (!Number.isNaN(id)) {
-        this.eventBus.call(BoardPageEvent.openTask, id);
-      }
-    }));
+    this.buttonsTask = [...document.getElementsByClassName('task')];
     this.popupContainer = document.getElementById('popup-container');
   }
 
   addEventListeners() {
-    this.photoAvatar.addEventListener('click', () => this.eventBus.call(BoardPageEvent.profile));
-    this.buttonSettings.addEventListener('click', () => this.eventBus.call(BoardPageEvent.openSettings));
-    this.buttonFavorite.addEventListener('click', this.addToFavorite);
+    this.photoAvatar?.addEventListener('click', () => this.eventBus.call(BoardPageEvent.profile));
+    this.buttonSettings?.addEventListener('click', () => this.eventBus.call(BoardPageEvent.openSettings));
+    this.buttonFavorite?.addEventListener('click', this.addToFavorite);
+    this.buttonAddRow?.addEventListener('click', () => this.eventBus.call(BoardPageEvent.clickAddRow, 'Новая колонка'));
+    this.buttonsTask.forEach((elem) => elem.addEventListener(
+      'click', () => this.eventBus.call(BoardPageEvent.openTask, +elem.id.slice(5)),
+    ));
   }
 
   renderPopup(data, isTask) {
@@ -128,7 +123,7 @@ export default class BoardPageView {
     document.body.classList.add('root-while-popup');
 
     this.buttonClose = document.getElementById('btn-close');
-    this.buttonClose.addEventListener('click', () => this.closePopup());
+    this.buttonClose?.addEventListener('click', () => this.closePopup());
   }
 
   closePopup() {
@@ -144,8 +139,22 @@ export default class BoardPageView {
     this.eventBus.call(BoardPageEvent.addToFavorite);
   }
 
-  boardErrorHandler(message) {
-    // eslint-disable-next-line no-alert
-    alert(message);
+  boardErrorBoard(user, board, error) {
+    this.renderData(user, board, null, error);
+  }
+
+  /**
+   * @param {row} row
+   */
+  renderNewRow(row) {
+    const newDocumentFragmentRow = document.createRange().createContextualFragment(
+      // eslint-disable-next-line no-undef
+      Handlebars.templates.boardPage({ ...row, singleRow: true }),
+    );
+    this.buttonAddRow.before(newDocumentFragmentRow);
+    // const newHTMLElementRow = this.buttonAddRow.previousElementSibling;
+    // newHTMLElementRow.addEventListener(
+    //   'click', () => this.eventBus.call(MainPageEvent.openBoard, newHTMLElementButtonBoard.id),
+    // );
   }
 }

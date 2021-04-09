@@ -13,7 +13,7 @@
 {{#*inline "deskGrid" desks add-desk}}
 <div class="desks-container-grid">
   {{#if add-desk}}
-  <div id="adddesk" class="grid-elem grid-adddesk">Создать доску</div>
+  <div id="addBoard" class="grid-elem grid-adddesk">Создать доску</div>
   {{/if}}
   {{#each desks}}
   {{> desk desk=this}}
@@ -27,12 +27,12 @@
 <div class="main-page">
   <div class="user-desks desks-container">
     <div class="container-title menu-textbox">Персональные доски</div>
-    {{> deskGrid desks=Guest add-desk=true}}
+    {{> deskGrid desks=guest add-desk=true}}
   </div>
 
   <div class="all-desks desks-container">
     <div class="container-title menu-textbox">Остальные доски</div>
-    {{> deskGrid desks=Admin add-desk=false}}
+    {{> deskGrid desks=admin add-desk=false}}
   </div>
 </div>
 {{/if}}

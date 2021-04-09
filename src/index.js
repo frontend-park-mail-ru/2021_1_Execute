@@ -14,12 +14,11 @@ const registrationController = new RegistrationController(router, root);
 const boardPageController = new BoardPageController(router, root);
 const mainPageController = new MainPageController(router, root);
 
-router.addRoute('/', () => router.go('main'));
-router.addRoute('login', () => loginController.start());
-router.addRoute('registration', () => registrationController.start());
-router.addRoute('profile', () => profileController.start());
-router.addRoute('board', (boardId = 3) => boardPageController.start(boardId));// fixme хардкод
-router.addRoute('main', () => mainPageController.start());
+router.addRoute('/', (...all) => router.go('main', ...all));
+router.addRoute('login', (...all) => loginController.start(...all));
+router.addRoute('registration', (...all) => registrationController.start(...all));
+router.addRoute('profile', (...all) => profileController.start(...all));
+router.addRoute('board', (pathArr, ...data) => boardPageController.start(pathArr, ...data));
+router.addRoute('main', (...all) => mainPageController.start(...all));
 
-router.go(window.location.pathname);
-window.onpopstate = () => router.routes.call(window.location.pathname);
+router.goWithoutHistory(window.location.pathname);

@@ -46,6 +46,19 @@ export default class EventBus {
   }
 
   /**
+   * Метод позволяет узнать есть ли у определенного события функция-обработчик
+   * @param  {string} eventName - имя события
+   * @throws ошибка, если передано невалидное имя события
+   * @returns {boolean}
+   */
+  has(eventName) {
+    if (!validateEventName(eventName)) {
+      throw new Error('Invalid event name:', eventName);
+    }
+    return this.events.has(eventName);
+  }
+
+  /**
    * Метод позволяет вызвать функцию-обработчик события с переданными данными
    * @param  {string} eventName - имя события
    * @param  {*} data - данные для функции-обработчика события

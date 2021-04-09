@@ -1,4 +1,6 @@
-import { profileGet, boardGetById, taskGetById } from '../utils/requestToServer.js';
+import {
+  profileGet, boardGetById, taskGetById, rowCreate,
+} from '../utils/requestToServer.js';
 import { BoardPageEvent, BoardPageMessage } from './boardPageEvents.js';
 
 export default class BoardPageModel {
@@ -8,11 +10,12 @@ export default class BoardPageModel {
    */
   constructor(eventBus) {
     this.eventBus = eventBus;
-    this.eventBus.subscribe(BoardPageEvent.getData, (boardId) => this.getData(boardId));
+    this.eventBus.subscribe(BoardPageEvent.getData, (...all) => this.getData(...all));
     this.eventBus.subscribe(BoardPageEvent.openSettings,
-      () => this.getBoardForSettings());
-    this.eventBus.subscribe(BoardPageEvent.openTask, (id) => this.getTask(id));
-    this.eventBus.subscribe(BoardPageEvent.addToFavorite, this.addToFavorite);
+      (...all) => this.getBoardForSettings(...all));
+    this.eventBus.subscribe(BoardPageEvent.openTask, (...all) => this.getTask(...all));
+    this.eventBus.subscribe(BoardPageEvent.addToFavorite, (...all) => this.addToFavorite(...all));
+    this.eventBus.subscribe(BoardPageEvent.clickAddRow, (...all) => this.addRow(...all));
   }
 
   /**
@@ -44,13 +47,17 @@ export default class BoardPageModel {
     return avatars;
   }
 
+  /**
+   * @param {number} boardId
+   */
   getData(boardId) {
-    this.boardId = boardId;
+    console.log(this, boardId);
+    this.eventBus.call(BoardPageEvent.renderData);
 
-    const callProfileError = (message) => this
-      .eventBus.call(BoardPageEvent.headerError, message);
-    const callBoardError = (message) => this
-      .eventBus.call(BoardPageEvent.boardError, message);
+    const callError = (error) => this.eventBus
+      .call(BoardPageEvent.boardError, this.user, this.board, error);
+
+    this.boardId = boardId;
 
     Promise.all([
       profileGet()
@@ -62,10 +69,14 @@ export default class BoardPageModel {
               this.eventBus.call(BoardPageEvent.login);
               break;
             case 404:
-              callProfileError(BoardPageMessage.userUndefind);
-              break;
-            default:
-              callProfileError(`${BoardPageMessage.unknownError}: ${resp.status}`);
+              callError(BoardPageMessage.userUndefined);
+              return { error: BoardPageMessage.userUndefined };
+            default: {
+              const err = { ...BoardPageMessage.unknownError };
+              err.message += resp.status;
+              callError(err);
+              return { error: err };
+            }
           }
           return undefined;
         }),
@@ -77,16 +88,30 @@ export default class BoardPageModel {
             case 401:
               this.eventBus.call(BoardPageEvent.login);
               break;
-            default:
-              callBoardError(`${BoardPageMessage.unknownError}: ${resp.status}`);
+            case 404:
+              callError(BoardPageMessage.urlBrake);
+              return { error: BoardPageMessage.urlBrake };
+            default: {
+              const err = { ...BoardPageMessage.unknownError };
+              err.message += resp.status;
+              callError(err);
+              return { error: err };
+            }
           }
           return undefined;
         }),
-    ]).then(([{ user }, { board }]) => {
+    ]).then(([{ user, error: userError }, { board, error: boardError }]) => {
+      this.user = user;
+      this.board = board;
+      if (userError) {
+        callError(userError);
+      }
+      if (boardError) {
+        callError(boardError);
+      }
       if (!user || !board) {
         return;
       }
-      this.board = board;
       const users = this.getAvatarsForView(board);
       this.eventBus.call(BoardPageEvent.renderData, user, board, users);
     });
@@ -96,7 +121,12 @@ export default class BoardPageModel {
     this.eventBus.call(BoardPageEvent.renderSettings, this.board);
   }
 
+  /**
+   * @param {number} taskId
+   */
   getTask(taskId) {
+    // eslint-disable-next-line no-console
+    console.log('getTask:', taskId, this);
     taskGetById(taskId)
       .then((resp) => {
         switch (resp.status) {
@@ -110,6 +140,40 @@ export default class BoardPageModel {
             this.eventBus.call(BoardPageEvent.boardError, `${BoardPageEvent.unknownError}: ${resp.status}`);
         }
       });
+  }
+
+  /**
+   * @param {string} name
+   */
+  addRow(name) {
+    // eslint-disable-next-line no-console
+    console.log('addRow:', name, this);
+    const callError = (message) => this.eventBus.call(BoardPageEvent.boardsError, message);
+
+    const position = Object.keys(this.board.rows).length;
+
+    rowCreate({ name, board_id: this.boardId, position })
+      .then((resp) => {
+        switch (resp.status) {
+          case 200:
+            return resp.json();
+          case 401:
+            this.eventBus.call(BoardPageEvent.login);
+            break;
+          case 400:
+          default: {
+            const err = { ...BoardPageMessage.unknownError };
+            err.message += resp.status;
+            callError(err);
+            return { error: err };
+          }
+        }
+        return undefined;
+      })
+      .then((row) => ({
+        ...row, position, name, tasks: [],
+      }))
+      .then((row) => this.eventBus.call(BoardPageEvent.renderNewRow, row));
   }
 
   addToFavorite() {

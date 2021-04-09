@@ -303,6 +303,7 @@ body {
 }
 
 .btn-icon-div {
+  user-select: none;
   cursor: pointer;
   display: flex;
   align-content: center;
