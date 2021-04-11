@@ -1,5 +1,5 @@
 import {
-  profileGet, boardGetById, taskGetById, rowCreate,
+  profileGet, boardGetById, taskGetById, rowCreate, taskCreate,
 } from '../utils/requestToServer.js';
 import { BoardPageEvent, BoardPageMessage } from './boardPageEvents.js';
 
@@ -16,6 +16,7 @@ export default class BoardPageModel {
     this.eventBus.subscribe(BoardPageEvent.openTask, (...all) => this.getTask(...all));
     this.eventBus.subscribe(BoardPageEvent.addToFavorite, (...all) => this.addToFavorite(...all));
     this.eventBus.subscribe(BoardPageEvent.clickAddRow, (...all) => this.addRow(...all));
+    this.eventBus.subscribe(BoardPageEvent.clickAddTask, (...all) => this.addTask(...all));
   }
 
   /**
@@ -104,15 +105,12 @@ export default class BoardPageModel {
       this.board = board;
       if (userError) {
         callError(userError);
-      }
-      if (boardError) {
+      } else if (boardError) {
         callError(boardError);
+      } else {
+        const users = this.getAvatarsForView(board);
+        this.eventBus.call(BoardPageEvent.renderData, user, board, users);
       }
-      if (!user || !board) {
-        return;
-      }
-      const users = this.getAvatarsForView(board);
-      this.eventBus.call(BoardPageEvent.renderData, user, board, users);
     });
   }
 
@@ -145,11 +143,12 @@ export default class BoardPageModel {
    * @param {string} name
    */
   addRow(name) {
-    // eslint-disable-next-line no-console
-    console.log('addRow:', name, this);
     const callError = (message) => this.eventBus.call(BoardPageEvent.boardsError, message);
 
     const position = Object.keys(this.board.rows).length;
+
+    // eslint-disable-next-line no-console
+    console.log('addRow:', name, this.boardId, position, this);
 
     rowCreate({ name, board_id: this.boardId, position })
       .then((resp) => {
@@ -170,9 +169,49 @@ export default class BoardPageModel {
         return undefined;
       })
       .then((row) => ({
-        ...row, position, name, tasks: [],
+        ...row, position, name, tasks: {},
       }))
+      // eslint-disable-next-line no-return-assign
+      .then((row) => (this.board.rows[position] = row))
       .then((row) => this.eventBus.call(BoardPageEvent.renderNewRow, row));
+  }
+
+  /**
+   * @param {number} rowId
+   * @param {string} name
+   */
+  addTask(rowId, rowPosition, name) {
+    const callError = (message) => this.eventBus.call(BoardPageEvent.boardsError, message);
+
+    const position = Object.keys(this.board.rows[rowPosition].tasks).length;
+
+    // eslint-disable-next-line no-console
+    console.log('addTask:', name, rowId, position, this);
+
+    taskCreate({ name, row_id: rowId, position })
+      .then((resp) => {
+        switch (resp.status) {
+          case 200:
+            return resp.json();
+          case 401:
+            this.eventBus.call(BoardPageEvent.login);
+            break;
+          case 400:
+          default: {
+            const err = { ...BoardPageMessage.unknownError };
+            err.message += resp.status;
+            callError(err);
+            return { error: err };
+          }
+        }
+        return undefined;
+      })
+      .then((task) => ({
+        ...task, position, name,
+      }))
+      // eslint-disable-next-line no-return-assign
+      .then((task) => (this.board.rows[rowPosition].tasks[position] = task))
+      .then((task) => this.eventBus.call(BoardPageEvent.renderNewTask, task, rowPosition));
   }
 
   addToFavorite() {

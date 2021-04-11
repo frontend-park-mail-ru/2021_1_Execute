@@ -22,3 +22,5 @@ router.addRoute('board', (pathArr, ...data) => boardPageController.start(pathArr
 router.addRoute('main', (...all) => mainPageController.start(...all));
 
 router.goWithoutHistory(window.location.pathname);
+
+window.onpopstate = () => router.goWithoutHistory(window.location.pathname);

@@ -1,7 +1,7 @@
 const PORT = 1323;
 // Don't change or move FIRST Line
-const BACKEND_API_ADDRESS = `http://89.208.199.114:${PORT}/api`;
-// const BACKEND_API_ADDRESS = `http://localhost:${PORT}/api`;
+// const BACKEND_API_ADDRESS = `http://89.208.199.114:${PORT}/api`;
+const BACKEND_API_ADDRESS = `http://localhost:${PORT}/api`;
 
 export const ApiRoutes = {
   login: '/login/',
@@ -12,7 +12,8 @@ export const ApiRoutes = {
   authorized: '/authorized/',
   getBoards: '/api/boards/',
   getTasks: '/api/tasks/',
-  postRows: '/api/rows',
+  postRows: '/api/rows/',
+  postTasks: '/api/tasks/',
 };
 
 /**
@@ -1829,12 +1830,14 @@ export const boardsGet = () => Promise.resolve({
  * @param {!string} name
  */
 // export const boardCreate = (name) => postJson(name, ApiRoutes.postBoards);
-export const boardCreate = () => Promise.resolve({
+let debagIdBoardCreate = 666;
+// eslint-disable-next-line no-return-assign
+export const boardCreate = () => ((id) => Promise.resolve({
   status: 200,
   json: () => ({
-    id: 666,
+    id,
   }),
-});
+}))(debagIdBoardCreate += 1);
 
 /**
  * @param {Object} rowInfo
@@ -1843,9 +1846,27 @@ export const boardCreate = () => Promise.resolve({
  * @param {number} rowInfo.position
  */
 // export const rowCreate = (rowInfo) => postJson(rowInfo, ApiRoutes.postRows);
-export const rowCreate = () => Promise.resolve({
+let debagIdRowCreate = 777;
+// eslint-disable-next-line no-return-assign
+export const rowCreate = () => ((id) => Promise.resolve({
   status: 200,
   json: () => ({
-    id: 777,
+    id,
   }),
-});
+}))(debagIdRowCreate += 1);
+
+/**
+ * @param {Object} taskInfo
+ * @param {number} taskInfo.row_id
+ * @param {string} taskInfo.name
+ * @param {number} taskInfo.position
+ */
+// export const taskCreate = (taskInfo) => postJson(taskInfo, ApiRoutes.postTasks);
+let debagIdTaskCreate = 888;
+// eslint-disable-next-line no-return-assign
+export const taskCreate = () => ((id) => Promise.resolve({
+  status: 200,
+  json: () => ({
+    id,
+  }),
+}))(debagIdTaskCreate += 1);

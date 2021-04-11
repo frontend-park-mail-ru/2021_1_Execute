@@ -17,6 +17,7 @@ export default class BoardPageView {
     this.eventBus.subscribe(BoardPageEvent.renderSettings,
       (board) => this.renderPopup(board, false));
     this.eventBus.subscribe(BoardPageEvent.renderTask, (task) => this.renderPopup(task, true));
+    this.eventBus.subscribe(BoardPageEvent.renderNewTask, (...all) => this.renderNewTask(...all));
     this.eventBus.subscribe(BoardPageEvent.renderNewRow, (row) => this.renderNewRow(row));
     this.eventBus.subscribe(BoardPageEvent.headerError,
       (...all) => this.boardErrorBoard(...all));
@@ -97,6 +98,7 @@ export default class BoardPageView {
     this.buttonInvite = document.getElementById('invite-bnt');
     this.buttonAddRow = document.getElementById('add-row-btn');
     this.buttonsTask = [...document.getElementsByClassName('task')];
+    this.buttonsAddTask = [...document.getElementsByClassName('add-card-button')];
     this.popupContainer = document.getElementById('popup-container');
   }
 
@@ -107,6 +109,9 @@ export default class BoardPageView {
     this.buttonAddRow?.addEventListener('click', () => this.eventBus.call(BoardPageEvent.clickAddRow, 'Новая колонка'));
     this.buttonsTask.forEach((elem) => elem.addEventListener(
       'click', () => this.eventBus.call(BoardPageEvent.openTask, +elem.id.slice(5)),
+    ));
+    this.buttonsAddTask.forEach((elem, ind) => elem.addEventListener(
+      'click', () => this.eventBus.call(BoardPageEvent.clickAddTask, +elem.id.slice(12), ind, 'Новая задача'),
     ));
   }
 
@@ -152,9 +157,29 @@ export default class BoardPageView {
       Handlebars.templates.boardPage({ ...row, singleRow: true }),
     );
     this.buttonAddRow.before(newDocumentFragmentRow);
-    // const newHTMLElementRow = this.buttonAddRow.previousElementSibling;
-    // newHTMLElementRow.addEventListener(
-    //   'click', () => this.eventBus.call(MainPageEvent.openBoard, newHTMLElementButtonBoard.id),
-    // );
+    const newHTMLElementRow = this.buttonAddRow.previousElementSibling;
+    const newHTMLElementAddTask = newHTMLElementRow.lastElementChild;
+    newHTMLElementAddTask.addEventListener(
+      'click', ((position) => () => this.eventBus.call(BoardPageEvent.clickAddTask,
+        +newHTMLElementAddTask.id.slice(12), position, 'Новая задача'))(this.buttonsAddTask.length),
+    );
+    this.buttonsAddTask.push(newHTMLElementAddTask);
+  }
+
+  /**
+   * @param {taskOutter} task
+   * @param {number} rowId
+   */
+  renderNewTask(task, rowId) {
+    const newDocumentFragmentTask = document.createRange().createContextualFragment(
+      // eslint-disable-next-line no-undef
+      Handlebars.templates.boardPage({ ...task, singleTask: true }),
+    );
+    this.buttonsAddTask[rowId].previousElementSibling.append(newDocumentFragmentTask);
+    const newHTMLElementTask = this.buttonsAddTask[rowId].previousElementSibling.lastElementChild;
+    newHTMLElementTask.addEventListener(
+      'click', () => this.eventBus.call(BoardPageEvent.openTask, +newHTMLElementTask.id.slice(5)),
+    );
+    this.buttonsTask.push(newHTMLElementTask);
   }
 }

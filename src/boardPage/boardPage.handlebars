@@ -29,6 +29,8 @@
 
 {{#if singleRow}}
 {{> row row=this}}
+{{else if singleTask}}
+{{> task task=this}}
 {{else}}
 <div class="board-page">
     <div class="popup-container menu-wrapper-column menu-hidden" id="popup-container">

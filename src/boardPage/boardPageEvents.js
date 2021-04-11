@@ -8,9 +8,11 @@ export const BoardPageEvent = {
   renderSettings: 'boardPage.model.renderSettings',
   openTask: 'boardPage.model.getTask',
   renderTask: 'boardPage.model.renderTask',
+  renderNewTask: 'boardPage.view.renderNewTask',
   renderNewRow: 'boardPage.view.renderNewRow',
   addToFavorite: 'boardPage.model.addToFavorite',
   clickAddRow: 'boardPage.model.clickAddRow',
+  clickAddTask: 'boardPage.model.clickAddTask',
   boardError: 'boardPage.view.boardErrorHandler',
   headerError: 'boardPage.view.headerErrorHandler',
 };

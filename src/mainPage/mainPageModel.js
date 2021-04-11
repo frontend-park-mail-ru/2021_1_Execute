@@ -87,5 +87,6 @@ export default class MainPageModel {
   openBoard(boardNameId) {
     // eslint-disable-next-line no-console
     console.log('openBoard:', boardNameId, +boardNameId.slice(6), this);
+    this.eventBus.call(MainPageEvent.board, +boardNameId.slice(6));
   }
 }
