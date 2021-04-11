@@ -3,7 +3,6 @@
     "./node_modules/stylelint-config-standard"
   ],
   "rules": {
-    "no-return-assign": "except-parens",
     "selector-list-comma-newline-after": null,
     "selector-list-comma-space-after": "always-single-line",
     "selector-list-comma-space-before": "never",

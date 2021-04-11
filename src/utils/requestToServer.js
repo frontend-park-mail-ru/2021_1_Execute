@@ -12,6 +12,7 @@ export const ApiRoutes = {
   authorized: '/authorized/',
   getBoards: '/api/boards/',
   getTasks: '/api/tasks/',
+  postBoards: '/api/boards/',
   postRows: '/api/rows/',
   postTasks: '/api/tasks/',
 };
