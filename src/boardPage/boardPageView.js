@@ -161,8 +161,9 @@ export default class BoardPageView {
     const newHTMLElementRow = this.buttonAddRow.previousElementSibling;
     const newHTMLElementAddTask = newHTMLElementRow.lastElementChild;
     newHTMLElementAddTask.addEventListener(
-      'click', () => this.eventBus.call(BoardPageEvent.clickAddTask,
-        +newHTMLElementAddTask.dataset.id, row.position, 'Новая задача'),
+      'click', () => this.eventBus.call(
+        BoardPageEvent.clickAddTask, +newHTMLElementAddTask.dataset.id, row.position, 'Новая задача',
+      ),
     );
     this.buttonsAddTask.push(newHTMLElementAddTask);
   }
