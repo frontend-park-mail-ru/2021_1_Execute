@@ -3,12 +3,6 @@
  * @typedef {(meta: string|RegExpExecArray, ...data) => void} handler
  */
 
-/**
- * @param {path} path
- * @returns {path}
- */
-const standardizedPath = (path) => (typeof path === 'string' ? `/${(path.match(/[^/]{1,}/g) || []).join('/')}` : path);
-
 export default class Router {
   constructor() {
     /**
@@ -23,15 +17,14 @@ export default class Router {
    * @throws ошибка, если переданный обработчик события - не функция
    */
   addRoute(path, handler) {
-    const needPath = standardizedPath(path);
     if (typeof handler !== 'function') {
       throw new Error(`Handler must be a function, but found: ${handler}`);
     }
-    const findElem = this.routes.find(([key]) => key === needPath);
+    const findElem = this.routes.find(([key]) => key === path);
     if (findElem) {
       findElem[1] = handler;
     } else {
-      this.routes.push([needPath, handler]);
+      this.routes.push([path, handler]);
     }
   }
 
@@ -39,8 +32,7 @@ export default class Router {
    * @param {path} path
    */
   deleteRoute(path) {
-    const needPath = standardizedPath(path);
-    this.routes = this.routes.filter(([key]) => key !== needPath);
+    this.routes = this.routes.filter(([key]) => key !== path);
   }
 
   /**
@@ -48,9 +40,8 @@ export default class Router {
    * @param  {...any} data
    */
   go(path, ...data) {
-    const needPath = standardizedPath(path);
-    Router.addHistoryRecord(needPath);
-    this.goWithoutHistory(needPath, ...data);
+    Router.addHistoryRecord(path);
+    this.goWithoutHistory(path, ...data);
   }
 
   /**
@@ -58,21 +49,20 @@ export default class Router {
    * @param  {...any} data
    */
   goWithoutHistory(path, ...data) {
-    const needPath = standardizedPath(path);
     const findElem = this.routes.find(([key]) => (typeof key === 'string'
-      ? key === needPath : key.exec(needPath)));
+      ? key === path : key.exec(path)));
     if (!findElem) {
-      throw new Error(`Missing path: ${standardizedPath(path)}`); // error-html-message?
+      throw new Error(`Missing path: ${path}`); // error-html-message?
     }
     const [key, value] = findElem;
     value(
-      (typeof key === 'string' ? needPath : key.exec(needPath)),
+      (typeof key === 'string' ? path : key.exec(path)),
       ...data,
     );
   }
 
   static addHistoryRecord(path, state = { urlPath: window.location.pathname }) {
-    window.history.pushState(state, '', standardizedPath(path));
+    window.history.pushState(state, '', path);
   }
 
   static back() {

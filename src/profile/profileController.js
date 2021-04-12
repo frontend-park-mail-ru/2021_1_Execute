@@ -2,6 +2,7 @@ import EventBus from '../utils/eventBus.js';
 import ProfileModel from './profileModel.js';
 import ProfileView from './profileView.js';
 import { ProfileEvent } from './profileEvents.js';
+import { ConstantEvents } from '../constants.js';
 
 export default class ProfileController {
   /**
@@ -12,7 +13,7 @@ export default class ProfileController {
   constructor(router, root) {
     this.root = root;
     this.eventBus = new EventBus();
-    this.eventBus.subscribe(ProfileEvent.login, () => router.go('/login'));
+    this.eventBus.subscribe(ProfileEvent.login, () => router.go(ConstantEvents.login));
     this.model = new ProfileModel(this.eventBus);
     this.view = new ProfileView(this.eventBus, this.root);
   }
