@@ -1,5 +1,5 @@
 {{#*inline "task" task}}
-<div id="task-{{id}}" class="task">
+<div id="task-{{id}}" data-id="{{id}}" class="task">
     {{name}}
 </div>
 {{/inline}}
@@ -12,7 +12,7 @@
         {{> task task=this}}
         {{/each}}
     </div>
-    <div id="add-card-to-{{id}}" class="add-card-button">
+    <div id="add-card-to-{{id}}" data-id="{{id}}" class="add-card-button">
         Добавить карточку
     </div>
 </div>

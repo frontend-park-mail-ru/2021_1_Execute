@@ -19,7 +19,10 @@ export default class BoardPageController {
     this.view = new BoardPageView(this.eventBus, this.root);
   }
 
-  start(pathArr) {
-    this.eventBus.call(BoardPageEvent.getData, +pathArr[0]);
+  /**
+   * @param {number} boardId
+   */
+  start(boardId) {
+    this.eventBus.call(BoardPageEvent.getData, boardId);
   }
 }

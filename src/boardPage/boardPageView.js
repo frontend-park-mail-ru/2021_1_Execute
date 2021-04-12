@@ -17,12 +17,13 @@ export default class BoardPageView {
     this.eventBus.subscribe(BoardPageEvent.renderSettings,
       (board) => this.renderPopup(board, false));
     this.eventBus.subscribe(BoardPageEvent.renderTask, (task) => this.renderPopup(task, true));
-    this.eventBus.subscribe(BoardPageEvent.renderNewTask, (...all) => this.renderNewTask(...all));
+    this.eventBus.subscribe(BoardPageEvent.renderNewTask,
+      (task, rowId) => this.renderNewTask(task, rowId));
     this.eventBus.subscribe(BoardPageEvent.renderNewRow, (row) => this.renderNewRow(row));
     this.eventBus.subscribe(BoardPageEvent.headerError,
-      (...all) => this.boardErrorBoard(...all));
+      (user, board, error) => this.boardErrorBoard(user, board, error));
     this.eventBus.subscribe(BoardPageEvent.boardError,
-      (...all) => this.boardErrorBoard(...all));
+      (user, board, error) => this.boardErrorBoard(user, board, error));
   }
 
   /**
@@ -36,14 +37,14 @@ export default class BoardPageView {
 
   /**
    * @typedef {Object} users
-   * @param {participant} owner
-   * @param {participant[]} admins
-   * @param {participant[]} members
+   * @property {participant} owner
+   * @property {participant[]} admins
+   * @property {participant[]} members
    */
 
   /**
    * @typedef {Object} participant
-   * @param {number} id
+   * @property {number} id
    * @property {string} avatar
    */
 
@@ -56,23 +57,23 @@ export default class BoardPageView {
 
   /**
    * @typedef {Object} row
-   * @param {number} id
-   * @param {number} position
-   * @param {string} name
-   * @param {taskOutter[]} tasks
+   * @property {number} id
+   * @property {number} position
+   * @property {string} name
+   * @property {taskOutter[]} tasks
    */
 
   /**
    * @typedef {Object} taskOutter
-   * @param {string} name
-   * @param {number} id
-   * @param {number} position
+   * @property {string} name
+   * @property {number} id
+   * @property {number} position
    */
 
   /**
    * @typedef {Object} task
-   * @param {string} name
-   * @param {string} description
+   * @property {string} name
+   * @property {string} description
    */
 
   /**
@@ -108,10 +109,10 @@ export default class BoardPageView {
     this.buttonFavorite?.addEventListener('click', this.addToFavorite);
     this.buttonAddRow?.addEventListener('click', () => this.eventBus.call(BoardPageEvent.clickAddRow, 'Новая колонка'));
     this.buttonsTask.forEach((elem) => elem.addEventListener(
-      'click', () => this.eventBus.call(BoardPageEvent.openTask, +elem.id.slice(5)),
+      'click', () => this.eventBus.call(BoardPageEvent.openTask, +elem.dataset.id),
     ));
     this.buttonsAddTask.forEach((elem, ind) => elem.addEventListener(
-      'click', () => this.eventBus.call(BoardPageEvent.clickAddTask, +elem.id.slice(12), ind, 'Новая задача'),
+      'click', () => this.eventBus.call(BoardPageEvent.clickAddTask, +elem.dataset.id, ind, 'Новая задача'),
     ));
   }
 
@@ -160,8 +161,8 @@ export default class BoardPageView {
     const newHTMLElementRow = this.buttonAddRow.previousElementSibling;
     const newHTMLElementAddTask = newHTMLElementRow.lastElementChild;
     newHTMLElementAddTask.addEventListener(
-      'click', ((position) => () => this.eventBus.call(BoardPageEvent.clickAddTask,
-        +newHTMLElementAddTask.id.slice(12), position, 'Новая задача'))(this.buttonsAddTask.length),
+      'click', () => this.eventBus.call(BoardPageEvent.clickAddTask,
+        +newHTMLElementAddTask.dataset.id, row.position, 'Новая задача'),
     );
     this.buttonsAddTask.push(newHTMLElementAddTask);
   }
@@ -178,7 +179,7 @@ export default class BoardPageView {
     this.buttonsAddTask[rowId].previousElementSibling.append(newDocumentFragmentTask);
     const newHTMLElementTask = this.buttonsAddTask[rowId].previousElementSibling.lastElementChild;
     newHTMLElementTask.addEventListener(
-      'click', () => this.eventBus.call(BoardPageEvent.openTask, +newHTMLElementTask.id.slice(5)),
+      'click', () => this.eventBus.call(BoardPageEvent.openTask, +newHTMLElementTask.dataset.id),
     );
     this.buttonsTask.push(newHTMLElementTask);
   }

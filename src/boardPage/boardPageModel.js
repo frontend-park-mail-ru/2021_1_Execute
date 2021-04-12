@@ -10,13 +10,13 @@ export default class BoardPageModel {
    */
   constructor(eventBus) {
     this.eventBus = eventBus;
-    this.eventBus.subscribe(BoardPageEvent.getData, (...all) => this.getData(...all));
-    this.eventBus.subscribe(BoardPageEvent.openSettings,
-      (...all) => this.getBoardForSettings(...all));
-    this.eventBus.subscribe(BoardPageEvent.openTask, (...all) => this.getTask(...all));
-    this.eventBus.subscribe(BoardPageEvent.addToFavorite, (...all) => this.addToFavorite(...all));
-    this.eventBus.subscribe(BoardPageEvent.clickAddRow, (...all) => this.addRow(...all));
-    this.eventBus.subscribe(BoardPageEvent.clickAddTask, (...all) => this.addTask(...all));
+    this.eventBus.subscribe(BoardPageEvent.getData, (boardId) => this.getData(boardId));
+    this.eventBus.subscribe(BoardPageEvent.openSettings, () => this.getBoardForSettings());
+    this.eventBus.subscribe(BoardPageEvent.openTask, (taskId) => this.getTask(taskId));
+    this.eventBus.subscribe(BoardPageEvent.addToFavorite, () => this.addToFavorite());
+    this.eventBus.subscribe(BoardPageEvent.clickAddRow, (name) => this.addRow(name));
+    this.eventBus.subscribe(BoardPageEvent.clickAddTask,
+      (rowId, rowPosition, name) => this.addTask(rowId, rowPosition, name));
   }
 
   /**
@@ -178,6 +178,7 @@ export default class BoardPageModel {
 
   /**
    * @param {number} rowId
+   * @param {number} rowPosition
    * @param {string} name
    */
   addTask(rowId, rowPosition, name) {

@@ -1,41 +1,46 @@
-import EventBus from './eventBus.js';
+/**
+ * @typedef {string|RegExp} path
+ * @typedef {(meta: string|RegExpExecArray, ...data) => void} handler
+ */
 
 /**
- * @param {string} path
- * @returns {string[]}
+ * @param {path} path
+ * @returns {path}
  */
-const pathToArray = (path) => path.match(/[^/]{1,}/g) || [];
-
-/**
- * @param {string[]} arr
- * @returns {string}
- */
-const arrayToPath = (arr) => `/${arr.join('/')}`;
-
-/**
- * @param {string} path
- * @returns {string}
- */
-const standardizedPath = (path) => arrayToPath(pathToArray(path));
+const standardizedPath = (path) => (typeof path === 'string' ? `/${(path.match(/[^/]{1,}/g) || []).join('/')}` : path);
 
 export default class Router {
   constructor() {
-    this.routes = new EventBus();
+    /**
+     * @type {[path, handler][]}
+     */
+    this.routes = [];
   }
 
   /**
-   * @param {string} path
-   * @param {(pathArr: string[], ...data) => void} handler
+   * @param {path} path
+   * @param {handler} handler
+   * @throws ошибка, если переданный обработчик события - не функция
    */
   addRoute(path, handler) {
-    this.routes.subscribe(standardizedPath(path), handler);
+    const needPath = standardizedPath(path);
+    if (typeof handler !== 'function') {
+      throw new Error(`Handler must be a function, but found: ${handler}`);
+    }
+    const findElem = this.routes.find(([key]) => key === needPath);
+    if (findElem) {
+      findElem[1] = handler;
+    } else {
+      this.routes.push([needPath, handler]);
+    }
   }
 
   /**
-   * @param {string} path
+   * @param {path} path
    */
   deleteRoute(path) {
-    this.routes.unsubscribe(path);
+    const needPath = standardizedPath(path);
+    this.routes = this.routes.filter(([key]) => key !== needPath);
   }
 
   /**
@@ -43,8 +48,9 @@ export default class Router {
    * @param  {...any} data
    */
   go(path, ...data) {
-    Router.addHistoryRecord(standardizedPath(path));
-    this.goWithoutHistory(path, ...data);
+    const needPath = standardizedPath(path);
+    Router.addHistoryRecord(needPath);
+    this.goWithoutHistory(needPath, ...data);
   }
 
   /**
@@ -52,15 +58,17 @@ export default class Router {
    * @param  {...any} data
    */
   goWithoutHistory(path, ...data) {
-    const newArray = pathToArray(path);
-    for (let i = newArray.length; i >= 0; i -= 1) {
-      const subUrl = arrayToPath(newArray.slice(0, i));
-      if (this.routes.has(subUrl)) {
-        this.routes.call(subUrl, newArray.slice(i), ...data);
-        return;
-      }
+    const needPath = standardizedPath(path);
+    const findElem = this.routes.find(([key]) => (typeof key === 'string'
+      ? key === needPath : key.exec(needPath)));
+    if (!findElem) {
+      throw new Error(`Missing path: ${standardizedPath(path)}`); // error-html-message?
     }
-    throw new Error('Missing path:', standardizedPath(path));
+    const [key, value] = findElem;
+    value(
+      (typeof key === 'string' ? needPath : key.exec(needPath)),
+      ...data,
+    );
   }
 
   static addHistoryRecord(path, state = { urlPath: window.location.pathname }) {
