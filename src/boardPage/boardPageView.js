@@ -111,8 +111,8 @@ export default class BoardPageView {
     this.buttonsTask.forEach((elem) => elem.addEventListener(
       'click', () => this.eventBus.call(BoardPageEvent.openTask, +elem.dataset.id),
     ));
-    this.buttonsAddTask.forEach((elem, ind) => elem.addEventListener(
-      'click', () => this.eventBus.call(BoardPageEvent.clickAddTask, +elem.dataset.id, ind, 'Новая задача'),
+    this.buttonsAddTask.forEach((elem, index) => elem.addEventListener(
+      'click', () => this.eventBus.call(BoardPageEvent.clickAddTask, +elem.dataset.id, index, 'Новая задача'),
     ));
   }
 
