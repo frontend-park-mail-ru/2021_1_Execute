@@ -1,6 +1,6 @@
 /**
  * @typedef {RegExp} path
- * @typedef {(meta: string|RegExpExecArray, ...data) => void} handler
+ * @typedef {(meta: string|RegExpExecArray) => void} handler
  */
 
 /**
@@ -49,24 +49,22 @@ export default class Router {
 
   /**
    * @param {string} path
-   * @param  {...any} data
    */
-  go(path, ...data) {
+  go(path) {
     Router.addHistoryRecord(path);
-    this.goWithoutHistory(path, ...data);
+    this.goWithoutHistory(path);
   }
 
   /**
    * @param {string} path
-   * @param  {...any} data
    */
-  goWithoutHistory(path, ...data) {
+  goWithoutHistory(path) {
     const findElem = this.routes.find(({ path: key }) => key.exec(path));
     if (!findElem) {
       throw new Error(`Missing path: ${path}`); // error-html-message?
     }
     const { path: key, handler } = findElem;
-    handler(key.exec(path), ...data);
+    handler(key.exec(path));
   }
 
   static addHistoryRecord(path, state = { urlPath: window.location.pathname }) {
