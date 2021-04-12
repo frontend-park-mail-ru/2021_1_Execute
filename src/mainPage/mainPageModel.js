@@ -1,6 +1,13 @@
 import { profileGet, boardsGet, boardCreate } from '../utils/requestToServer.js';
 import { MainPageEvent } from './mainPageEvents.js';
 
+const boardToViewFormat = (boards) => boards.reduce((accum, board) => {
+  accum[board.access].push(board);
+  return accum;
+}, {
+  guest: [], member: [], admin: [], owner: [],
+});
+
 export default class MainPageModel {
   /**
    * @param {!EventBus}
@@ -8,20 +15,9 @@ export default class MainPageModel {
    */
   constructor(eventBus) {
     this.eventBus = eventBus;
-    this.eventBus.subscribe(MainPageEvent.getData, () => this.getData());
+    this.eventBus.subscribe(MainPageEvent.getData, this.getData.bind(this));
     this.eventBus.subscribe(MainPageEvent.clickAddBoard, (name) => this.addBoard(name));
-    this.eventBus.subscribe(MainPageEvent.openBoard,
-      (boardId) => this.openBoard(boardId));
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  boardToViewFormat(boards) {
-    return boards.reduce((accum, board) => {
-      accum[board.access].push(board);
-      return accum;
-    }, {
-      Guest: [], Member: [], Admin: [], Owner: [],
-    });
+    this.eventBus.subscribe(MainPageEvent.openBoard, (boardId) => this.openBoard(boardId));
   }
 
   getData() {
@@ -56,13 +52,16 @@ export default class MainPageModel {
           }
         }),
     ]).then(([{ user }, { boards }]) => {
-      this.eventBus.call(MainPageEvent.renderData, user, this.boardToViewFormat(boards));
+      this.eventBus.call(MainPageEvent.renderData, user, boardToViewFormat(boards));
     });
   }
 
+  /**
+   * @param {string} name
+   */
   addBoard(name) {
     // eslint-disable-next-line no-console
-    console.log('clickAddDesk:', name, this);
+    console.log('addBoard:', name, this);
     const callError = (message) => this.eventBus.call(MainPageEvent.boardsError, message);
 
     boardCreate(name)
@@ -80,5 +79,14 @@ export default class MainPageModel {
       })
       .then((board) => ({ ...board, name }))
       .then((board) => this.eventBus.call(MainPageEvent.renderNewBoard, board));
+  }
+
+  /**
+   * @param {number} boardId
+   */
+  openBoard(boardId) {
+    // eslint-disable-next-line no-console
+    console.log('openBoard:', boardId, this);
+    this.eventBus.call(MainPageEvent.board, boardId);
   }
 }

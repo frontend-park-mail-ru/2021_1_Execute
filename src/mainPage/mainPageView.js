@@ -19,10 +19,18 @@ export default class MainPageView {
   /**
  * @typedef {Object} board
  * @property {!number} id
- * @property {!('Guest'|'Member'|'Admin'|'Owner')} access
+ * @property {!('guest'|'member'|'admin'|'owner')} access
  * @property {boolean} isStared
  * @property {string} name
  * @property {string} description
+ */
+
+  /**
+ * @typedef {Object} boards
+ * @property {board[]} guest
+ * @property {board[]} member
+ * @property {board[]} admin
+ * @property {board[]} owner
  */
 
   /**
@@ -34,11 +42,7 @@ export default class MainPageView {
 
   /**
    * @param {user} user
-   * @param {Object} boards
-   * @param {board[]} boards.Guest
-   * @param {board[]} boards.Member
-   * @param {board[]} boards.Admin
-   * @param {board[]} boards.Owner
+   * @param {boards} boards
    */
   renderData(user, boards) {
     // eslint-disable-next-line no-undef
@@ -48,25 +52,29 @@ export default class MainPageView {
     this.root.innerHTML += Handlebars.templates.mainPage(boards);
 
     this.findNeedElem(boards);
-    this.addEventListeners(boards);
+    this.addEventListeners();
   }
 
   /**
-   * @param {board[]} boards
+   * @param {boards} boards
    */
   findNeedElem(boards) {
     this.photoAvatar = document.getElementById('avatar-photo');
     this.buttonAddBoard = document.getElementById('addBoard');
-    this.buttonsBoards = boards.reduce((accum, board) => accum.concat(
-      document.getElementById(`board-${board.id}`),
-    ), []);
+    this.buttonsBoards = [
+      ...boards.guest, ...boards.member,
+      ...boards.admin, ...boards.owner,
+    ]
+      .reduce((accum, board) => accum.concat(
+        document.getElementById(`board-${board.id}`),
+      ), []);
   }
 
   addEventListeners() {
     this.photoAvatar.addEventListener('click', () => this.eventBus.call(MainPageEvent.profile));
     this.buttonAddBoard.addEventListener('click', () => this.eventBus.call(MainPageEvent.clickAddBoard, 'Новая доска'));
     this.buttonsBoards.forEach((buttonBoard) => buttonBoard.addEventListener(
-      'click', () => this.eventBus.call(MainPageEvent.clickButtonBoard, buttonBoard.id),
+      'click', () => this.eventBus.call(MainPageEvent.openBoard, +buttonBoard.dataset.id),
     ));
   }
 
@@ -79,7 +87,7 @@ export default class MainPageView {
     const newHTMLElementButtonBoard = this.buttonAddBoard.nextElementSibling;
     this.buttonsBoards = [newHTMLElementButtonBoard, ...this.buttonsBoards];
     newHTMLElementButtonBoard.addEventListener(
-      'click', () => this.eventBus.call(MainPageEvent.clickButtonBoard, newHTMLElementButtonBoard.id),
+      'click', () => this.eventBus.call(MainPageEvent.openBoard, newHTMLElementButtonBoard.id),
     );
   }
 }

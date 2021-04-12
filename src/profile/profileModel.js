@@ -11,8 +11,8 @@ export default class ProfileModel {
    */
   constructor(eventBus) {
     this.eventBus = eventBus;
-    this.eventBus.subscribe(ProfileEvent.exit, () => this.exit());
-    this.eventBus.subscribe(ProfileEvent.getData, () => this.getData());
+    this.eventBus.subscribe(ProfileEvent.exit, this.exit.bind(this));
+    this.eventBus.subscribe(ProfileEvent.getData, this.getData.bind(this));
     this.eventBus.subscribe(ProfileEvent.clickChangeData, (profile) => this.changeData(profile));
     this.eventBus.subscribe(ProfileEvent.clickChangeAvatar,
       (avatar, pushToServer) => this.changeAvatar(avatar, pushToServer));

@@ -62,9 +62,37 @@
   padding: 11px;
 }
 
-.text-bnt {
+.text-btn {
   cursor: pointer;
   user-select: none;
+  transition: 0.25s;
+}
+
+.text-btn:hover {
+  background: padding-box var(--btn-exit-hover);
+}
+
+.board-error {
+  overflow: hidden;
+  height: calc(100vh - var(--header-height));
+  background-color: white;
+  display: block;
+  padding: 100px;
+  text-align: center;
+}
+
+.board-error h1 {
+  display: block;
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 28px;
+  margin: 0 0 24px;
+}
+
+.board-error p {
+  display: block;
+  font-size: 18px;
+  line-height: 22px;
 }
 
 .rounded-avatar {
@@ -95,13 +123,13 @@
   overflow-x: auto;
   flex-direction: row;
   display: flex;
-  padding-left: 8px;
-  padding-bottom: 10px;
+  padding: 0 8px 10px 8px;
   height: calc(100% - var(--board-panel-height));
 }
 
 .row {
   width: 210px;
+  padding: 0 6px;
   max-height: 100%;
   height: fit-content;
   flex: 0 0 auto;
@@ -111,32 +139,66 @@
 }
 
 .row-name {
-  text-align: center;
   margin: 10px 5px;
   flex: 0 0 auto;
 }
 
 .tasks-container {
+  width: 100%;
+  padding: 0 4px;
   overflow-y: auto;
   overflow-x: hidden;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 20px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--board-panel-buttons-bg);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--btn-exit-hover);
+  border-radius: 3px;
 }
 
 .task {
   cursor: pointer;
   align-self: center;
-  width: 160px;
+  width: calc(100% - 20px);
   border-radius: 5px;
   overflow-wrap: break-word;
   padding: 10px;
-  margin: 5px;
+  margin: 0 5px 6px 5px;
   background-color: white;
+  transition: 0.25s;
+}
+
+.task:hover {
+  background: padding-box var(--btn-exit-hover);
+}
+
+.add-card-button::before {
+  content: "+";
 }
 
 .add-card-button {
-  padding: 10px;
+  margin-top: 2px;
+  margin-bottom: 10px;
+  padding: 5px 10px;
+  width: calc(100% - 20px);
   color: gray;
   cursor: pointer;
   user-select: none;
+  border-radius: 5px;
+  transition: 0.25s;
+}
+
+.add-card-button:hover {
+  background: padding-box var(--btn-exit-hover);
 }
 
 .popup-container {
@@ -180,7 +242,7 @@
 
 .span-textarea {
   display: block;
-  width: auto;
+  width: calc(100% - 20px);
   overflow: hidden;
   resize: none;
   min-height: 20px;
@@ -201,6 +263,7 @@
 }
 
 .close-icon-div {
+  user-select: none;
   position: absolute;
   top: 13px;
   right: 0;

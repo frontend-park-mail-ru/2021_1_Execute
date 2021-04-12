@@ -17,10 +17,13 @@ export default class BoardPageView {
     this.eventBus.subscribe(BoardPageEvent.renderSettings,
       (board) => this.renderPopup(board, false));
     this.eventBus.subscribe(BoardPageEvent.renderTask, (task) => this.renderPopup(task, true));
-    this.eventBus.subscribe(BoardPageEvent.boardError,
-      (message) => this.boardErrorHandler(message));
+    this.eventBus.subscribe(BoardPageEvent.renderNewTask,
+      (task, rowId) => this.renderNewTask(task, rowId));
+    this.eventBus.subscribe(BoardPageEvent.renderNewRow, (row) => this.renderNewRow(row));
     this.eventBus.subscribe(BoardPageEvent.headerError,
-      (message) => this.boardErrorHandler(message));
+      (user, board, error) => this.boardErrorBoard(user, board, error));
+    this.eventBus.subscribe(BoardPageEvent.boardError,
+      (user, board, error) => this.boardErrorBoard(user, board, error));
   }
 
   /**
@@ -34,14 +37,14 @@ export default class BoardPageView {
 
   /**
    * @typedef {Object} users
-   * @param {participant} owner
-   * @param {participant[]} admins
-   * @param {participant[]} members
+   * @property {participant} owner
+   * @property {participant[]} admins
+   * @property {participant[]} members
    */
 
   /**
    * @typedef {Object} participant
-   * @param {number} id
+   * @property {number} id
    * @property {string} avatar
    */
 
@@ -54,43 +57,40 @@ export default class BoardPageView {
 
   /**
    * @typedef {Object} row
-   * @param {number} id
-   * @param {number} position
-   * @param {string} name
-   * @param {taskOutter[]} tasks
+   * @property {number} id
+   * @property {number} position
+   * @property {string} name
+   * @property {taskOutter[]} tasks
    */
 
   /**
-   * @typedef taskOutter
-   * @param {string} name
-   * @param {number} id
-   * @param {number} position
+   * @typedef {Object} taskOutter
+   * @property {string} name
+   * @property {number} id
+   * @property {number} position
    */
 
   /**
-   * @typedef task
-   * @param {string} name
-   * @param {string} description
+   * @typedef {Object} task
+   * @property {string} name
+   * @property {string} description
    */
 
   /**
-   * @param {user} user
-   * @param {board} board
-   * @param {user[]} avatars Данные для панели с аватарками
+   * @param {?user} user
+   * @param {?board} board
+   * @param {?user[]} avatars Данные для панели с аватарками
+   * @param {?Object} error
    */
-  renderData(user, board, avatars) {
+  renderData(user, board, avatars, error) {
     // eslint-disable-next-line no-undef
     this.root.innerHTML = Handlebars.templates.header(user);
     // eslint-disable-next-line no-undef
-    this.root.innerHTML += Handlebars.templates.boardPage({ board, avatars });
+    this.root.innerHTML += Handlebars.templates.boardPage({ board, avatars, error });
 
     this.findNeedElem();
-    this.addEventListeners(board);
+    this.addEventListeners();
   }
-
-  /**
-     * @param {board} board
-     */
 
   findNeedElem() {
     this.photoAvatar = document.getElementById('avatar-photo');
@@ -98,21 +98,22 @@ export default class BoardPageView {
     this.buttonFavorite = document.getElementById('btn-favorite');
     this.buttonInvite = document.getElementById('invite-bnt');
     this.buttonAddRow = document.getElementById('add-row-btn');
-    this.buttonsTask = document.getElementsByClassName('task');
-    [...this.buttonsTask].forEach((element) => element.addEventListener('click', (e) => {
-      const id = parseInt(e.currentTarget.id?.replace('task-', ''), 10);
-
-      if (!Number.isNaN(id)) {
-        this.eventBus.call(BoardPageEvent.openTask, id);
-      }
-    }));
+    this.buttonsTask = [...document.getElementsByClassName('task')];
+    this.buttonsAddTask = [...document.getElementsByClassName('add-card-button')];
     this.popupContainer = document.getElementById('popup-container');
   }
 
   addEventListeners() {
-    this.photoAvatar.addEventListener('click', () => this.eventBus.call(BoardPageEvent.profile));
-    this.buttonSettings.addEventListener('click', () => this.eventBus.call(BoardPageEvent.openSettings));
-    this.buttonFavorite.addEventListener('click', this.addToFavorite);
+    this.photoAvatar?.addEventListener('click', () => this.eventBus.call(BoardPageEvent.profile));
+    this.buttonSettings?.addEventListener('click', () => this.eventBus.call(BoardPageEvent.openSettings));
+    this.buttonFavorite?.addEventListener('click', this.addToFavorite);
+    this.buttonAddRow?.addEventListener('click', () => this.eventBus.call(BoardPageEvent.clickAddRow, 'Новая колонка'));
+    this.buttonsTask.forEach((elem) => elem.addEventListener(
+      'click', () => this.eventBus.call(BoardPageEvent.openTask, +elem.dataset.id),
+    ));
+    this.buttonsAddTask.forEach((elem, index) => elem.addEventListener(
+      'click', () => this.eventBus.call(BoardPageEvent.clickAddTask, +elem.dataset.id, index, 'Новая задача'),
+    ));
   }
 
   renderPopup(data, isTask) {
@@ -128,7 +129,7 @@ export default class BoardPageView {
     document.body.classList.add('root-while-popup');
 
     this.buttonClose = document.getElementById('btn-close');
-    this.buttonClose.addEventListener('click', () => this.closePopup());
+    this.buttonClose?.addEventListener('click', () => this.closePopup());
   }
 
   closePopup() {
@@ -144,8 +145,43 @@ export default class BoardPageView {
     this.eventBus.call(BoardPageEvent.addToFavorite);
   }
 
-  boardErrorHandler(message) {
-    // eslint-disable-next-line no-alert
-    alert(message);
+  boardErrorBoard(user, board, error) {
+    this.renderData(user, board, null, error);
+  }
+
+  /**
+   * @param {row} row
+   */
+  renderNewRow(row) {
+    const newDocumentFragmentRow = document.createRange().createContextualFragment(
+      // eslint-disable-next-line no-undef
+      Handlebars.templates.boardPage({ ...row, singleRow: true }),
+    );
+    this.buttonAddRow.before(newDocumentFragmentRow);
+    const newHTMLElementRow = this.buttonAddRow.previousElementSibling;
+    const newHTMLElementAddTask = newHTMLElementRow.lastElementChild;
+    newHTMLElementAddTask.addEventListener(
+      'click', () => this.eventBus.call(
+        BoardPageEvent.clickAddTask, +newHTMLElementAddTask.dataset.id, row.position, 'Новая задача',
+      ),
+    );
+    this.buttonsAddTask.push(newHTMLElementAddTask);
+  }
+
+  /**
+   * @param {taskOutter} task
+   * @param {number} rowId
+   */
+  renderNewTask(task, rowId) {
+    const newDocumentFragmentTask = document.createRange().createContextualFragment(
+      // eslint-disable-next-line no-undef
+      Handlebars.templates.boardPage({ ...task, singleTask: true }),
+    );
+    this.buttonsAddTask[rowId].previousElementSibling.append(newDocumentFragmentTask);
+    const newHTMLElementTask = this.buttonsAddTask[rowId].previousElementSibling.lastElementChild;
+    newHTMLElementTask.addEventListener(
+      'click', () => this.eventBus.call(BoardPageEvent.openTask, +newHTMLElementTask.dataset.id),
+    );
+    this.buttonsTask.push(newHTMLElementTask);
   }
 }

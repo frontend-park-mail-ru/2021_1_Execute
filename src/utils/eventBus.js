@@ -23,7 +23,7 @@ export default class EventBus {
    */
   subscribe(eventName, handler) {
     if (!validateEventName(eventName)) {
-      throw new Error('Invalid event name:', eventName);
+      throw new Error(`Invalid event name: ${eventName}`);
     }
     if (typeof handler !== 'function') {
       throw new Error('Handler must be a function');
@@ -38,11 +38,24 @@ export default class EventBus {
    */
   unsubscribe(eventName) {
     if (!validateEventName(eventName)) {
-      throw new Error('Invalid event name:', eventName);
+      throw new Error(`Invalid event name: ${eventName}`);
     }
     if (this.events.has(eventName)) {
       this.events.delete(eventName);
     }
+  }
+
+  /**
+   * Метод позволяет узнать есть ли у определенного события функция-обработчик
+   * @param  {string} eventName - имя события
+   * @throws ошибка, если передано невалидное имя события
+   * @returns {boolean}
+   */
+  has(eventName) {
+    if (!validateEventName(eventName)) {
+      throw new Error(`Invalid event name: ${eventName}`);
+    }
+    return this.events.has(eventName);
   }
 
   /**
@@ -55,10 +68,10 @@ export default class EventBus {
    */
   call(eventName, ...data) {
     if (!validateEventName(eventName)) {
-      throw new Error('Invalid event name:', eventName);
+      throw new Error(`Invalid event name: ${eventName}`);
     }
     if (!this.events.has(eventName)) {
-      throw new Error('Missing handler:', eventName);
+      throw new Error(`Missing handler: ${eventName}`);
     }
     this.events.get(eventName)(...data);
   }

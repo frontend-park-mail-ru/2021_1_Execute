@@ -20,7 +20,7 @@ export default class LoginView {
       (message) => this.handleRegistrationWait(message));
     this.eventBus.subscribe(RegistrationEvents.registrationError,
       (message) => this.handleRegistrationError(message));
-    this.eventBus.subscribe(RegistrationEvents.render, () => this.render());
+    this.eventBus.subscribe(RegistrationEvents.render, this.render.bind(this));
   }
 
   render() {
