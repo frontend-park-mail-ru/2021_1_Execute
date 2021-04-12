@@ -1,11 +1,19 @@
-export const ConstantEvents = {
+export const ConstantEventsString = {
   root: '/',
   login: '/login',
   registration: '/registration',
   profile: '/profile',
-  board: /^\/board\/(?<boardId>\d+)$/,
-  task: /^\/board\/(?<boardId>\d+)\/task\/(?<taskId>\d+)$/,
   main: '/main',
+};
+
+export const ConstantEventsRegExp = {
+  root: /^\/$/,
+  login: /^\/login\/?$/,
+  registration: /^\/registration\/?$/,
+  profile: /^\/profile\/?$/,
+  board: /^\/board\/(?<boardId>\d+)\/?$/,
+  task: /^\/board\/(?<boardId>\d+)\/task\/(?<taskId>\d+)\/?$/,
+  main: /^\/main\/?$/,
 };
 
 /**

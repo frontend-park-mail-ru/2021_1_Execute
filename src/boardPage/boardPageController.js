@@ -3,7 +3,7 @@ import './boardPage.handlebars.js';
 import BoardPageModel from './boardPageModel.js';
 import BoardPageView from './boardPageView.js';
 import { BoardPageEvent } from './boardPageEvents.js';
-import { ConstantEvents } from '../constants.js';
+import { ConstantEventsString } from '../constants.js';
 
 export default class BoardPageController {
   /**
@@ -14,8 +14,8 @@ export default class BoardPageController {
   constructor(router, root) {
     this.root = root;
     this.eventBus = new EventBus();
-    this.eventBus.subscribe(BoardPageEvent.profile, () => router.go(ConstantEvents.profile));
-    this.eventBus.subscribe(BoardPageEvent.login, () => router.go(ConstantEvents.login));
+    this.eventBus.subscribe(BoardPageEvent.profile, () => router.go(ConstantEventsString.profile));
+    this.eventBus.subscribe(BoardPageEvent.login, () => router.go(ConstantEventsString.login));
     this.model = new BoardPageModel(this.eventBus);
     this.view = new BoardPageView(this.eventBus, this.root);
   }

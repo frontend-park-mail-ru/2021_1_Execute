@@ -3,10 +3,31 @@
  * @typedef {(meta: string|RegExpExecArray, ...data) => void} handler
  */
 
+/**
+ * @param {RegExp} r1
+ * @param {RegExp} r2
+ * @returns {boolean}
+ */
+function regexSame(r1, r2) {
+  return r1 instanceof RegExp
+    && r2 instanceof RegExp
+    && r1.source === r2.source
+    && r1.flags.split('').sort().join('') === r2.flags.split('').sort().join('');
+}
+
+/**
+ * @param {path} p1
+ * @param {path} p2
+ * @returns {boolean}
+ */
+function pathSame(p1, p2) {
+  return p1 === p2 || regexSame(p1, p2);
+}
+
 export default class Router {
   constructor() {
     /**
-     * @type {[path, handler][]}
+     * @type {{path:path,handler:handler}[]}
      */
     this.routes = [];
   }
@@ -20,11 +41,11 @@ export default class Router {
     if (typeof handler !== 'function') {
       throw new Error(`Handler must be a function, but found: ${handler}`);
     }
-    const findElem = this.routes.find(([key]) => key === path);
+    const findElem = this.routes.find(({ path: key }) => pathSame(key, path));
     if (findElem) {
-      findElem[1] = handler;
+      findElem.handler = handler;
     } else {
-      this.routes.push([path, handler]);
+      this.routes.push({ path, handler });
     }
   }
 
@@ -32,7 +53,7 @@ export default class Router {
    * @param {path} path
    */
   deleteRoute(path) {
-    this.routes = this.routes.filter(([key]) => key !== path);
+    this.routes = this.routes.filter(({ path: key }) => !pathSame(key, path));
   }
 
   /**
@@ -49,13 +70,13 @@ export default class Router {
    * @param  {...any} data
    */
   goWithoutHistory(path, ...data) {
-    const findElem = this.routes.find(([key]) => (typeof key === 'string'
+    const findElem = this.routes.find(({ path: key }) => (typeof key === 'string'
       ? key === path : key.exec(path)));
     if (!findElem) {
       throw new Error(`Missing path: ${path}`); // error-html-message?
     }
-    const [key, value] = findElem;
-    value(
+    const { path: key, handler } = findElem;
+    handler(
       (typeof key === 'string' ? path : key.exec(path)),
       ...data,
     );
