@@ -6,7 +6,10 @@
 
 {{#*inline "row" row}}
 <div class="row menu-wrapper-column">
-    <span class="row-name span-textarea" role="textbox" contenteditable>{{name}}</span>
+    <div class="row-head">
+        <span class="row-name span-textarea" role="textbox" contenteditable>{{name}}</span>
+        <div id="row-delete-{{id}}" data-id="{{id}}" class="row-delete"></div>
+    </div>
     <div class="tasks-container menu-wrapper-column">
         {{#each tasks}}
         {{> task task=this}}

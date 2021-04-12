@@ -20,6 +20,10 @@ export default class BoardPageView {
     this.eventBus.subscribe(BoardPageEvent.renderNewTask,
       (task, rowId) => this.renderNewTask(task, rowId));
     this.eventBus.subscribe(BoardPageEvent.renderNewRow, (row) => this.renderNewRow(row));
+    this.eventBus.subscribe(BoardPageEvent.renderDeleteRow,
+      (rowPosition) => this.renderDeleteRow(rowPosition));
+    this.eventBus.subscribe(BoardPageEvent.renderDeleteTask,
+      (rowPosition, taskPosition) => this.renderDeleteTask(rowPosition, taskPosition));
     this.eventBus.subscribe(BoardPageEvent.headerError,
       (user, board, error) => this.boardErrorBoard(user, board, error));
     this.eventBus.subscribe(BoardPageEvent.boardError,
@@ -100,6 +104,7 @@ export default class BoardPageView {
     this.buttonAddRow = document.getElementById('add-row-btn');
     this.buttonsTask = [...document.getElementsByClassName('task')];
     this.buttonsAddTask = [...document.getElementsByClassName('add-card-button')];
+    this.buttonsRowDelete = [...document.getElementsByClassName('row-delete')];
     this.popupContainer = document.getElementById('popup-container');
   }
 
@@ -111,8 +116,11 @@ export default class BoardPageView {
     this.buttonsTask.forEach((elem) => elem.addEventListener(
       'click', () => this.eventBus.call(BoardPageEvent.openTask, +elem.dataset.id),
     ));
-    this.buttonsAddTask.forEach((elem, index) => elem.addEventListener(
-      'click', () => this.eventBus.call(BoardPageEvent.clickAddTask, +elem.dataset.id, index, 'Новая задача'),
+    this.buttonsAddTask.forEach((elem) => elem.addEventListener(
+      'click', () => this.eventBus.call(BoardPageEvent.clickAddTask, +elem.dataset.id, 'Новая задача'),
+    ));
+    this.buttonsRowDelete.forEach((elem) => elem.addEventListener(
+      'click', () => this.eventBus.call(BoardPageEvent.clickDeleteRow, +elem.dataset.id),
     ));
   }
 
@@ -130,6 +138,18 @@ export default class BoardPageView {
 
     this.buttonClose = document.getElementById('btn-close');
     this.buttonClose?.addEventListener('click', () => this.closePopup());
+
+    if (isTask) {
+      [this.buttonsTaskDelete] = document.getElementsByClassName('task-delete');
+      this.buttonsTaskDelete.addEventListener('click',
+        () => this.eventBus.call(
+          BoardPageEvent.clickDeleteTask, +this.buttonsTaskDelete.dataset.id,
+        ));
+    } else {
+      [this.buttonsBoardDelete] = document.getElementsByClassName('board-delete');
+      this.buttonsBoardDelete.addEventListener('click',
+        () => this.eventBus.call(BoardPageEvent.clickDeleteBoard));
+    }
   }
 
   closePopup() {
@@ -162,26 +182,54 @@ export default class BoardPageView {
     const newHTMLElementAddTask = newHTMLElementRow.lastElementChild;
     newHTMLElementAddTask.addEventListener(
       'click', () => this.eventBus.call(
-        BoardPageEvent.clickAddTask, +newHTMLElementAddTask.dataset.id, row.position, 'Новая задача',
+        BoardPageEvent.clickAddTask, +newHTMLElementAddTask.dataset.id, 'Новая задача',
       ),
     );
     this.buttonsAddTask.push(newHTMLElementAddTask);
+    const newHTMLElementRowDelete = newHTMLElementRow.firstElementChild.lastElementChild;
+    newHTMLElementRowDelete.addEventListener(
+      'click', () => this.eventBus.call(BoardPageEvent.clickDeleteRow, +newHTMLElementRowDelete.dataset.id),
+    );
+    this.buttonsRowDelete.push(newHTMLElementRowDelete);
   }
 
   /**
    * @param {taskOutter} task
-   * @param {number} rowId
+   * @param {number} rowPosition
    */
-  renderNewTask(task, rowId) {
+  renderNewTask(task, rowPosition) {
     const newDocumentFragmentTask = document.createRange().createContextualFragment(
       // eslint-disable-next-line no-undef
       Handlebars.templates.boardPage({ ...task, singleTask: true }),
     );
-    this.buttonsAddTask[rowId].previousElementSibling.append(newDocumentFragmentTask);
-    const newHTMLElementTask = this.buttonsAddTask[rowId].previousElementSibling.lastElementChild;
+    this.buttonsAddTask[rowPosition].previousElementSibling.append(newDocumentFragmentTask);
+    const newHTMLElementTask = this.buttonsAddTask[rowPosition]
+      .previousElementSibling.lastElementChild;
     newHTMLElementTask.addEventListener(
       'click', () => this.eventBus.call(BoardPageEvent.openTask, +newHTMLElementTask.dataset.id),
     );
     this.buttonsTask.push(newHTMLElementTask);
+  }
+
+  /**
+   * @param {number} rowPosition
+   */
+  renderDeleteRow(rowPosition) {
+    this.buttonsRowDelete[rowPosition].parentElement.parentElement.remove();
+    delete this.buttonsAddTask[rowPosition];
+    this.buttonsAddTask = this.buttonsAddTask.filter(() => true);
+    delete this.buttonsRowDelete[rowPosition];
+    this.buttonsRowDelete = this.buttonsRowDelete.filter(() => true);
+  }
+
+  /**
+   * @param {number} rowPosition
+   * @param {number} taskPosition
+   */
+  renderDeleteTask(rowPosition, taskPosition) {
+    this.closePopup();
+    const needTask = this.buttonsRowDelete[rowPosition].parentElement
+      .nextElementSibling.children[taskPosition];
+    needTask.remove();
   }
 }

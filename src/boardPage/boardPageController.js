@@ -16,6 +16,7 @@ export default class BoardPageController {
     this.eventBus = new EventBus();
     this.eventBus.subscribe(BoardPageEvent.profile, () => router.go(ConstantEventsString.profile));
     this.eventBus.subscribe(BoardPageEvent.login, () => router.go(ConstantEventsString.login));
+    this.eventBus.subscribe(BoardPageEvent.main, () => router.go(ConstantEventsString.main));
     this.model = new BoardPageModel(this.eventBus);
     this.view = new BoardPageView(this.eventBus, this.root);
   }
