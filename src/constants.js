@@ -7,13 +7,13 @@ export const ConstantEventsString = {
 };
 
 export const ConstantEventsRegExp = {
-  root: /^\/$/,
-  login: /^\/login\/?$/,
-  registration: /^\/registration\/?$/,
-  profile: /^\/profile\/?$/,
-  board: /^\/board\/(?<boardId>\d+)\/?$/,
-  task: /^\/board\/(?<boardId>\d+)\/task\/(?<taskId>\d+)\/?$/,
-  main: /^\/main\/?$/,
+  root: /^\/?$/,
+  login: /^\/?login\/?$/,
+  registration: /^\/?registration\/?$/,
+  profile: /^\/?profile\/?$/,
+  board: /^\/?board\/(?<boardId>\d+)\/?$/,
+  task: /^\/?board\/(?<boardId>\d+)\/task\/(?<taskId>\d+)\/?$/,
+  main: /^\/?main\/?$/,
 };
 
 /**
