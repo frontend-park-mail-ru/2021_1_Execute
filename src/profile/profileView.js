@@ -24,9 +24,9 @@ export default class ProfileView {
     this.eventBus.subscribe(ProfileEvent.changeAvatarToBuffer,
       (file) => this.changeAvatarToBuffer(file));
     this.eventBus.subscribe(ProfileEvent.originalAvatarFromBuffer,
-      () => this.originalAvatarFromBuffer());
+      this.originalAvatarFromBuffer().bind(this));
     this.eventBus.subscribe(ProfileEvent.clearAvatarBuffer,
-      () => this.clearAvatarBuffer());
+      this.clearAvatarBuffer().bind(this));
     this.eventBus.subscribe(ProfileEvent.profileAvatarWait,
       (message) => this.handleProfileAvatarWait(message));
     this.eventBus.subscribe(ProfileEvent.profileAvatarError,

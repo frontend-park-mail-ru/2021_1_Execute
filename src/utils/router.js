@@ -1,5 +1,5 @@
 /**
- * @typedef {string|RegExp} path
+ * @typedef {RegExp} path
  * @typedef {(meta: string|RegExpExecArray, ...data) => void} handler
  */
 
@@ -8,20 +8,11 @@
  * @param {RegExp} r2
  * @returns {boolean}
  */
-function regexSame(r1, r2) {
+function pathSame(r1, r2) {
   return r1 instanceof RegExp
     && r2 instanceof RegExp
     && r1.source === r2.source
     && r1.flags.split('').sort().join('') === r2.flags.split('').sort().join('');
-}
-
-/**
- * @param {path} p1
- * @param {path} p2
- * @returns {boolean}
- */
-function pathSame(p1, p2) {
-  return p1 === p2 || regexSame(p1, p2);
 }
 
 export default class Router {
@@ -70,16 +61,12 @@ export default class Router {
    * @param  {...any} data
    */
   goWithoutHistory(path, ...data) {
-    const findElem = this.routes.find(({ path: key }) => (typeof key === 'string'
-      ? key === path : key.exec(path)));
+    const findElem = this.routes.find(({ path: key }) => key.exec(path));
     if (!findElem) {
       throw new Error(`Missing path: ${path}`); // error-html-message?
     }
     const { path: key, handler } = findElem;
-    handler(
-      (typeof key === 'string' ? path : key.exec(path)),
-      ...data,
-    );
+    handler(key.exec(path), ...data);
   }
 
   static addHistoryRecord(path, state = { urlPath: window.location.pathname }) {

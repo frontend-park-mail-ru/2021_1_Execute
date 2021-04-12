@@ -15,7 +15,7 @@ export default class MainPageModel {
    */
   constructor(eventBus) {
     this.eventBus = eventBus;
-    this.eventBus.subscribe(MainPageEvent.getData, () => this.getData());
+    this.eventBus.subscribe(MainPageEvent.getData, this.getData().bind(this));
     this.eventBus.subscribe(MainPageEvent.clickAddBoard, (name) => this.addBoard(name));
     this.eventBus.subscribe(MainPageEvent.openBoard, (boardId) => this.openBoard(boardId));
   }
@@ -82,11 +82,11 @@ export default class MainPageModel {
   }
 
   /**
-   * @param {string} boardNameId /^board-\d+$/.test(boardNameId) === true
+   * @param {number} boardId
    */
-  openBoard(boardNameId) {
+  openBoard(boardId) {
     // eslint-disable-next-line no-console
-    console.log('openBoard:', boardNameId, +boardNameId.slice(6), this);
-    this.eventBus.call(MainPageEvent.board, +boardNameId.slice(6));
+    console.log('openBoard:', boardId, this);
+    this.eventBus.call(MainPageEvent.board, boardId);
   }
 }

@@ -74,7 +74,7 @@ export default class MainPageView {
     this.photoAvatar.addEventListener('click', () => this.eventBus.call(MainPageEvent.profile));
     this.buttonAddBoard.addEventListener('click', () => this.eventBus.call(MainPageEvent.clickAddBoard, 'Новая доска'));
     this.buttonsBoards.forEach((buttonBoard) => buttonBoard.addEventListener(
-      'click', () => this.eventBus.call(MainPageEvent.openBoard, buttonBoard.id),
+      'click', () => this.eventBus.call(MainPageEvent.openBoard, +buttonBoard.dataset.id),
     ));
   }
 
