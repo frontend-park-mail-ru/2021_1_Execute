@@ -11,9 +11,9 @@ export default class BoardPageModel {
   constructor(eventBus) {
     this.eventBus = eventBus;
     this.eventBus.subscribe(BoardPageEvent.getData, (boardId) => this.getData(boardId));
-    this.eventBus.subscribe(BoardPageEvent.openSettings, this.getBoardForSettings().bind(this));
+    this.eventBus.subscribe(BoardPageEvent.openSettings, this.getBoardForSettings.bind(this));
     this.eventBus.subscribe(BoardPageEvent.openTask, (taskId) => this.getTask(taskId));
-    this.eventBus.subscribe(BoardPageEvent.addToFavorite, this.addToFavorite().bind(this));
+    this.eventBus.subscribe(BoardPageEvent.addToFavorite, this.addToFavorite.bind(this));
     this.eventBus.subscribe(BoardPageEvent.clickAddRow, (name) => this.addRow(name));
     this.eventBus.subscribe(BoardPageEvent.clickAddTask,
       (rowId, rowPosition, name) => this.addTask(rowId, rowPosition, name));

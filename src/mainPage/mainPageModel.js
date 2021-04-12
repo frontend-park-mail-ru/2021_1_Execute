@@ -15,7 +15,7 @@ export default class MainPageModel {
    */
   constructor(eventBus) {
     this.eventBus = eventBus;
-    this.eventBus.subscribe(MainPageEvent.getData, this.getData().bind(this));
+    this.eventBus.subscribe(MainPageEvent.getData, this.getData.bind(this));
     this.eventBus.subscribe(MainPageEvent.clickAddBoard, (name) => this.addBoard(name));
     this.eventBus.subscribe(MainPageEvent.openBoard, (boardId) => this.openBoard(boardId));
   }

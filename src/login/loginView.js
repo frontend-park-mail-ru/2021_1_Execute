@@ -20,7 +20,7 @@ export default class LoginView {
     this.eventBus = eventBus;
     this.eventBus.subscribe(LoginEvents.loginWait, (message) => this.handleLoginWait(message));
     this.eventBus.subscribe(LoginEvents.loginError, (message) => this.handleLoginError(message));
-    this.eventBus.subscribe(LoginEvents.render, this.render().bind(this));
+    this.eventBus.subscribe(LoginEvents.render, this.render.bind(this));
   }
 
   render() {
