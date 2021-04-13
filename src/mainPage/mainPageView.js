@@ -87,7 +87,7 @@ export default class MainPageView {
     const newHTMLElementButtonBoard = this.buttonAddBoard.nextElementSibling;
     this.buttonsBoards = [newHTMLElementButtonBoard, ...this.buttonsBoards];
     newHTMLElementButtonBoard.addEventListener(
-      'click', () => this.eventBus.call(MainPageEvent.openBoard, newHTMLElementButtonBoard.id),
+      'click', () => this.eventBus.call(MainPageEvent.openBoard, +newHTMLElementButtonBoard.dataset.id),
     );
   }
 }

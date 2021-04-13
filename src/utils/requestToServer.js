@@ -15,6 +15,9 @@ export const ApiRoutes = {
   postBoards: '/api/boards/',
   postRows: '/api/rows/',
   postTasks: '/api/tasks/',
+  deleteRow: '/api/rows/',
+  deleteTask: '/api/tasks/',
+  deleteBoard: '/api/boards/',
 };
 
 /**
@@ -1871,3 +1874,24 @@ export const taskCreate = () => ((id) => Promise.resolve({
     id,
   }),
 }))(debagIdTaskCreate += 1);
+
+/**
+ * @param {number} rowId
+ */
+// export const rowDelete = (rowId) => deleteEmpty(ApiRoutes.deleteRow + rowId);
+// eslint-disable-next-line no-return-assign
+export const rowDelete = () => Promise.resolve({ status: 200 });
+
+/**
+ * @param {number} taskId
+ */
+// export const taskDelete = (taskId) => deleteEmpty(ApiRoutes.deleteTask + taskDelete);
+// eslint-disable-next-line no-return-assign
+export const taskDelete = () => Promise.resolve({ status: 200 });
+
+/**
+ * @param {number} boardId
+ */
+// export const boardDelete = (boardId) => deleteEmpty(ApiRoutes.deleteBoard + boardId);
+// eslint-disable-next-line no-return-assign
+export const boardDelete = () => Promise.resolve({ status: 200 });
