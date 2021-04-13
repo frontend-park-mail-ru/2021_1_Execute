@@ -218,7 +218,7 @@ export default class BoardPageModel {
     const callError = (message) => this.eventBus.call(BoardPageEvent.boardsError, message);
 
     const row = this.getRowById(rowId);
-    const position = row.tasks.length + 1;
+    const position = row.tasks.length;
 
     // eslint-disable-next-line no-console
     console.log('addTask:', name, rowId, position, this);
