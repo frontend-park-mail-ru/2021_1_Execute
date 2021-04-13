@@ -179,10 +179,13 @@ export default class BoardPageView {
    */
   addDnDForTask(task) {
     task.onmousedown = (event) => {
-      const shiftX = event.clientX - task.offsetLeft;
+      console.log(event.clientX, event.offsetX);
+      const shiftX = event.offsetX;
       const shiftY = event.clientY - task.offsetTop;
 
       const ghostTask = createGhostTask(task);
+
+      document.body.style.overflow = 'hidden';
 
       const moveAt = (pageX, pageY) => {
         task.style.left = `${pageX - shiftX}px`;
@@ -192,6 +195,8 @@ export default class BoardPageView {
       const bufOnclick = task.onclick;
       let firstOnMouseMove = true;
       const allTasks = [...document.getElementsByClassName('task')];
+      let toLeft;
+      let toRight;
 
       function onMouseMove(onMouseMoveEvent) {
         if (firstOnMouseMove) {
@@ -203,9 +208,11 @@ export default class BoardPageView {
         }
 
         moveAt(onMouseMoveEvent.pageX, onMouseMoveEvent.pageY);
+        const correctCenterTask = getCenter(task);
+        correctCenterTask.x += document.getElementById('rows-container').scrollLeft;
         const [bestTask] = [...allTasks, ...document.getElementsByClassName('task-ghost-dnd')]
           .reduce(([ans, bestCost], iterTask) => {
-            const cost = delta(getCenter(iterTask), getCenter(task));
+            const cost = delta(getCenter(iterTask), correctCenterTask);
             return (Math.abs(cost.x) < Math.abs(bestCost.x)
               || (Math.abs(cost.x) === Math.abs(bestCost.x)
                 && Math.abs(cost.y) < Math.abs(bestCost.y)))
@@ -214,6 +221,32 @@ export default class BoardPageView {
               : [ans, bestCost];
           }, [undefined, { x: Infinity, y: Infinity }]);
         bestTask.after(ghostTask);
+
+        if (task.getBoundingClientRect().right > document.body.offsetWidth - 10) {
+          if (!toRight) {
+            toRight = setInterval(() => {
+              document.getElementById('rows-container').scrollBy(
+                (task.getBoundingClientRect().right - document.body.offsetWidth + 10)
+                ** 0.5 * 0.5, 0,
+              );
+            }, 1);
+          }
+        } else {
+          toRight = clearInterval(toRight);
+        }
+
+        if (task.getBoundingClientRect().left < 10) {
+          if (!toLeft) {
+            toLeft = setInterval(() => {
+              document.getElementById('rows-container').scrollBy(
+                -((10 - task.getBoundingClientRect().left)
+                  ** 0.5 * 0.5), 0,
+              );
+            }, 1);
+          }
+        } else {
+          toLeft = clearInterval(toLeft);
+        }
 
         firstOnMouseMove = false;
       }
@@ -227,6 +260,7 @@ export default class BoardPageView {
         ghostTask.remove();
         task.onmouseup = null;
         task.style = '';
+        document.body.style.overflow = '';
         setTimeout(() => {
           task.onclick = bufOnclick;
         }, 0.1);
