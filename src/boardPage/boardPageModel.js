@@ -19,7 +19,7 @@ export default class BoardPageModel {
       (rowId, name) => this.addTask(rowId, name));
     this.eventBus.subscribe(BoardPageEvent.clickDeleteRow, (rowId) => this.deleteRow(rowId));
     this.eventBus.subscribe(BoardPageEvent.clickDeleteTask, (rowId) => this.deleteTask(rowId));
-    this.eventBus.subscribe(BoardPageEvent.clickDeleteBoard, () => this.deleteBoard());
+    this.eventBus.subscribe(BoardPageEvent.clickDeleteBoard, this.deleteBoard.bind(this));
   }
 
   /**
@@ -105,7 +105,15 @@ export default class BoardPageModel {
         }),
     ]).then(([{ user, error: userError }, { board, error: boardError }]) => {
       this.user = user;
-      this.board = board;
+      if (board) {
+        board.rows = Object.values(board.rows)
+          .sort(({ position: p1 }, { position: p2 }) => p1 - p2); // нужен ли sort? уточнить у бека
+        board.rows.forEach(({ tasks }, index, rows) => {
+          rows[index].tasks = Object.values(tasks)
+            .sort(({ position: p1 }, { position: p2 }) => p1 - p2); // нужен ли sort?
+        });
+        this.board = board;
+      }
       if (userError) {
         callError(userError);
       } else if (boardError) {
@@ -118,7 +126,24 @@ export default class BoardPageModel {
   }
 
   getBoardForSettings() {
-    this.eventBus.call(BoardPageEvent.renderSettings, this.board);
+    this.eventBus.call(BoardPageEvent.renderPopupBoard, this.board);
+  }
+
+  /**
+   * @param {number} rowId
+   */
+  getRowById(rowId) {
+    return this.board.rows.find((row) => row.id === rowId);
+  }
+
+  /**
+   * @param {number} taskId
+   */
+  getTaskAndRowByTaskId(taskId) {
+    let task;
+    // eslint-disable-next-line no-return-assign
+    const row = this.board.rows.find(({ tasks }) => task = tasks.find(({ id }) => id === taskId));
+    return { row, task };
   }
 
   /**
@@ -131,8 +156,8 @@ export default class BoardPageModel {
       .then((resp) => {
         switch (resp.status) {
           case 200:
-            resp.json().then((task) => this.eventBus.call(
-              BoardPageEvent.renderTask, { ...task, id: taskId },
+            resp.json().then(({ task }) => this.eventBus.call(
+              BoardPageEvent.renderPopupTask, { ...task, id: taskId },
             ));
             break;
           case 401:
@@ -150,7 +175,7 @@ export default class BoardPageModel {
   addRow(name) {
     const callError = (message) => this.eventBus.call(BoardPageEvent.boardsError, message);
 
-    const position = Object.keys(this.board.rows).length;
+    const position = this.board.rows.length;
 
     // eslint-disable-next-line no-console
     console.log('addRow:', name, this.boardId, position, this);
@@ -173,11 +198,11 @@ export default class BoardPageModel {
         }
         return undefined;
       })
-      .then((row) => ({
-        ...row, position, name, tasks: {},
+      .then(({ id }) => ({
+        id, position, name, tasks: [],
       }))
       // eslint-disable-next-line no-return-assign
-      .then((row) => (this.board.rows[position] = row))
+      .then((row) => this.board.rows[row.position] = row)
       .then((row) => this.eventBus.call(BoardPageEvent.renderNewRow, row));
   }
 
@@ -188,8 +213,8 @@ export default class BoardPageModel {
   addTask(rowId, name) {
     const callError = (message) => this.eventBus.call(BoardPageEvent.boardsError, message);
 
-    const rowPosition = +Object.entries(this.board.rows).find(([, value]) => value.id === rowId)[0];
-    const position = Object.keys(this.board.rows[rowPosition].tasks).length;
+    const row = this.getRowById(rowId);
+    const position = row.tasks.length;
 
     // eslint-disable-next-line no-console
     console.log('addTask:', name, rowId, position, this);
@@ -212,12 +237,12 @@ export default class BoardPageModel {
         }
         return undefined;
       })
-      .then((task) => ({
-        ...task, position, name,
+      .then(({ id }) => ({
+        id, position, name,
       }))
       // eslint-disable-next-line no-return-assign
-      .then((task) => (this.board.rows[rowPosition].tasks[position] = task))
-      .then((task) => this.eventBus.call(BoardPageEvent.renderNewTask, task, rowPosition));
+      .then((task) => row.tasks[task.position] = task)
+      .then((task) => this.eventBus.call(BoardPageEvent.renderNewTask, task, row.position));
   }
 
   /**
@@ -225,10 +250,11 @@ export default class BoardPageModel {
    */
   deleteRow(rowId) {
     const callError = (message) => this.eventBus.call(BoardPageEvent.boardsError, message);
-    const rowPosition = +Object.entries(this.board.rows).find(([, value]) => value.id === rowId)[0];
+
+    const row = this.getRowById(rowId);
 
     // eslint-disable-next-line no-console
-    console.log('deleteRow:', rowId, rowPosition, this);
+    console.log('deleteRow:', rowId, row.position, this);
 
     rowDelete(rowId)
       .then((resp) => {
@@ -250,25 +276,11 @@ export default class BoardPageModel {
       })
       // eslint-disable-next-line no-return-assign
       .then(() => {
-        const newRows = {
-          ...Object
-            .entries(this.board.rows)
-            .slice(0, rowPosition)
-            .reduce((accum, [key, value]) => {
-              accum[key] = value;
-              return accum;
-            }, {}),
-          ...Object
-            .entries(this.board.rows)
-            .slice(rowPosition + 1)
-            .reduce((accum, [key, value]) => {
-              accum[key - 1] = value;
-              return accum;
-            }, {}),
-        };
-        this.board.rows = newRows;
+        this.board.rows.splice(row.position, 1);
+        // eslint-disable-next-line no-return-assign
+        this.board.rows.slice(row.position).forEach((iterRow) => iterRow.position -= 1);
       })
-      .then(() => this.eventBus.call(BoardPageEvent.renderDeleteRow, rowPosition));
+      .then(() => this.eventBus.call(BoardPageEvent.renderDeleteRow, rowId, row.position));
   }
 
   /**
@@ -276,15 +288,11 @@ export default class BoardPageModel {
    */
   deleteTask(taskId) {
     const callError = (message) => this.eventBus.call(BoardPageEvent.boardsError, message);
-    let taskPosition;
-    const rowPosition = +Object.entries(this.board.rows)
-      // eslint-disable-next-line no-return-assign
-      .find(([, { tasks }]) => !Number.isNaN(taskPosition = +Object.entries(tasks)
-        .find(([, { id }]) => id === taskId)?.[0]))[0];
-    taskPosition = +taskPosition;
+
+    const { row, task } = this.getTaskAndRowByTaskId(taskId);
 
     // eslint-disable-next-line no-console
-    console.log('deleteTask:', taskId, taskPosition, rowPosition, this);
+    console.log('deleteTask:', taskId, task.position, row.position, this);
 
     taskDelete(taskId)
       .then((resp) => {
@@ -306,25 +314,11 @@ export default class BoardPageModel {
       })
       // eslint-disable-next-line no-return-assign
       .then(() => {
-        const newTasks = {
-          ...Object
-            .entries(this.board.rows[rowPosition].tasks)
-            .slice(0, taskPosition)
-            .reduce((accum, [key, value]) => {
-              accum[key] = value;
-              return accum;
-            }, {}),
-          ...Object
-            .entries(this.board.rows[rowPosition].tasks)
-            .slice(taskPosition + 1)
-            .reduce((accum, [key, value]) => {
-              accum[key - 1] = value;
-              return accum;
-            }, {}),
-        };
-        this.board.rows[rowPosition].tasks = newTasks;
+        row.tasks.splice(task.position, 1);
+        // eslint-disable-next-line no-return-assign
+        row.tasks.slice(task.position).forEach((iterTask) => iterTask.position -= 1);
       })
-      .then(() => this.eventBus.call(BoardPageEvent.renderDeleteTask, rowPosition, taskPosition));
+      .then(() => this.eventBus.call(BoardPageEvent.renderDeleteTask, taskId));
   }
 
   deleteBoard() {

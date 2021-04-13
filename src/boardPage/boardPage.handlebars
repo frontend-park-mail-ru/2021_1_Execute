@@ -5,12 +5,12 @@
 {{/inline}}
 
 {{#*inline "row" row}}
-<div class="row menu-wrapper-column">
+<div id="row-{{id}}" data-id="{{id}}" class="row menu-wrapper-column">
     <div class="row-head">
         <span class="row-name span-textarea" role="textbox" contenteditable>{{name}}</span>
         <div id="row-delete-{{id}}" data-id="{{id}}" class="row-delete"></div>
     </div>
-    <div class="tasks-container menu-wrapper-column">
+    <div id="row-body-{{id}}" data-id="{{id}}"class="row-body tasks-container menu-wrapper-column">
         {{#each tasks}}
         {{> task task=this}}
         {{/each}}
@@ -87,7 +87,7 @@
                 </div>
             </div>
         </div>
-        <div class="rows-container">
+        <div id="rows-container" class="rows-container">
             {{#each board.rows}}
             {{> row row=this}}
             {{/each}}

@@ -14,14 +14,15 @@ export default class BoardPageView {
     this.eventBus = eventBus;
     this.eventBus.subscribe(BoardPageEvent.renderData,
       (user, board, users) => this.renderData(user, board, users));
-    this.eventBus.subscribe(BoardPageEvent.renderSettings,
-      (board) => this.renderPopup(board, false));
-    this.eventBus.subscribe(BoardPageEvent.renderTask, (task) => this.renderPopup(task, true));
+    this.eventBus.subscribe(BoardPageEvent.renderPopupBoard,
+      (board) => this.renderPopupBoard(board));
+    this.eventBus.subscribe(BoardPageEvent.renderPopupTask,
+      (task) => this.renderPopupTask(task));
     this.eventBus.subscribe(BoardPageEvent.renderNewTask,
       (task, rowId) => this.renderNewTask(task, rowId));
     this.eventBus.subscribe(BoardPageEvent.renderNewRow, (row) => this.renderNewRow(row));
     this.eventBus.subscribe(BoardPageEvent.renderDeleteRow,
-      (rowPosition) => this.renderDeleteRow(rowPosition));
+      (rowId, rowPosition) => this.renderDeleteRow(rowId, rowPosition));
     this.eventBus.subscribe(BoardPageEvent.renderDeleteTask,
       (rowPosition, taskPosition) => this.renderDeleteTask(rowPosition, taskPosition));
     this.eventBus.subscribe(BoardPageEvent.headerError,
@@ -124,32 +125,35 @@ export default class BoardPageView {
     ));
   }
 
-  renderPopup(data, isTask) {
-    if (isTask) {
-      // eslint-disable-next-line no-undef
-      this.popupContainer.innerHTML = Handlebars.templates.taskPopup(data);
-      // todo вынести таску в отдельную модель
-    } else {
-      // eslint-disable-next-line no-undef
-      this.popupContainer.innerHTML = Handlebars.templates.boardPopup(data);
-    }
+  renderPopupTask(task) {
+    // eslint-disable-next-line no-undef
+    this.popupContainer.innerHTML = Handlebars.templates.taskPopup(task);
+    // todo вынести таску в отдельную модель
+
     this.popupContainer.classList.remove('menu-hidden');
     document.body.classList.add('root-while-popup');
 
-    this.buttonClose = document.getElementById('btn-close');
-    this.buttonClose?.addEventListener('click', () => this.closePopup());
+    const buttonClose = document.getElementById('btn-close');
+    buttonClose.addEventListener('click', () => this.closePopup());
 
-    if (isTask) {
-      [this.buttonsTaskDelete] = document.getElementsByClassName('task-delete');
-      this.buttonsTaskDelete.addEventListener('click',
-        () => this.eventBus.call(
-          BoardPageEvent.clickDeleteTask, +this.buttonsTaskDelete.dataset.id,
-        ));
-    } else {
-      [this.buttonsBoardDelete] = document.getElementsByClassName('board-delete');
-      this.buttonsBoardDelete.addEventListener('click',
-        () => this.eventBus.call(BoardPageEvent.clickDeleteBoard));
-    }
+    const buttonsTaskDelete = document.getElementById(`task-delete-${task.id}`);
+    buttonsTaskDelete.addEventListener('click',
+      () => this.eventBus.call(BoardPageEvent.clickDeleteTask, +buttonsTaskDelete.dataset.id));
+  }
+
+  renderPopupBoard(board) {
+    // eslint-disable-next-line no-undef
+    this.popupContainer.innerHTML = Handlebars.templates.boardPopup(board);
+
+    this.popupContainer.classList.remove('menu-hidden');
+    document.body.classList.add('root-while-popup');
+
+    const buttonClose = document.getElementById('btn-close');
+    buttonClose.addEventListener('click', () => this.closePopup());
+
+    const buttonsBoardDelete = document.getElementById('board-delete');
+    buttonsBoardDelete.addEventListener('click',
+      () => this.eventBus.call(BoardPageEvent.clickDeleteBoard));
   }
 
   closePopup() {
@@ -177,16 +181,15 @@ export default class BoardPageView {
       // eslint-disable-next-line no-undef
       Handlebars.templates.boardPage({ ...row, singleRow: true }),
     );
-    this.buttonAddRow.before(newDocumentFragmentRow);
-    const newHTMLElementRow = this.buttonAddRow.previousElementSibling;
-    const newHTMLElementAddTask = newHTMLElementRow.lastElementChild;
+    document.getElementById('add-row-btn').before(newDocumentFragmentRow);
+    const newHTMLElementAddTask = document.getElementById(`add-card-to-${row.id}`);
     newHTMLElementAddTask.addEventListener(
       'click', () => this.eventBus.call(
         BoardPageEvent.clickAddTask, +newHTMLElementAddTask.dataset.id, 'Новая задача',
       ),
     );
     this.buttonsAddTask.push(newHTMLElementAddTask);
-    const newHTMLElementRowDelete = newHTMLElementRow.firstElementChild.lastElementChild;
+    const newHTMLElementRowDelete = document.getElementById(`row-delete-${row.id}`);
     newHTMLElementRowDelete.addEventListener(
       'click', () => this.eventBus.call(BoardPageEvent.clickDeleteRow, +newHTMLElementRowDelete.dataset.id),
     );
@@ -202,9 +205,8 @@ export default class BoardPageView {
       // eslint-disable-next-line no-undef
       Handlebars.templates.boardPage({ ...task, singleTask: true }),
     );
-    this.buttonsAddTask[rowPosition].previousElementSibling.append(newDocumentFragmentTask);
-    const newHTMLElementTask = this.buttonsAddTask[rowPosition]
-      .previousElementSibling.lastElementChild;
+    document.getElementsByClassName('row-body')[rowPosition].append(newDocumentFragmentTask);
+    const newHTMLElementTask = document.getElementById(`task-${task.id}`);
     newHTMLElementTask.addEventListener(
       'click', () => this.eventBus.call(BoardPageEvent.openTask, +newHTMLElementTask.dataset.id),
     );
@@ -212,24 +214,20 @@ export default class BoardPageView {
   }
 
   /**
+   * @param {number} rowId
    * @param {number} rowPosition
    */
-  renderDeleteRow(rowPosition) {
-    this.buttonsRowDelete[rowPosition].parentElement.parentElement.remove();
-    delete this.buttonsAddTask[rowPosition];
-    this.buttonsAddTask = this.buttonsAddTask.filter(() => true);
-    delete this.buttonsRowDelete[rowPosition];
-    this.buttonsRowDelete = this.buttonsRowDelete.filter(() => true);
+  renderDeleteRow(rowId, rowPosition) {
+    document.getElementById(`row-${rowId}`).remove();
+    this.buttonsAddTask.splice(rowPosition, 1);
+    this.buttonsRowDelete.splice(rowPosition, 1);
   }
 
   /**
-   * @param {number} rowPosition
-   * @param {number} taskPosition
+   * @param {number} taskId
    */
-  renderDeleteTask(rowPosition, taskPosition) {
+  renderDeleteTask(taskId) {
     this.closePopup();
-    const needTask = this.buttonsRowDelete[rowPosition].parentElement
-      .nextElementSibling.children[taskPosition];
-    needTask.remove();
+    document.getElementById(`task-${taskId}`).remove();
   }
 }
