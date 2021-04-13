@@ -179,9 +179,8 @@ export default class BoardPageView {
    */
   addDnDForTask(task) {
     task.onmousedown = (event) => {
-      console.log(event.clientX, event.offsetX);
       const shiftX = event.offsetX;
-      const shiftY = event.clientY - task.offsetTop;
+      const shiftY = event.offsetY;
 
       const ghostTask = createGhostTask(task);
 
@@ -194,9 +193,11 @@ export default class BoardPageView {
 
       const bufOnclick = task.onclick;
       let firstOnMouseMove = true;
-      const allTasks = [...document.getElementsByClassName('task')];
+      const allRows = [...document.getElementsByClassName('row-body')];
       let toLeft;
       let toRight;
+      let toUp;
+      let toDown;
 
       function onMouseMove(onMouseMoveEvent) {
         if (firstOnMouseMove) {
@@ -210,13 +211,21 @@ export default class BoardPageView {
         moveAt(onMouseMoveEvent.pageX, onMouseMoveEvent.pageY);
         const correctCenterTask = getCenter(task);
         correctCenterTask.x += document.getElementById('rows-container').scrollLeft;
-        const [bestTask] = [...allTasks, ...document.getElementsByClassName('task-ghost-dnd')]
+
+        const [bestRow] = allRows
+          .reduce(([ans, bestCost], iterRow) => {
+            const cost = delta(getCenter(iterRow), correctCenterTask);
+            return Math.abs(cost.x) < Math.abs(bestCost.x)
+              ? [iterRow, cost]
+              : [ans, bestCost];
+          }, [undefined, { x: Infinity, y: Infinity }]);
+
+        correctCenterTask.y += bestRow.scrollTop;
+
+        const [bestTask] = [...bestRow.getElementsByClassName('task')]
           .reduce(([ans, bestCost], iterTask) => {
             const cost = delta(getCenter(iterTask), correctCenterTask);
-            return (Math.abs(cost.x) < Math.abs(bestCost.x)
-              || (Math.abs(cost.x) === Math.abs(bestCost.x)
-                && Math.abs(cost.y) < Math.abs(bestCost.y)))
-              && iterTask !== task
+            return Math.abs(cost.y) < Math.abs(bestCost.y)
               ? [iterTask, cost]
               : [ans, bestCost];
           }, [undefined, { x: Infinity, y: Infinity }]);
@@ -246,6 +255,31 @@ export default class BoardPageView {
           }
         } else {
           toLeft = clearInterval(toLeft);
+        }
+
+        if (task.getBoundingClientRect().top < bestRow.offsetTop) {
+          if (!toUp) {
+            toUp = setInterval(() => {
+              bestRow.scrollBy(
+                0, -((bestRow.offsetTop - task.getBoundingClientRect().top) ** 0.5),
+              );
+            }, 1);
+          }
+        } else {
+          toUp = clearInterval(toUp);
+        }
+
+        if (task.getBoundingClientRect().bottom > bestRow.offsetTop + bestRow.offsetHeight) {
+          if (!toDown) {
+            toDown = setInterval(() => {
+              bestRow.scrollBy(
+                0, (task.getBoundingClientRect().bottom - bestRow.offsetTop - bestRow.offsetHeight)
+              ** 0.5,
+              );
+            }, 1);
+          }
+        } else {
+          toDown = clearInterval(toDown);
         }
 
         firstOnMouseMove = false;
