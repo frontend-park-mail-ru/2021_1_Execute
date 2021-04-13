@@ -1,5 +1,6 @@
 import {
-  profileGet, boardGetById, taskGetById, rowCreate, taskCreate, rowDelete, taskDelete, boardDelete,
+  profileGet, boardGetById, taskGetById, rowCreate, taskCreate, rowDelete,
+  taskDelete, boardDelete, taskPatch,
 } from '../utils/requestToServer.js';
 import { BoardPageEvent, BoardPageMessage } from './boardPageEvents.js';
 
@@ -20,6 +21,8 @@ export default class BoardPageModel {
     this.eventBus.subscribe(BoardPageEvent.clickDeleteRow, (rowId) => this.deleteRow(rowId));
     this.eventBus.subscribe(BoardPageEvent.clickDeleteTask, (rowId) => this.deleteTask(rowId));
     this.eventBus.subscribe(BoardPageEvent.clickDeleteBoard, this.deleteBoard.bind(this));
+    this.eventBus.subscribe(BoardPageEvent.clickUpdateTask,
+      (taskId, taskName, taskDescription) => this.updateTask(taskId, taskName, taskDescription));
   }
 
   /**
@@ -340,6 +343,40 @@ export default class BoardPageModel {
             this.eventBus.call(BoardPageEvent.login);
             break;
           case 400:
+          default: {
+            const err = { ...BoardPageMessage.unknownError };
+            err.message += resp.status;
+            callError(err);
+            return { error: err };
+          }
+        }
+        return undefined;
+      });
+  }
+
+  /**
+   *
+   * @param {number} taskId
+   * @param {string} taskName
+   * @param {string} taskDescription
+   */
+  updateTask(taskId, taskName, taskDescription) {
+    const callError = (message) => this.eventBus.call(BoardPageEvent.boardError, message);
+
+    // eslint-disable-next-line no-console
+    console.log('updateBoard:', { taskId, taskName, taskDescription });
+    taskPatch({
+      name: taskName,
+      description: taskDescription,
+    }, taskId)
+      .then((resp) => {
+        switch (resp.status) {
+          case 200:
+            this.eventBus.call(BoardPageEvent.renderUpdateTask, +taskId, taskName);
+            break;
+          case 401:
+            this.eventBus.call(BoardPageEvent.login);
+            break;
           default: {
             const err = { ...BoardPageMessage.unknownError };
             err.message += resp.status;

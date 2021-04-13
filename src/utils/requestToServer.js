@@ -1,7 +1,7 @@
 const PORT = 1323;
 // Don't change or move FIRST Line
-const BACKEND_API_ADDRESS = `http://89.208.199.114:${PORT}/api`;
-// const BACKEND_API_ADDRESS = `http://localhost:${PORT}/api`;
+// const BACKEND_API_ADDRESS = `http://89.208.199.114:${PORT}/api`;
+const BACKEND_API_ADDRESS = `http://localhost:${PORT}/api`;
 
 export const ApiRoutes = {
   login: '/login/',
@@ -18,6 +18,7 @@ export const ApiRoutes = {
   deleteRow: '/rows/',
   deleteTask: '/tasks/',
   deleteBoard: '/boards/',
+  updateTask: '/tasks/',
 };
 
 /**
@@ -185,3 +186,9 @@ export const taskDelete = (taskId) => deleteEmpty(`${ApiRoutes.deleteTask + task
  * @param {number} boardId
  */
 export const boardDelete = (boardId) => deleteEmpty(`${ApiRoutes.deleteBoard + boardId}/`);
+
+/**
+ * @param {Object} taskInfo
+ * @param {number} taskId
+ */
+export const taskPatch = (taskInfo, taskId) => patchJson(taskInfo, `${ApiRoutes.updateTask + taskId}/`);
