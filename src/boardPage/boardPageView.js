@@ -3,6 +3,50 @@ import '../header/header.handlebars.js';
 import './popupsTemplates/boardPopup.handlebars.js';
 import './popupsTemplates/taskPopup.handlebars.js';
 import { BoardPageEvent } from './boardPageEvents.js';
+import { replaceObjectPropForNSeconds } from '../utils/temporaryReplacement.js';
+
+/**
+ * @param {HTMLElement} task
+ * @param {number} height
+ */
+const fixHeight = (task, height) => {
+  task.style.height = `${height}px`;
+  task.style['min-height'] = task.style.height;
+  task.style['max-height'] = task.style.height;
+};
+
+/**
+ * @param {HTMLElement} task
+ * @param {number} width
+ */
+const fixWidth = (task, width) => {
+  task.style.width = `${width}px`;
+  task.style['min-width'] = task.style.width;
+  task.style['max-width'] = task.style.width;
+};
+
+/**
+ * @param {HTMLElement} task
+ * @return {HTMLElement}
+ */
+const createGhostTask = (task) => {
+  const ghostTask = document.createElement('div');
+  ghostTask.classList.add('task-ghost-dnd');
+  fixHeight(ghostTask, task.offsetHeight);
+  fixWidth(ghostTask, task.offsetWidth);
+  return ghostTask;
+};
+
+/**
+ * @param {HTMLElement} task
+ * @return {{x:number,y:number}}
+ */
+const getCenter = (task) => ({
+  x: task.offsetLeft + task.offsetWidth / 2,
+  y: task.offsetTop + task.offsetHeight / 2,
+});
+
+const delta = ({ x: x1, y: y1 }, { x: x2, y: y2 }) => ({ x: (x1 - x2), y: (y1 - y2) });
 
 export default class BoardPageView {
   /**
@@ -95,6 +139,7 @@ export default class BoardPageView {
 
     this.findNeedElem();
     this.addEventListeners();
+    this.addDnDForTasks();
   }
 
   findNeedElem() {
@@ -114,15 +159,82 @@ export default class BoardPageView {
     this.buttonSettings?.addEventListener('click', () => this.eventBus.call(BoardPageEvent.openSettings));
     this.buttonFavorite?.addEventListener('click', this.addToFavorite);
     this.buttonAddRow?.addEventListener('click', () => this.eventBus.call(BoardPageEvent.clickAddRow, 'Новая колонка'));
-    this.buttonsTask.forEach((elem) => elem.addEventListener(
-      'click', () => this.eventBus.call(BoardPageEvent.openTask, +elem.dataset.id),
-    ));
+    this.buttonsTask.forEach((elem) => {
+      elem.onclick = () => this.eventBus.call(BoardPageEvent.openTask, +elem.dataset.id);
+    });
     this.buttonsAddTask.forEach((elem) => elem.addEventListener(
       'click', () => this.eventBus.call(BoardPageEvent.clickAddTask, +elem.dataset.id, 'Новая задача'),
     ));
     this.buttonsRowDelete.forEach((elem) => elem.addEventListener(
       'click', () => this.eventBus.call(BoardPageEvent.clickDeleteRow, +elem.dataset.id),
     ));
+  }
+
+  addDnDForTasks() {
+    [...document.getElementsByClassName('task')].forEach((task) => this.addDnDForTask(task));
+  }
+
+  /**
+   * @param {HTMLElement} task
+   */
+  addDnDForTask(task) {
+    task.onmousedown = (event) => {
+      const shiftX = event.clientX - task.offsetLeft;
+      const shiftY = event.clientY - task.offsetTop;
+
+      const ghostTask = createGhostTask(task);
+
+      const moveAt = (pageX, pageY) => {
+        task.style.left = `${pageX - shiftX}px`;
+        task.style.top = `${pageY - shiftY}px`;
+      };
+
+      const bufOnclick = task.onclick;
+      let firstOnMouseMove = true;
+      const allTasks = [...document.getElementsByClassName('task')];
+
+      function onMouseMove(onMouseMoveEvent) {
+        if (firstOnMouseMove) {
+          task.after(ghostTask);
+          fixHeight(task, task.offsetHeight - 20);
+          fixWidth(task, task.offsetWidth - 20);
+          task.classList.replace('task', 'task-dnd');
+          task.onclick = () => { };
+        }
+
+        moveAt(onMouseMoveEvent.pageX, onMouseMoveEvent.pageY);
+        const [bestTask] = [...allTasks, ...document.getElementsByClassName('task-ghost-dnd')]
+          .reduce(([ans, bestCost], iterTask) => {
+            const cost = delta(getCenter(iterTask), getCenter(task));
+            return (Math.abs(cost.x) < Math.abs(bestCost.x)
+              || (Math.abs(cost.x) === Math.abs(bestCost.x)
+                && Math.abs(cost.y) < Math.abs(bestCost.y)))
+              && iterTask !== task
+              ? [iterTask, cost]
+              : [ans, bestCost];
+          }, [undefined, { x: Infinity, y: Infinity }]);
+        bestTask.after(ghostTask);
+
+        firstOnMouseMove = false;
+      }
+
+      document.addEventListener('mousemove', onMouseMove);
+
+      task.onmouseup = () => {
+        task.classList.replace('task-dnd', 'task');
+        document.removeEventListener('mousemove', onMouseMove);
+        ghostTask.after(task);
+        ghostTask.remove();
+        task.onmouseup = null;
+        task.style = '';
+        setTimeout(() => {
+          task.onclick = bufOnclick;
+        }, 0.1);
+        replaceObjectPropForNSeconds(task.style, 'transition', 'none', {}, 0.1);
+      };
+    };
+
+    task.ondragstart = () => false;
   }
 
   renderPopupTask(task) {
@@ -207,10 +319,11 @@ export default class BoardPageView {
     );
     document.getElementsByClassName('row-body')[rowPosition].append(newDocumentFragmentTask);
     const newHTMLElementTask = document.getElementById(`task-${task.id}`);
-    newHTMLElementTask.addEventListener(
-      'click', () => this.eventBus.call(BoardPageEvent.openTask, +newHTMLElementTask.dataset.id),
+    newHTMLElementTask.onclick = () => this.eventBus.call(
+      BoardPageEvent.openTask, +newHTMLElementTask.dataset.id,
     );
     this.buttonsTask.push(newHTMLElementTask);
+    this.addDnDForTask(newHTMLElementTask);
   }
 
   /**
