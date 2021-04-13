@@ -30,7 +30,7 @@ export default class BoardPageView {
     this.eventBus.subscribe(BoardPageEvent.boardError,
       (user, board, error) => this.boardErrorBoard(user, board, error));
     this.eventBus.subscribe(BoardPageEvent.renderUpdateTask,
-      (taskId, taskName) => this.renderUpdateTask(taskId, taskName));
+      (taskInfo) => this.renderUpdateTask(taskInfo));
   }
 
   /**
@@ -154,7 +154,11 @@ export default class BoardPageView {
     const newTaskName = taskName !== '' ? taskName : task.name;
     const newTaskDescription = taskDescription !== '' ? taskDescription : task.description;
 
-    this.eventBus.call(BoardPageEvent.clickUpdateTask, +task.id, newTaskName, newTaskDescription);
+    this.eventBus.call(BoardPageEvent.clickUpdateTask, {
+      id: task.id,
+      name: newTaskName,
+      description: newTaskDescription,
+    });
   }
 
   renderPopupBoard(board) {
@@ -248,11 +252,13 @@ export default class BoardPageView {
   }
 
   /**
-   * @param {number} taskId
-   * @param {string} taskName
+   *
+   * @param {Object} task
+   * @param {number} task.id
+   * @param {string} task.name
    */
-  renderUpdateTask(taskId, taskName) {
+  renderUpdateTask(task) {
     this.closePopup();
-    document.getElementById(`task-${taskId}`).innerText = taskName;
+    document.getElementById(`task-${task.id}`).innerText = task.name;
   }
 }

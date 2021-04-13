@@ -355,24 +355,24 @@ export default class BoardPageModel {
   }
 
   /**
-   *
-   * @param {number} taskId
-   * @param {string} taskName
-   * @param {string} taskDescription
+   * @param {Object} task
+   * @param {number} task.id
+   * @param {string} task.name
+   * @param {string} task.description
    */
-  updateTask(taskId, taskName, taskDescription) {
+  updateTask(task) {
     const callError = (message) => this.eventBus.call(BoardPageEvent.boardError, message);
 
     // eslint-disable-next-line no-console
-    console.log('updateBoard:', { taskId, taskName, taskDescription });
+    console.log('updateTask:', { task });
     taskPatch({
-      name: taskName,
-      description: taskDescription,
-    }, taskId)
+      name: task.name,
+      description: task.description,
+    }, task.id)
       .then((resp) => {
         switch (resp.status) {
           case 200:
-            this.eventBus.call(BoardPageEvent.renderUpdateTask, +taskId, taskName);
+            this.eventBus.call(BoardPageEvent.renderUpdateTask, { id: task.id, name: task.name });
             break;
           case 401:
             this.eventBus.call(BoardPageEvent.login);
