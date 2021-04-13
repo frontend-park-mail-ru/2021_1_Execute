@@ -21,8 +21,7 @@ export default class BoardPageModel {
     this.eventBus.subscribe(BoardPageEvent.clickDeleteRow, (rowId) => this.deleteRow(rowId));
     this.eventBus.subscribe(BoardPageEvent.clickDeleteTask, (rowId) => this.deleteTask(rowId));
     this.eventBus.subscribe(BoardPageEvent.clickDeleteBoard, this.deleteBoard.bind(this));
-    this.eventBus.subscribe(BoardPageEvent.clickUpdateTask,
-      (taskId, taskName, taskDescription) => this.updateTask(taskId, taskName, taskDescription));
+    this.eventBus.subscribe(BoardPageEvent.clickUpdateTask, (task) => this.updateTask(task));
   }
 
   /**
