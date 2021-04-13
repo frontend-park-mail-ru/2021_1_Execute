@@ -106,11 +106,10 @@ export default class BoardPageModel {
     ]).then(([{ user, error: userError }, { board, error: boardError }]) => {
       this.user = user;
       if (board) {
-        board.rows = Object.values(board.rows)
-          .sort(({ position: p1 }, { position: p2 }) => p1 - p2); // нужен ли sort? уточнить у бека
+        const sorter = ({ position: p1 }, { position: p2 }) => p1 - p2;
+        board.rows = Object.values(board.rows).sort(sorter); // нужен ли sort? уточнить у бека
         board.rows.forEach(({ tasks }, index, rows) => {
-          rows[index].tasks = Object.values(tasks)
-            .sort(({ position: p1 }, { position: p2 }) => p1 - p2); // нужен ли sort?
+          rows[index].tasks = Object.values(tasks).sort(sorter); // нужен ли sort?
         });
         this.board = board;
       }
@@ -141,8 +140,10 @@ export default class BoardPageModel {
    */
   getTaskAndRowByTaskId(taskId) {
     let task;
-    // eslint-disable-next-line no-return-assign
-    const row = this.board.rows.find(({ tasks }) => task = tasks.find(({ id }) => id === taskId));
+    const row = this.board.rows.find(({ tasks }) => {
+      task = tasks.find(({ id }) => id === taskId);
+      return task;
+    });
     return { row, task };
   }
 
@@ -201,9 +202,10 @@ export default class BoardPageModel {
       .then(({ id }) => ({
         id, position, name, tasks: [],
       }))
-      // eslint-disable-next-line no-return-assign
-      .then((row) => this.board.rows[row.position] = row)
-      .then((row) => this.eventBus.call(BoardPageEvent.renderNewRow, row));
+      .then((row) => {
+        this.board.rows[row.position] = row;
+        this.eventBus.call(BoardPageEvent.renderNewRow, row);
+      });
   }
 
   /**
@@ -240,9 +242,10 @@ export default class BoardPageModel {
       .then(({ id }) => ({
         id, position, name,
       }))
-      // eslint-disable-next-line no-return-assign
-      .then((task) => row.tasks[task.position] = task)
-      .then((task) => this.eventBus.call(BoardPageEvent.renderNewTask, task, row.position));
+      .then((task) => {
+        row.tasks[task.position] = task;
+        this.eventBus.call(BoardPageEvent.renderNewTask, task, row.position);
+      });
   }
 
   /**
@@ -274,11 +277,11 @@ export default class BoardPageModel {
         }
         return undefined;
       })
-      // eslint-disable-next-line no-return-assign
       .then(() => {
         this.board.rows.splice(row.position, 1);
-        // eslint-disable-next-line no-return-assign
-        this.board.rows.slice(row.position).forEach((iterRow) => iterRow.position -= 1);
+        this.board.rows.slice(row.position).forEach((iterRow) => {
+          iterRow.position -= 1;
+        });
       })
       .then(() => this.eventBus.call(BoardPageEvent.renderDeleteRow, rowId, row.position));
   }
@@ -312,11 +315,11 @@ export default class BoardPageModel {
         }
         return undefined;
       })
-      // eslint-disable-next-line no-return-assign
       .then(() => {
         row.tasks.splice(task.position, 1);
-        // eslint-disable-next-line no-return-assign
-        row.tasks.slice(task.position).forEach((iterTask) => iterTask.position -= 1);
+        row.tasks.slice(task.position).forEach((iterTask) => {
+          iterTask.position -= 1;
+        });
       })
       .then(() => this.eventBus.call(BoardPageEvent.renderDeleteTask, taskId));
   }
