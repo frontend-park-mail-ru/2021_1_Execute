@@ -1,7 +1,15 @@
 import {
-  profileGet, boardGetById, taskGetById, rowCreate, taskCreate, rowDelete,
-  taskDelete, boardDelete, taskPatch,
+  profileGet,
+  boardGetById,
+  taskGetById,
+  rowCreate,
+  taskCreate,
+  rowDelete,
+  taskDelete,
+  boardDelete,
+  taskPatch,
 } from '../utils/requestToServer.js';
+
 import { BoardPageEvent, BoardPageMessage } from './boardPageEvents.js';
 
 export default class BoardPageModel {
