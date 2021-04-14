@@ -2,7 +2,7 @@ export const RegistrationEvents = {
   clickEnter: 'registration.model.clickEnter',
   registrationError: 'registration.view.registrationError',
   registrationWait: 'registration.view.registrationWait',
-  profile: 'profile.controller.start',
+  mainPage: 'mainPage.controller.start',
   login: 'login.controller.start',
   render: 'registration.view.render',
 };
