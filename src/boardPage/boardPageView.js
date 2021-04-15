@@ -109,11 +109,11 @@ export default class BoardPageView {
    * @property {number} id
    * @property {number} position
    * @property {string} name
-   * @property {taskOutter[]} tasks
+   * @property {taskOuter[]} tasks
    */
 
   /**
-   * @typedef {Object} taskOutter
+   * @typedef {Object} taskOuter
    * @property {string} name
    * @property {number} id
    * @property {number} position
@@ -292,6 +292,13 @@ export default class BoardPageView {
         document.removeEventListener('mousemove', onMouseMove);
         ghostTask.after(task);
         ghostTask.remove();
+        const newRowId = task.parentNode.dataset.id;
+        const newPosition = [...task.parentElement.children].indexOf(task) - 1;
+        this.eventBus.call(BoardPageEvent.moveTask, {
+          taskId: +task.dataset.id,
+          newRowId: +newRowId,
+          newPosition,
+        });
         task.onmouseup = null;
         task.style = '';
         document.body.style.overflow = '';
@@ -377,7 +384,7 @@ export default class BoardPageView {
   }
 
   /**
-   * @param {taskOutter} task
+   * @param {taskOuter} task
    * @param {number} rowPosition
    */
   renderNewTask(task, rowPosition) {

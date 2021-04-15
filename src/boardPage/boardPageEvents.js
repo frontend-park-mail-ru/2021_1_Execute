@@ -8,6 +8,7 @@ export const BoardPageEvent = {
   openSettings: 'boardPage.model.getBoard',
   renderPopupBoard: 'boardPage.view.renderPopupBoard',
   openTask: 'boardPage.model.getTask',
+  moveTask: 'boardPage.model.moveTask',
   renderPopupTask: 'boardPage.view.renderPopupTask',
   renderNewTask: 'boardPage.view.renderNewTask',
   renderNewRow: 'boardPage.view.renderNewRow',

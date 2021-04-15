@@ -1,5 +1,13 @@
 import {
-  profileGet, boardGetById, taskGetById, rowCreate, taskCreate, rowDelete, taskDelete, boardDelete,
+  profileGet,
+  boardGetById,
+  taskGetById,
+  rowCreate,
+  taskCreate,
+  rowDelete,
+  taskDelete,
+  boardDelete,
+  rowPatch,
 } from '../utils/requestToServer.js';
 import { BoardPageEvent, BoardPageMessage } from './boardPageEvents.js';
 
@@ -20,6 +28,9 @@ export default class BoardPageModel {
     this.eventBus.subscribe(BoardPageEvent.clickDeleteRow, (rowId) => this.deleteRow(rowId));
     this.eventBus.subscribe(BoardPageEvent.clickDeleteTask, (rowId) => this.deleteTask(rowId));
     this.eventBus.subscribe(BoardPageEvent.clickDeleteBoard, this.deleteBoard.bind(this));
+    this.eventBus.subscribe(BoardPageEvent.moveTask, (moveInfo) => this.moveTask(moveInfo));
+
+    this.sorter = ({ position: p1 }, { position: p2 }) => p1 - p2;
   }
 
   /**
@@ -106,10 +117,9 @@ export default class BoardPageModel {
     ]).then(([{ user, error: userError }, { board, error: boardError }]) => {
       this.user = user;
       if (board) {
-        const sorter = ({ position: p1 }, { position: p2 }) => p1 - p2;
-        board.rows = Object.values(board.rows).sort(sorter); // нужен ли sort? уточнить у бека
+        board.rows = Object.values(board.rows).sort(this.sorter);
         board.rows.forEach(({ tasks }, index, rows) => {
-          rows[index].tasks = Object.values(tasks).sort(sorter); // нужен ли sort?
+          rows[index].tasks = Object.values(tasks).sort(this.sorter);
         });
         this.board = board;
       }
@@ -349,6 +359,87 @@ export default class BoardPageModel {
         }
         return undefined;
       });
+  }
+
+  /**
+   * @param {object} task
+   * @param {number} task.taskId
+   * @param {number} task.newRowId
+   * @param {number} task.newPosition
+   */
+  moveTask(moveInfo) {
+    const { row, task } = this.getTaskAndRowByTaskId(moveInfo.taskId);
+
+    const isCarryOver = row.id !== moveInfo.newRowId;
+    if (!isCarryOver && task.position === moveInfo.newPosition) {
+      return;
+    }
+    const newRow = this.getRowById(moveInfo.newRowId);
+
+    const changePositions = (rowPos,
+      newPosition, oldPosition) => {
+      this.board.rows[rowPos].tasks.slice().forEach((iterTask) => {
+        if (iterTask.id === task.id) {
+          iterTask.position = newPosition;
+        }
+        if (oldPosition > newPosition
+          && iterTask.position >= newPosition && iterTask.position < oldPosition) {
+          iterTask.position += 1;
+        }
+        if (oldPosition < newPosition
+          && iterTask.position <= newPosition && iterTask.position > oldPosition) {
+          iterTask.position -= 1;
+        }
+      });
+      this.board.rows[rowPos].tasks.sort(this.sorter);
+    };
+    const carryOverSuccess = () => {
+      this.board.rows[row.position].tasks.splice(task.position, 1);
+      changePositions(row.position, row.tasks.length, task.position);
+      this.board.rows[newRow.position].tasks.push(task);
+      changePositions(newRow.position, moveInfo.newPosition, newRow.tasks.length - 1);
+    };
+    let request;
+    if (isCarryOver) {
+      // eslint-disable-next-line no-console
+      console.log('Carry Over:', task, 'rowId:', row.id, 'newRowId:', moveInfo.newRowId, this);
+      request = rowPatch(moveInfo.newRowId, {
+        carry_over: {
+          card_id: moveInfo.taskId,
+          new_position: moveInfo.newPosition,
+        },
+      });
+    } else {
+      // eslint-disable-next-line no-console
+      console.log('Move:', task, 'taskPosition', task.position, 'newTaskPosition', moveInfo.newPosition, this);
+      request = rowPatch(moveInfo.newRowId, {
+        move: {
+          card_id: task.id,
+          new_position: moveInfo.newPosition,
+        },
+      });
+    }
+    request.then((resp) => {
+      switch (resp.status) {
+        case 200:
+          if (isCarryOver) {
+            carryOverSuccess();
+          } else {
+            changePositions(row.position, moveInfo.newPosition, task.position);
+          }
+          break;
+        case 401:
+          task.position = moveInfo.newPosition;
+          this.eventBus.call(BoardPageEvent.login);
+          break;
+        case 400:
+        default: {
+          const err = { ...BoardPageMessage.unknownError };
+          err.message += resp.status;
+          this.eventBus.call(BoardPageEvent.boardsError, err);
+        }
+      }
+    });
   }
 
   addToFavorite() {
