@@ -190,3 +190,9 @@ export const boardDelete = (boardId) => deleteEmpty(`${ApiRoutes.boards + boardI
  * @param {Object} [patchInfo.move] Перенос внутри столбца
  */
 export const rowPatch = (rowId, patchInfo) => patchJson(patchInfo, `${ApiRoutes.rows + rowId}/`);
+
+/**
+ * @param {Object} taskInfo
+ * @param {number} taskId
+ */
+export const taskPatch = (taskInfo, taskId) => patchJson(taskInfo, `${ApiRoutes.tasks + taskId}/`);

@@ -16,7 +16,7 @@ export default class LoginModel {
     isAuthorized()
       .then((resp) => {
         if (resp.status === 200) {
-          this.eventBus.call(LoginEvents.profile);
+          this.eventBus.call(LoginEvents.mainPage);
         } else {
           this.eventBus.call(LoginEvents.render);
         }
@@ -33,7 +33,7 @@ export default class LoginModel {
         .then((resp) => {
           switch (resp.status) {
             case 200:
-              this.eventBus.call(LoginEvents.profile);
+              this.eventBus.call(LoginEvents.mainPage);
               break;
             case 400:
               callError(LoginMessage.unknownError);

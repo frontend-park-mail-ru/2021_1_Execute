@@ -8,7 +8,9 @@ import {
   taskDelete,
   boardDelete,
   rowPatch,
+  taskPatch,
 } from '../utils/requestToServer.js';
+
 import { BoardPageEvent, BoardPageMessage } from './boardPageEvents.js';
 
 export default class BoardPageModel {
@@ -28,6 +30,7 @@ export default class BoardPageModel {
     this.eventBus.subscribe(BoardPageEvent.clickDeleteRow, (rowId) => this.deleteRow(rowId));
     this.eventBus.subscribe(BoardPageEvent.clickDeleteTask, (rowId) => this.deleteTask(rowId));
     this.eventBus.subscribe(BoardPageEvent.clickDeleteBoard, this.deleteBoard.bind(this));
+    this.eventBus.subscribe(BoardPageEvent.clickUpdateTask, (task) => this.updateTask(task));
     this.eventBus.subscribe(BoardPageEvent.moveTask, (moveInfo) => this.moveTask(moveInfo));
 
     this.sorter = ({ position: p1 }, { position: p2 }) => p1 - p2;
@@ -440,6 +443,39 @@ export default class BoardPageModel {
         }
       }
     });
+  }
+
+  /* @param {Object} task
+   * @param {number} task.id
+   * @param {string} task.name
+   * @param {string} task.description
+   */
+  updateTask(task) {
+    const callError = (message) => this.eventBus.call(BoardPageEvent.boardError, message);
+
+    // eslint-disable-next-line no-console
+    console.log('updateTask:', { task });
+    taskPatch({
+      name: task.name,
+      description: task.description,
+    }, task.id)
+      .then((resp) => {
+        switch (resp.status) {
+          case 200:
+            this.eventBus.call(BoardPageEvent.renderUpdateTask, { id: task.id, name: task.name });
+            break;
+          case 401:
+            this.eventBus.call(BoardPageEvent.login);
+            break;
+          default: {
+            const err = { ...BoardPageMessage.unknownError };
+            err.message += resp.status;
+            callError(err);
+            return { error: err };
+          }
+        }
+        return undefined;
+      });
   }
 
   addToFavorite() {

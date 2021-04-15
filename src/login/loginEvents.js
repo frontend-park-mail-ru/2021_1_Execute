@@ -2,7 +2,7 @@ export const LoginEvents = {
   clickEnter: 'login.model.clickEnter',
   loginError: 'login.view.loginError',
   loginWait: 'login.view.loginWait',
-  profile: 'profile.controller.start',
+  mainPage: 'mainPage.controller.start',
   registration: 'registration.controller.start',
   render: 'login.view.render',
 };
