@@ -91,7 +91,6 @@ export default class BoardPageView {
     // eslint-disable-next-line no-undef
     this.root.innerHTML = Handlebars.templates.header(user);
     // eslint-disable-next-line no-undef
-    console.log(avatars);
     this.root.innerHTML += Handlebars.templates.boardPage({ board, avatars, error });
 
     this.findNeedElem();
