@@ -32,9 +32,9 @@ export default class BoardPageModel {
    * @returns {Object} Объект с массивом аватарок и количеством скрытых аватарок
    */
   getAvatarsForView(board) {
-    const admins = board.users?.admins === undefined ? [] : board.users?.admins;
-    const members = board.users?.members === undefined ? [] : board.users?.members;
-    const users = [board.users?.owner, ...admins, ...members];
+    const admins = board.users?.admins || board.users?.admins;
+    const members = board.users?.members || board.users?.members;
+    const users = [board.users.owner, ...admins, ...members];
     const usersWithAvatars = users.filter((user) => user.avatar !== '');
     const usersWithoutAvatars = users.length - usersWithAvatars.length;
     const maxAvatars = 3;
