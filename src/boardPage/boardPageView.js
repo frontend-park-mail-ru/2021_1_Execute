@@ -182,7 +182,6 @@ export default class BoardPageView {
   addDnDForTask(task) {
     task.onmousedown = (eventMouseDown) => {
       document.onmouseup?.(eventMouseDown);
-      console.log(eventMouseDown.button);
       if (eventMouseDown.button !== 0) {
         return;
       }
