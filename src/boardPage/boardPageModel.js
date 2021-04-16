@@ -3,6 +3,8 @@ import {
 } from '../utils/requestToServer.js';
 import { BoardPageEvent, BoardPageMessage } from './boardPageEvents.js';
 
+const maxAvatars = 5;
+
 export default class BoardPageModel {
   /**
    * @param {!EventBus}
@@ -36,7 +38,6 @@ export default class BoardPageModel {
     const members = board.users?.members || [];
     const users = [board.users.owner, ...admins, ...members];
     users.sort((a, b) => a.avatar.localeCompare(b.avatar));
-    const maxAvatars = 5;
     const avatars = {};
     if (users.length > maxAvatars) {
       avatars.avatars = users.slice(0, maxAvatars);
