@@ -181,7 +181,7 @@
 }
 
 .task-delete, .board-delete {
-  border-radius: 3px;
+  border-radius: 5px;
   margin: auto 0 0 auto;
   width: 35px;
   height: 35px;

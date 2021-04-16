@@ -8,6 +8,7 @@ export const ProfileEvent = {
   profileFormWait: 'profile.view.profileFormWait',
   profileFormError: 'profile.view.profileFormError',
   profileFormSuccess: 'profile.view.profileFormSuccess',
+  main: 'main.controller.start',
   login: 'login.controller.start',
   renderData: 'profile.view.renderData',
   exit: 'profile.model.exit',
