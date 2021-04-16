@@ -180,9 +180,14 @@ export default class BoardPageView {
    * @param {HTMLElement} task
    */
   addDnDForTask(task) {
-    task.onmousedown = (event) => {
-      const shiftX = event.offsetX;
-      const shiftY = event.offsetY;
+    task.onmousedown = (eventMouseDown) => {
+      document.onmouseup?.(eventMouseDown);
+      console.log(eventMouseDown.button);
+      if (eventMouseDown.button !== 0) {
+        return;
+      }
+      const shiftX = eventMouseDown.offsetX;
+      const shiftY = eventMouseDown.offsetY;
 
       const ghostTask = createGhostTask(task);
 
@@ -289,7 +294,10 @@ export default class BoardPageView {
 
       document.addEventListener('mousemove', onMouseMove);
 
-      task.onmouseup = () => {
+      document.onmouseup = (eventMouseUp) => {
+        if (eventMouseUp.button !== 0) {
+          return;
+        }
         task.classList.replace('task-dnd', 'task');
         document.removeEventListener('mousemove', onMouseMove);
         ghostTask.after(task);
@@ -301,7 +309,7 @@ export default class BoardPageView {
           newRowId: +newRowId,
           newPosition,
         });
-        task.onmouseup = null;
+        document.onmouseup = null;
         task.style = '';
         document.body.style.overflow = '';
         setTimeout(() => {
