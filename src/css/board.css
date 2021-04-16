@@ -154,6 +154,7 @@
 .row-head {
   width: 100%;
   display: flex;
+  user-select: none;
 }
 
 .row-name {
@@ -199,6 +200,7 @@
 }
 
 .task {
+  user-select: none;
   cursor: pointer;
   align-self: center;
   width: calc(100% - 20px);
@@ -295,4 +297,27 @@
   border-bottom: 1px solid black;
   padding: 10px 0;
   margin: 0 0 5px 0;
+}
+
+.task-dnd {
+  user-select: none;
+  position: absolute;
+  z-index: 1000;
+  cursor: grabbing;
+  align-self: center;
+  border-radius: 5px;
+  overflow-wrap: break-word;
+  padding: 10px;
+  margin: 0 5px 6px 5px;
+  background-color: white;
+  box-shadow: 0 0 5px;
+  transform: rotate(3deg);
+}
+
+.task-ghost-dnd {
+  user-select: none;
+  border-radius: 5px;
+  margin: 0 5px 6px 5px;
+  box-shadow: inset 0 0 3px;
+  background-color: rgba(128, 128, 128, 0.514);
 }

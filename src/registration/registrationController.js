@@ -13,8 +13,8 @@ export default class RegistrationController {
   constructor(router, root) {
     this.root = root;
     this.eventBus = new EventBus();
-    this.eventBus.subscribe(RegistrationEvents.profile,
-      () => router.go(ConstantEventsString.profile));
+    this.eventBus.subscribe(RegistrationEvents.mainPage,
+      () => router.go(ConstantEventsString.main));
     this.eventBus.subscribe(RegistrationEvents.login, () => router.go(ConstantEventsString.login));
     this.model = new RegistrationModel(this.eventBus);
     this.view = new RegistrationView(this.eventBus, root);

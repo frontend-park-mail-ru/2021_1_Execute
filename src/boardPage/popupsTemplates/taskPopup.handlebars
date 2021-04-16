@@ -5,11 +5,12 @@
             </defs><title/><g><line class="cls-1" x1="7" x2="25" y1="7" y2="25"/><line class="cls-1" x1="7" x2="25" y1="25" y2="7"/></g></svg>
         </div>
         <div class="task-header">
-            <span class="span-textarea" role="textbox" contenteditable >{{name}}</span>
+            <span id="task-name-{{id}}" class="span-textarea" role="textbox" contenteditable >{{name}}</span>
 
         </div>
         <div class="task-description-heading">Описание:</div>
-        <span class="span-textarea" role="textbox" contenteditable>{{description}}</span>
+        <span id="task-description-{{id}}" class="span-textarea" role="textbox" contenteditable>{{description}}</span>
+        <button id="task-update-{{id}}" data-id="{{id}}" class="menu-btn menu-btn-success"> Сохранить </button>
         <div id="task-delete-{{id}}" data-id="{{id}}" class="task-delete"></div>
     </div>
 </div>
