@@ -53,7 +53,9 @@
 }
 
 .board-panel-name {
-  font: large;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
   font-weight: bolder;
   color: white;
 }
