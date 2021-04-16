@@ -23,7 +23,7 @@
 
 {{#*inline "avatars" avatars counter}}
 {{#each avatars}}
-<img class="rounded-avatar board-panel-element" src={{this.avatar}}>
+<img class="rounded-avatar board-panel-element" src="{{this.avatar}}" onerror='this.src="/not-available.png"'>
 {{/each}}
 {{#if counter }}
 <div id="additional-people-icon" class="additional-people-icon btn-icon-div board-panel-element">+{{counter}}</div>
@@ -52,10 +52,12 @@
                 <div class="board-panel-text-elem  board-panel-element">{{board.name}}</div>
                 <div class=" board-panel-element board-panel-divider"></div>
             </div>
+            {{#if avatars.avatars.length}}
             <div class="board-panel-group">
                 {{> avatars avatars=avatars.avatars counter=avatars.counter}}
                 <div class=" board-panel-element board-panel-divider"></div>
             </div>
+            {{/if}}
             <div class="board-panel-group">
                 <div id="invite-bnt" class="board-panel-element board-panel-text-elem text-btn">Пригласить</div>
                 <div id="btn-favorite" class="board-panel-element btn-icon-div">

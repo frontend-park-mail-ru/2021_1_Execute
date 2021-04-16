@@ -3,6 +3,8 @@ import {
 } from '../utils/requestToServer.js';
 import { BoardPageEvent, BoardPageMessage } from './boardPageEvents.js';
 
+const maxAvatars = 5;
+
 export default class BoardPageModel {
   /**
    * @param {!EventBus}
@@ -32,14 +34,9 @@ export default class BoardPageModel {
    * @returns {Object} Объект с массивом аватарок и количеством скрытых аватарок
    */
   getAvatarsForView(board) {
-    if (!(board && board.users && board.users.owner && board.users.admins && board.users.members)) {
-      return {
-        avatars: [],
-        counter: 0,
-      };
-    }
-    const users = [board.users.owner, ...board.users.admins, ...board.users.members];
-    const maxAvatars = 3;
+    const { owner, admins = [], members = [] } = board.users;
+    const users = [owner, ...admins, ...members];
+    users.sort((a, b) => a.avatar.localeCompare(b.avatar));
     const avatars = {};
     if (users.length > maxAvatars) {
       avatars.avatars = users.slice(0, maxAvatars);
