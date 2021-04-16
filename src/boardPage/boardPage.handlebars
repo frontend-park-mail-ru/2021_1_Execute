@@ -23,7 +23,7 @@
 
 {{#*inline "avatars" avatars counter}}
 {{#each avatars}}
-<img class="rounded-avatar board-panel-element" src={{this.avatar}}>
+<img class="rounded-avatar board-panel-element" src="{{this.avatar}}" onerror='this.src="/not-available.png"'>
 {{/each}}
 {{#if counter }}
 <div id="additional-people-icon" class="additional-people-icon btn-icon-div board-panel-element">+{{counter}}</div>

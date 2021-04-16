@@ -32,19 +32,18 @@ export default class BoardPageModel {
    * @returns {Object} Объект с массивом аватарок и количеством скрытых аватарок
    */
   getAvatarsForView(board) {
-    const admins = board.users?.admins || board.users?.admins;
-    const members = board.users?.members || board.users?.members;
+    const admins = board.users?.admins || [];
+    const members = board.users?.members || [];
     const users = [board.users.owner, ...admins, ...members];
-    const usersWithAvatars = users.filter((user) => user.avatar !== '');
-    const usersWithoutAvatars = users.length - usersWithAvatars.length;
-    const maxAvatars = 3;
+    users.sort((a, b) => a.avatar.localeCompare(b.avatar));
+    const maxAvatars = 5;
     const avatars = {};
     if (users.length > maxAvatars) {
-      avatars.avatars = usersWithAvatars.slice(0, maxAvatars);
-      avatars.counter = usersWithAvatars.length - maxAvatars + usersWithoutAvatars;
+      avatars.avatars = users.slice(0, maxAvatars);
+      avatars.counter = users.length - maxAvatars;
     } else {
-      avatars.avatars = usersWithAvatars;
-      avatars.counter = usersWithoutAvatars;
+      avatars.avatars = users;
+      avatars.counter = 0;
     }
     return avatars;
   }
