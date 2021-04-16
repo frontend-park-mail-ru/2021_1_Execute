@@ -51,8 +51,11 @@
   text-align: center;
   border-radius: 3px;
 }
-.board-panel-name{
-  font:large;
+
+.board-panel-name {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
   font-weight: bolder;
   color: white;
 }
