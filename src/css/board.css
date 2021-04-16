@@ -50,7 +50,14 @@
   padding: 11px;
   text-align: center;
   border-radius: 3px;
-  background-color: var(--board-panel-buttons-bg);
+}
+
+.board-panel-name {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: bolder;
+  color: white;
 }
 
 .additional-people-icon {
@@ -75,6 +82,7 @@
 }
 
 .text-btn {
+  background-color: var(--board-panel-buttons-bg);
   cursor: pointer;
   user-select: none;
   transition: 0.25s;
