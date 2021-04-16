@@ -34,9 +34,8 @@ export default class BoardPageModel {
    * @returns {Object} Объект с массивом аватарок и количеством скрытых аватарок
    */
   getAvatarsForView(board) {
-    const admins = board.users?.admins || [];
-    const members = board.users?.members || [];
-    const users = [board.users.owner, ...admins, ...members];
+    const { owner, admins = [], members = [] } = board.users;
+    const users = [owner, ...admins, ...members];
     users.sort((a, b) => a.avatar.localeCompare(b.avatar));
     const avatars = {};
     if (users.length > maxAvatars) {
