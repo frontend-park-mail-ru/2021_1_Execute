@@ -204,7 +204,7 @@ const onMouseDown = (task, eventBus) => (onMouseDownEvent) => {
     correctCenterTask.x += document.getElementById('rows-container').scrollLeft;
     nearestRow = nearestRowByX(allRows, correctCenterTask);
     correctCenterTask.y += nearestRow.scrollTop;
-    const nearestTask = nearestTaskByY([...nearestRow.getElementsByClassName('task')], correctCenterTask);
+    const nearestTask = nearestTaskByY([...nearestRow.getElementsByClassName('task'), ghostTask], correctCenterTask);
 
     nearestTask.after(ghostTask);
   };
