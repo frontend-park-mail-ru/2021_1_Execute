@@ -1,15 +1,34 @@
-<div class  ="popup-module menu-wrapper-column ">
+<div class="popup-module menu-wrapper-column ">
     <div class="popup-content">
         <div class="close-icon-div btn-icon-div" id='btn-close'>
-            <svg class="btn-icon" viewBox="0 0 32 32" width="24" height="24"><defs><style>.cls-1{fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px;}</style>
-            </defs><title/><g><line class="cls-1" x1="7" x2="25" y1="7" y2="25"/><line class="cls-1" x1="7" x2="25" y1="25" y2="7"/></g></svg>
+            <svg class="btn-icon" viewBox="0 0 32 32" width="24" height="24">
+                <defs>
+                    <style>
+                        .cls-1 {
+                            fill: none;
+                            stroke: #000;
+                            stroke-linecap: round;
+                            stroke-linejoin: round;
+                            stroke-width: 2px;
+                        }
+                    </style>
+                </defs>
+                <title />
+                <g>
+                    <line class="cls-1" x1="7" x2="25" y1="7" y2="25" />
+                    <line class="cls-1" x1="7" x2="25" y1="25" y2="7" />
+                </g>
+            </svg>
         </div>
         <div class="task-header">
-            <span class="span-textarea" role="textbox" contenteditable >{{name}}</span>
+            <span id="task-name-{{id}}" class="span-textarea" role="textbox" contenteditable>{{name}}</span>
 
         </div>
         <div class="task-description-heading">Описание:</div>
-        <span class="span-textarea" role="textbox" contenteditable>{{description}}</span>
-        <div id="task-delete-{{id}}" data-id="{{id}}" class="task-delete"></div>
+        <span id="task-description-{{id}}" class="span-textarea" role="textbox" contenteditable>{{description}}</span>
+        <div style="display: flex;">
+            <button id="task-update-{{id}}" data-id="{{id}}" class="menu-btn menu-btn-success"> Сохранить </button>
+            <div id="task-delete-{{id}}" data-id="{{id}}" class="task-delete"></div>
+        </div>
     </div>
 </div>
