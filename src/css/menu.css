@@ -269,6 +269,10 @@ body {
   color: #006340;
 }
 
+.menu-linebtn-active-green:hover {
+  color: #006340;
+}
+
 .menu-linebtn-orange {
   color: #e38c00;
 }
