@@ -379,18 +379,19 @@ export default class BoardPageModel {
     }
     const newRow = this.getRowById(moveInfo.newRowId);
 
-    const changePositions = (rowPos,
-      newPosition, oldPosition) => {
+    const changePositions = (rowPos, newPosition, oldPosition) => {
       this.board.rows[rowPos].tasks.slice().forEach((iterTask) => {
         if (iterTask.id === task.id) {
           iterTask.position = newPosition;
         }
         if (oldPosition > newPosition
-          && iterTask.position >= newPosition && iterTask.position < oldPosition) {
+          && iterTask.position >= newPosition
+          && iterTask.position < oldPosition) {
           iterTask.position += 1;
         }
         if (oldPosition < newPosition
-          && iterTask.position <= newPosition && iterTask.position > oldPosition) {
+          && iterTask.position <= newPosition
+          && iterTask.position > oldPosition) {
           iterTask.position -= 1;
         }
       });
@@ -402,27 +403,12 @@ export default class BoardPageModel {
       this.board.rows[newRow.position].tasks.push(task);
       changePositions(newRow.position, moveInfo.newPosition, newRow.tasks.length - 1);
     };
-    let request;
-    if (isCarryOver) {
-      // eslint-disable-next-line no-console
-      console.log('Carry Over:', task, 'rowId:', row.id, 'newRowId:', moveInfo.newRowId, this);
-      request = rowPatch(moveInfo.newRowId, {
-        carry_over: {
-          card_id: moveInfo.taskId,
-          new_position: moveInfo.newPosition,
-        },
-      });
-    } else {
-      // eslint-disable-next-line no-console
-      console.log('Move:', task, 'taskPosition', task.position, 'newTaskPosition', moveInfo.newPosition, this);
-      request = rowPatch(moveInfo.newRowId, {
-        move: {
-          card_id: task.id,
-          new_position: moveInfo.newPosition,
-        },
-      });
-    }
-    request.then((resp) => {
+    rowPatch(moveInfo.newRowId, {
+      carry_over: {
+        card_id: (isCarryOver ? moveInfo : task).taskId,
+        new_position: moveInfo.newPosition,
+      },
+    }).then((resp) => {
       switch (resp.status) {
         case 200:
           if (isCarryOver) {

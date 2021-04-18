@@ -66,14 +66,9 @@ body {
   align-items: center;
 }
 
-@keyframes leaf-odd-grow {
-  0% {
-    transform: scale(0);
-  }
-
-  100% {
-    transform: scale(1);
-  }
+.zero-delay {
+  padding: 0;
+  margin: 0;
 }
 
 .menu-box {
@@ -81,7 +76,6 @@ body {
   padding: 40px;
   border-radius: 5px;
   background-color: var(--box-bg-color);
-  animation-name: leaf-odd-grow;
   animation-duration: 1s;
   animation-fill-mode: both;
   box-shadow: 0 0 10px;

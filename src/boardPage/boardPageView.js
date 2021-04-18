@@ -3,50 +3,7 @@ import '../header/header.handlebars.js';
 import './popupsTemplates/boardPopup.handlebars.js';
 import './popupsTemplates/taskPopup.handlebars.js';
 import { BoardPageEvent } from './boardPageEvents.js';
-import { replaceObjectPropForNSeconds } from '../utils/temporaryReplacement.js';
-
-/**
- * @param {HTMLElement} task
- * @param {number} height
- */
-const fixHeight = (task, height) => {
-  task.style.height = `${height}px`;
-  task.style['min-height'] = task.style.height;
-  task.style['max-height'] = task.style.height;
-};
-
-/**
- * @param {HTMLElement} task
- * @param {number} width
- */
-const fixWidth = (task, width) => {
-  task.style.width = `${width}px`;
-  task.style['min-width'] = task.style.width;
-  task.style['max-width'] = task.style.width;
-};
-
-/**
- * @param {HTMLElement} task
- * @return {HTMLElement}
- */
-const createGhostTask = (task) => {
-  const ghostTask = document.createElement('div');
-  ghostTask.classList.add('task-ghost-dnd');
-  fixHeight(ghostTask, task.offsetHeight);
-  fixWidth(ghostTask, task.offsetWidth);
-  return ghostTask;
-};
-
-/**
- * @param {HTMLElement} task
- * @return {{x:number,y:number}}
- */
-const getCenter = (task) => ({
-  x: task.offsetLeft + task.offsetWidth / 2,
-  y: task.offsetTop + task.offsetHeight / 2,
-});
-
-const delta = ({ x: x1, y: y1 }, { x: x2, y: y2 }) => ({ x: (x1 - x2), y: (y1 - y2) });
+import { addDnDForAllTasks, addDnDForTask } from './DnD.js';
 
 export default class BoardPageView {
   /**
@@ -141,7 +98,7 @@ export default class BoardPageView {
 
     this.findNeedElem();
     this.addEventListeners();
-    this.addDnDForTasks();
+    addDnDForAllTasks(this.eventBus);
   }
 
   findNeedElem() {
@@ -172,148 +129,6 @@ export default class BoardPageView {
     ));
   }
 
-  addDnDForTasks() {
-    [...document.getElementsByClassName('task')].forEach((task) => this.addDnDForTask(task));
-  }
-
-  /**
-   * @param {HTMLElement} task
-   */
-  addDnDForTask(task) {
-    task.onmousedown = (onMouseDownEvent) => {
-      const shiftX = onMouseDownEvent.offsetX;
-      const shiftY = onMouseDownEvent.offsetY;
-
-      const ghostTask = createGhostTask(task);
-
-      document.body.style.overflow = 'hidden';
-
-      const moveAt = (pageX, pageY) => {
-        task.style.left = `${pageX - shiftX}px`;
-        task.style.top = `${pageY - shiftY}px`;
-      };
-
-      const bufOnclick = task.onclick;
-      let firstOnMouseMove = true;
-      const allRows = [...document.getElementsByClassName('row-body')];
-      let toLeft;
-      let toRight;
-      let toUp;
-      let toDown;
-
-      function onMouseMove(onMouseMoveEvent) {
-        if (firstOnMouseMove) {
-          task.after(ghostTask);
-          fixHeight(task, task.offsetHeight - 20);
-          fixWidth(task, task.offsetWidth - 20);
-          task.classList.replace('task', 'task-dnd');
-          task.onclick = () => { };
-        }
-
-        moveAt(onMouseMoveEvent.pageX, onMouseMoveEvent.pageY);
-        const correctCenterTask = getCenter(task);
-        correctCenterTask.x += document.getElementById('rows-container').scrollLeft;
-
-        const [bestRow] = allRows
-          .reduce(([ans, bestCost], iterRow) => {
-            const cost = delta(getCenter(iterRow), correctCenterTask);
-            return Math.abs(cost.x) < Math.abs(bestCost.x)
-              ? [iterRow, cost]
-              : [ans, bestCost];
-          }, [undefined, { x: Infinity, y: Infinity }]);
-
-        correctCenterTask.y += bestRow.scrollTop;
-
-        const [bestTask] = [...bestRow.getElementsByClassName('task')]
-          .reduce(([ans, bestCost], iterTask) => {
-            const cost = delta(getCenter(iterTask), correctCenterTask);
-            return Math.abs(cost.y) < Math.abs(bestCost.y)
-              ? [iterTask, cost]
-              : [ans, bestCost];
-          }, [undefined, { x: Infinity, y: Infinity }]);
-        bestTask.after(ghostTask);
-
-        if (task.getBoundingClientRect().right > document.body.offsetWidth - 10) {
-          if (!toRight) {
-            toRight = setInterval(() => {
-              document.getElementById('rows-container').scrollBy(
-                (task.getBoundingClientRect().right - document.body.offsetWidth + 10)
-                ** 0.5 * 0.5, 0,
-              );
-            }, 1);
-          }
-        } else {
-          toRight = clearInterval(toRight);
-        }
-
-        if (task.getBoundingClientRect().left < 10) {
-          if (!toLeft) {
-            toLeft = setInterval(() => {
-              document.getElementById('rows-container').scrollBy(
-                -((10 - task.getBoundingClientRect().left)
-                  ** 0.5 * 0.5), 0,
-              );
-            }, 1);
-          }
-        } else {
-          toLeft = clearInterval(toLeft);
-        }
-
-        if (task.getBoundingClientRect().top < bestRow.offsetTop) {
-          if (!toUp) {
-            toUp = setInterval(() => {
-              bestRow.scrollBy(
-                0, -((bestRow.offsetTop - task.getBoundingClientRect().top) ** 0.5),
-              );
-            }, 1);
-          }
-        } else {
-          toUp = clearInterval(toUp);
-        }
-
-        if (task.getBoundingClientRect().bottom > bestRow.offsetTop + bestRow.offsetHeight) {
-          if (!toDown) {
-            toDown = setInterval(() => {
-              bestRow.scrollBy(
-                0, (task.getBoundingClientRect().bottom - bestRow.offsetTop - bestRow.offsetHeight)
-              ** 0.5,
-              );
-            }, 1);
-          }
-        } else {
-          toDown = clearInterval(toDown);
-        }
-
-        firstOnMouseMove = false;
-      }
-
-      document.addEventListener('mousemove', onMouseMove);
-
-      window.onmouseup = () => {
-        task.classList.replace('task-dnd', 'task');
-        document.removeEventListener('mousemove', onMouseMove);
-        ghostTask.after(task);
-        ghostTask.remove();
-        const newRowId = task.parentNode.dataset.id;
-        const newPosition = [...task.parentElement.children].indexOf(task) - 1;
-        this.eventBus.call(BoardPageEvent.moveTask, {
-          taskId: +task.dataset.id,
-          newRowId: +newRowId,
-          newPosition,
-        });
-        window.onmouseup = null;
-        task.style = '';
-        document.body.style.overflow = '';
-        setTimeout(() => {
-          task.onclick = bufOnclick;
-        }, 0.1);
-        replaceObjectPropForNSeconds(task.style, 'transition', 'none', {}, 0.1);
-      };
-    };
-
-    task.ondragstart = () => false;
-  }
-
   renderPopupTask(task) {
     // eslint-disable-next-line no-undef
     this.popupContainer.innerHTML = Handlebars.templates.taskPopup(task);
@@ -326,20 +141,20 @@ export default class BoardPageView {
     buttonClose.addEventListener('click', () => this.closePopup());
 
     const buttonsTaskDelete = document.getElementById(`task-delete-${task.id}`);
-    buttonsTaskDelete.addEventListener('click',
-      () => this.eventBus.call(BoardPageEvent.clickDeleteTask, +buttonsTaskDelete.dataset.id));
+    buttonsTaskDelete.addEventListener(
+      'click', () => this.eventBus.call(BoardPageEvent.clickDeleteTask, +buttonsTaskDelete.dataset.id),
+    );
 
     const buttonTaskUpdate = document.getElementById(`task-update-${task.id}`);
-    buttonTaskUpdate.addEventListener('click',
-      () => this.clickUpdateTask(task));
+    buttonTaskUpdate.addEventListener('click', () => this.clickUpdateTask(task));
   }
 
   clickUpdateTask(task) {
     const taskName = document.getElementById(`task-name-${task.id}`).textContent;
     const taskDescription = document.getElementById(`task-description-${task.id}`).textContent;
 
-    const newTaskName = taskName !== '' ? taskName : task.name;
-    const newTaskDescription = taskDescription !== '' ? taskDescription : task.description;
+    const newTaskName = taskName || task.name;
+    const newTaskDescription = taskDescription || task.description;
 
     this.eventBus.call(BoardPageEvent.clickUpdateTask, {
       id: task.id,
@@ -359,8 +174,9 @@ export default class BoardPageView {
     buttonClose.addEventListener('click', () => this.closePopup());
 
     const buttonsBoardDelete = document.getElementById('board-delete');
-    buttonsBoardDelete.addEventListener('click',
-      () => this.eventBus.call(BoardPageEvent.clickDeleteBoard));
+    buttonsBoardDelete.addEventListener(
+      'click', () => this.eventBus.call(BoardPageEvent.clickDeleteBoard),
+    );
   }
 
   closePopup() {
@@ -418,7 +234,7 @@ export default class BoardPageView {
       BoardPageEvent.openTask, +newHTMLElementTask.dataset.id,
     );
     this.buttonsTask.push(newHTMLElementTask);
-    this.addDnDForTask(newHTMLElementTask);
+    addDnDForTask(newHTMLElementTask, this.eventBus);
   }
 
   /**
