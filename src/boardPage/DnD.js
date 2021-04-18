@@ -82,7 +82,7 @@ const nearestTaskByY = (tasks, taskCenter) => findBest(
 ).task;
 
 /**
- * @param {Element} element
+ * @param {() => Element} element
  * @param {() => boolean} checker
  * @param {object} param1
  * @param {?((time:number) => number)} param1.moveX
@@ -99,7 +99,7 @@ const customScrollRule = (
     const delTime = time - startTime;
     startTime = time;
     if (checker()) {
-      element.scrollBy(delTime * moveX(), delTime * moveY());
+      element().scrollBy(delTime * moveX(), delTime * moveY());
     }
     controller.id = requestAnimationFrame(scroll);
   };
@@ -114,7 +114,7 @@ const scrollEarlierDown = 0;
 /**
  * @param {number} speed
  */
-const speeder = (speed) => speed ** 0.5;
+const speeder = (speed) => speed ** 0.5 / 10;
 
 /**
  * @param {HTMLElement} task
@@ -157,14 +157,14 @@ const onMouseDown = (task, eventBus) => (onMouseDownEvent) => {
     const toRight = () => scrollEarlierRight + task.getBoundingClientRect().right
       - document.body.offsetWidth;
     customScrollRule(
-      document.getElementById('rows-container'),
+      () => document.getElementById('rows-container'),
       () => toRight() > 0,
       { moveX: () => speeder(toRight()) },
       controller.toRight,
     );
     const toLeft = () => scrollEarlierLeft - task.getBoundingClientRect().left;
     customScrollRule(
-      document.getElementById('rows-container'),
+      () => document.getElementById('rows-container'),
       () => toLeft() > 0,
       { moveX: () => -speeder(toLeft()) },
       controller.toLeft,
@@ -173,14 +173,14 @@ const onMouseDown = (task, eventBus) => (onMouseDownEvent) => {
     const toDown = () => scrollEarlierDown + task.getBoundingClientRect().bottom
       - nearestRow.offsetTop - nearestRow.offsetHeight;
     customScrollRule(
-      nearestRow,
+      () => nearestRow,
       () => toDown() > 0,
       { moveY: () => speeder(toDown()) },
       controller.toDown,
     );
     const toUp = () => scrollEarlierUp + nearestRow.offsetTop - task.getBoundingClientRect().top;
     customScrollRule(
-      nearestRow,
+      () => nearestRow,
       () => toUp() > 0,
       { moveY: () => -speeder(toUp()) },
       controller.toUp,
@@ -196,7 +196,13 @@ const onMouseDown = (task, eventBus) => (onMouseDownEvent) => {
     }
     withoutMouseMove = false;
 
-    moveAt(onMouseMoveEvent.pageX, onMouseMoveEvent.pageY);
+    const { pageX, pageY } = onMouseMoveEvent;
+    moveAt(pageX, pageY);
+
+    const { width, height } = document.body.getBoundingClientRect();
+    if (pageX < 0 || width < pageX || pageY < 0 || height < pageX) {
+      return;
+    }
     const correctCenterTask = getCenter(task);
 
     correctCenterTask.x += document.getElementById('rows-container').scrollLeft;
@@ -211,10 +217,10 @@ const onMouseDown = (task, eventBus) => (onMouseDownEvent) => {
 
   const exit = () => {
     if (!withoutMouseMove) {
-      cancelAnimationFrame(controller.toLeft);
-      cancelAnimationFrame(controller.toRight);
-      cancelAnimationFrame(controller.toUp);
-      cancelAnimationFrame(controller.toDown);
+      cancelAnimationFrame(controller.toLeft.id);
+      cancelAnimationFrame(controller.toRight.id);
+      cancelAnimationFrame(controller.toUp.id);
+      cancelAnimationFrame(controller.toDown.id);
       task.classList.replace('task-dnd', 'task');
       ghostTask.after(task);
       ghostTask.remove();
