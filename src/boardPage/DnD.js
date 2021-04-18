@@ -199,10 +199,6 @@ const onMouseDown = (task, eventBus) => (onMouseDownEvent) => {
     const { pageX, pageY } = onMouseMoveEvent;
     moveAt(pageX, pageY);
 
-    const { width, height } = document.body.getBoundingClientRect();
-    if (pageX < 0 || width < pageX || pageY < 0 || height < pageX) {
-      return;
-    }
     const correctCenterTask = getCenter(task);
 
     correctCenterTask.x += document.getElementById('rows-container').scrollLeft;
