@@ -83,7 +83,7 @@ const nearestTaskByY = (tasks, taskCenter) => findBest(
 
 /**
  * @param {() => Element} element
- * @param {() => boolean} checker
+ * @param {() => number} checker
  * @param {'vertical'|'horizontal'} direction
  * @param {() => number} move
  * @param {object} controller
@@ -97,7 +97,7 @@ const customScrollRule = (
   const scroll = (time) => {
     const delTime = time - startTime;
     startTime = time;
-    if (checker()) {
+    if (checker() > 0) {
       const args = [0, delTime * move()];
       element().scrollBy(...(direction === 'vertical' ? args.reverse() : args));
     }
@@ -131,7 +131,7 @@ const addGlobalScroll = (task, nearestRow) => {
   customScrollRule(
     () => document.getElementById('rows-container'),
     'vertical',
-    () => toRight() > 0,
+    toRight,
     () => speeder(toRight()),
     globalController.toRight,
   );
@@ -139,7 +139,7 @@ const addGlobalScroll = (task, nearestRow) => {
   customScrollRule(
     () => document.getElementById('rows-container'),
     'vertical',
-    () => toLeft() > 0,
+    toLeft,
     () => -speeder(toLeft()),
     globalController.toLeft,
   );
@@ -150,7 +150,7 @@ const addGlobalScroll = (task, nearestRow) => {
   customScrollRule(
     () => nearestRow,
     'horizontal',
-    () => toDown() > 0,
+    toDown,
     () => speeder(toDown()),
     globalController.toDown,
   );
@@ -158,7 +158,7 @@ const addGlobalScroll = (task, nearestRow) => {
   customScrollRule(
     () => nearestRow,
     'horizontal',
-    () => toUp() > 0,
+    toUp,
     () => -speeder(toUp()),
     globalController.toUp,
   );
@@ -176,6 +176,17 @@ const deleteGlobalScroll = (globalController) => {
 };
 
 /**
+ * @param {HTMLElement} param0
+ * @param {number} shiftX
+ * @param {number} shiftY
+ * @returns {(pageX:number,pageY:number)=>void}
+ */
+const moveElementAtWithShift = ({ style }, shiftX, shiftY) => (pageX, pageY) => {
+  style.left = `${pageX - shiftX}px`;
+  style.top = `${pageY - shiftY}px`;
+};
+
+/**
  * @param {HTMLElement} task
  * @param {EventBus} eventBus
  * @returns {(onMouseDownEvent:MouseEvent) => void}
@@ -189,10 +200,7 @@ const onMouseDown = (task, eventBus) => ({ offsetX: shiftX, offsetY: shiftY }) =
    * @param {number} pageX
    * @param {number} pageY
    */
-  const moveAt = (pageX, pageY) => {
-    task.style.left = `${pageX - shiftX}px`;
-    task.style.top = `${pageY - shiftY}px`;
-  };
+  const moveAt = moveElementAtWithShift(task, shiftX, shiftY);
 
   const allRows = [...document.getElementsByClassName('row-body')];
   let nearestRow = allRows[0];

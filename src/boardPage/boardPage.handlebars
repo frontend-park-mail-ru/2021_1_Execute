@@ -11,7 +11,6 @@
         <div id="row-delete-{{id}}" data-id="{{id}}" class="row-delete"></div>
     </div>
     <div id="row-body-{{id}}" data-id="{{id}}" class="row-body tasks-container menu-wrapper-column">
-        <div class="task zero-delay"></div>
         {{#each tasks}}
         {{> task task=this}}
         {{/each}}
