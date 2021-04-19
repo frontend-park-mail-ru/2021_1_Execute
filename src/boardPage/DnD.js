@@ -91,7 +91,11 @@ const nearestTaskByY = (tasks, taskCenter) => findBest(
  * @returns {boolean}
  */
 const customScrollRule = (
-  element, direction, checker, move, controller,
+  element,
+  direction,
+  checker,
+  move,
+  controller,
 ) => {
   let startTime = NaN;
   const scroll = (time) => {
@@ -99,7 +103,7 @@ const customScrollRule = (
     startTime = time;
     if (checker() > 0) {
       const args = [0, delTime * move()];
-      element().scrollBy(...(direction === 'vertical' ? args.reverse() : args));
+      element().scrollBy(...(direction === 'horizontal' ? args.reverse() : args));
     }
     controller.id = requestAnimationFrame(scroll);
   };
@@ -118,10 +122,10 @@ const speeder = (speed) => speed ** 0.5 / 10;
 
 /**
  * @param {HTMLElement} task
- * @param {Element} nearestRow
+ * @param {()=>Element} getNearestRow
  * @returns {object}
  */
-const addGlobalScroll = (task, nearestRow) => {
+const addGlobalScroll = (task, getNearestRow) => {
   const globalController = {
     toLeft: {}, toRight: {}, toUp: {}, toDown: {},
   };
@@ -130,7 +134,7 @@ const addGlobalScroll = (task, nearestRow) => {
     - document.body.offsetWidth;
   customScrollRule(
     () => document.getElementById('rows-container'),
-    'vertical',
+    'horizontal',
     toRight,
     () => speeder(toRight()),
     globalController.toRight,
@@ -138,26 +142,26 @@ const addGlobalScroll = (task, nearestRow) => {
   const toLeft = () => scrollEarlierLeft - task.getBoundingClientRect().left;
   customScrollRule(
     () => document.getElementById('rows-container'),
-    'vertical',
+    'horizontal',
     toLeft,
     () => -speeder(toLeft()),
     globalController.toLeft,
   );
   const toDown = () => scrollEarlierDown
     + task.getBoundingClientRect().bottom
-    - nearestRow.offsetTop
-    - nearestRow.offsetHeight;
+    - getNearestRow().offsetTop
+    - getNearestRow().offsetHeight;
   customScrollRule(
-    () => nearestRow,
-    'horizontal',
+    getNearestRow,
+    'vertical',
     toDown,
     () => speeder(toDown()),
     globalController.toDown,
   );
-  const toUp = () => scrollEarlierUp + nearestRow.offsetTop - task.getBoundingClientRect().top;
+  const toUp = () => scrollEarlierUp + getNearestRow().offsetTop - task.getBoundingClientRect().top;
   customScrollRule(
-    () => nearestRow,
-    'horizontal',
+    getNearestRow,
+    'vertical',
     toUp,
     () => -speeder(toUp()),
     globalController.toUp,
@@ -205,27 +209,23 @@ const onMouseDown = (task, eventBus) => ({ offsetX: shiftX, offsetY: shiftY }) =
   const allRows = [...document.getElementsByClassName('row-body')];
   let nearestRow = allRows[0];
 
-  let withoutMouseMove = true;
+  let isMoveStarted = false;
   const bufOnclick = task.onclick;
   let globalController = null;
-
-  const firstOnMouseMove = () => {
-    task.after(ghostTask);
-    fixHeight(task, task.offsetHeight - 20);
-    fixWidth(task, task.offsetWidth - 20);
-    task.classList.replace('task', 'task-dnd');
-    task.onclick = null;
-    globalController = addGlobalScroll(task, nearestRow);
-  };
 
   /**
    * @param {MouseEvent} onMouseMoveEvent
    */
   const onMouseMove = ({ pageX, pageY }) => {
-    if (withoutMouseMove) {
-      firstOnMouseMove();
+    if (!isMoveStarted) {
+      task.after(ghostTask);
+      fixHeight(task, task.offsetHeight - 20);
+      fixWidth(task, task.offsetWidth - 20);
+      task.classList.replace('task', 'task-dnd');
+      task.onclick = null;
+      globalController = addGlobalScroll(task, () => nearestRow);
     }
-    withoutMouseMove = false;
+    isMoveStarted = true;
 
     moveAt(pageX, pageY);
 
@@ -242,7 +242,7 @@ const onMouseDown = (task, eventBus) => ({ offsetX: shiftX, offsetY: shiftY }) =
   document.addEventListener('mousemove', onMouseMove);
 
   const deleteDnDForTask = () => {
-    if (!withoutMouseMove) {
+    if (isMoveStarted) {
       deleteGlobalScroll(globalController);
       task.classList.replace('task-dnd', 'task');
       ghostTask.after(task);
@@ -254,8 +254,8 @@ const onMouseDown = (task, eventBus) => ({ offsetX: shiftX, offsetY: shiftY }) =
         newRowId,
         newPosition,
       });
-      task.style = '';
-      document.body.style.overflow = '';
+      task.style = null;
+      document.body.style.overflow = null;
       setTimeout(() => {
         task.onclick = bufOnclick;
       }, 0);
@@ -270,6 +270,7 @@ const onMouseDown = (task, eventBus) => ({ offsetX: shiftX, offsetY: shiftY }) =
 
 /**
   * @param {HTMLElement} task
+  * @param {EventBus} eventBus
   */
 export const addDnDForTask = (task, eventBus) => {
   task.onmousedown = onMouseDown(task, eventBus);
