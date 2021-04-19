@@ -384,14 +384,18 @@ export default class BoardPageModel {
         if (iterTask.id === task.id) {
           iterTask.position = newPosition;
         }
-        if (oldPosition > newPosition
+        if (
+          oldPosition > newPosition
           && iterTask.position >= newPosition
-          && iterTask.position < oldPosition) {
+          && iterTask.position < oldPosition
+        ) {
           iterTask.position += 1;
         }
-        if (oldPosition < newPosition
+        if (
+          oldPosition < newPosition
           && iterTask.position <= newPosition
-          && iterTask.position > oldPosition) {
+          && iterTask.position > oldPosition
+        ) {
           iterTask.position -= 1;
         }
       });

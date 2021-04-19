@@ -231,7 +231,8 @@ export default class BoardPageView {
     document.getElementsByClassName('row-body')[rowPosition].append(newDocumentFragmentTask);
     const newHTMLElementTask = document.getElementById(`task-${task.id}`);
     newHTMLElementTask.onclick = () => this.eventBus.call(
-      BoardPageEvent.openTask, +newHTMLElementTask.dataset.id,
+      BoardPageEvent.openTask,
+      +newHTMLElementTask.dataset.id,
     );
     this.buttonsTask.push(newHTMLElementTask);
     addDnDForTask(newHTMLElementTask, this.eventBus);
