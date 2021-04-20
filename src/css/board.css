@@ -180,7 +180,7 @@
 }
 
 .row-delete:hover, .task-delete:hover, .board-delete:hover {
-  background-image: url('/img/trash.svg');
+  background-image: url('../../img/trash.svg');
   background-color: red;
 }
 

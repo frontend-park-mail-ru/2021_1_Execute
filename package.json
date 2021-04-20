@@ -8,7 +8,8 @@
     "stylelint": "stylelint '**/*.css'",
     "eslint": "eslint '**/*.js'",
     "template": "find . -name \"*.handlebars\" -exec handlebars {} -f {}.js \\;",
-    "start": "npm run template && node server/server.js"
+    "start": "npm run build && node server/server.js",
+    "build": "webpack"
   },
   "hooks": {
     "pre-commit": "nmp run lint"
@@ -24,13 +25,21 @@
   },
   "homepage": "https://github.com/frontend-park-mail-ru/2021_1_Execute#readme",
   "devDependencies": {
+    "babel-loader": "^8.2.2",
+    "css-loader": "^5.2.3",
     "eslint": "^7.20.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.22.1",
     "handlebars": "^4.7.7",
+    "handlebars-loader": "^1.7.1",
+    "html-webpack-plugin": "^5.3.1",
     "husky": "^5.0.9",
+    "mini-css-extract-plugin": "^1.5.0",
     "stylelint": "^13.10.0",
-    "stylelint-config-standard": "^20.0.0"
+    "stylelint-config-standard": "^20.0.0",
+    "svg-inline-loader": "^0.8.2",
+    "webpack": "^5.34.0",
+    "webpack-cli": "^4.6.0"
   },
   "dependencies": {
     "body-parser": "^1.18.3",

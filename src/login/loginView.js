@@ -1,4 +1,3 @@
-import './login.handlebars.js';
 import {
   makeChecker,
   replaceObjectPropForSecond,
@@ -9,6 +8,7 @@ import {
 } from '../utils/temporaryReplacement.js';
 import { LoginEvents } from './loginEvents.js';
 import { getNextMessage } from '../utils/helperToView.js';
+import loginTemplate from './login.handlebars';
 
 export default class LoginView {
   /**
@@ -24,8 +24,7 @@ export default class LoginView {
   }
 
   render() {
-    // eslint-disable-next-line no-undef
-    this.root.innerHTML = Handlebars.templates.login();
+    this.root.innerHTML = loginTemplate();
     this.findNeedElem();
     this.addEventListeners();
   }

@@ -1,4 +1,4 @@
-import './registration.handlebars.js';
+import registrationTemplate from './registration.handlebars';
 import {
   makeChecker,
   replaceClassForSecond, replaceObjectPropForSecond,
@@ -24,8 +24,7 @@ export default class LoginView {
   }
 
   render() {
-    // eslint-disable-next-line no-undef
-    this.root.innerHTML = Handlebars.templates.registration();
+    this.root.innerHTML = registrationTemplate();
     this.findNeedElem();
     this.addEventListeners();
   }

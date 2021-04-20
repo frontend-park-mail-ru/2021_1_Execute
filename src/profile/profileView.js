@@ -1,4 +1,4 @@
-import './profile.handlebars.js';
+import profileTemplate from './profile.handlebars';
 import {
   makeChecker,
   replaceObjectPropForSecond,
@@ -11,6 +11,7 @@ import {
 } from '../utils/temporaryReplacement.js';
 import { ProfileEvent, ProfileMessage } from './profileEvents.js';
 import { getNextMessage } from '../utils/helperToView.js';
+import '../css/profile.css';
 
 export default class ProfileView {
   /**
@@ -42,8 +43,7 @@ export default class ProfileView {
   }
 
   renderData(data) {
-    // eslint-disable-next-line no-undef
-    this.root.innerHTML = Handlebars.templates.profile(data.user);
+    this.root.innerHTML = profileTemplate(data.user);
     this.findNeedElem();
     this.addEventListeners();
   }

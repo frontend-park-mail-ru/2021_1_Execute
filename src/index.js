@@ -1,3 +1,6 @@
+import './css/reset.css';
+import './css/menu.css';
+import './css/header.css';
 import LoginController from './login/loginController.js';
 import ProfileController from './profile/profileController.js';
 import RegistrationController from './registration/registrationController.js';
