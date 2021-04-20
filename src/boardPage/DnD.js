@@ -167,7 +167,8 @@ const addGlobalScroll = (task, getNearestRow) => {
 /**
  * @param {(()=>void)[]} globalController
  */
-const deleteGlobalScroll = (globalController) => globalController.forEach((elem) => elem());
+const deleteGlobalScroll = (globalController) => globalController
+  .forEach((stopScroll) => stopScroll());
 
 /**
  * @param {HTMLElement} param0
