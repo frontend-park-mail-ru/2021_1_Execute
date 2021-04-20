@@ -82,32 +82,33 @@ const nearestTaskByY = (tasks, taskCenter) => findBest(
 ).task;
 
 /**
- * @param {() => Element} element
+ * @param {() => Element} getElement
  * @param {() => number} checker
  * @param {'vertical'|'horizontal'} direction
  * @param {() => number} move
  * @param {object} controller
  * @param {number} controller.id
- * @returns {boolean}
+ * @returns {()=>void}
  */
 const customScrollRule = (
-  element,
+  getElement,
   direction,
   checker,
   move,
-  controller,
 ) => {
-  let startTime = NaN;
+  let startTime;
+  let id;
   const scroll = (time) => {
     const delTime = time - startTime;
     startTime = time;
     if (checker() > 0) {
       const args = [0, delTime * move()];
-      element().scrollBy(...(direction === 'horizontal' ? args.reverse() : args));
+      getElement().scrollBy(...(direction === 'horizontal' ? args.reverse() : args));
     }
-    controller.id = requestAnimationFrame(scroll);
+    id = requestAnimationFrame(scroll);
   };
-  controller.id = requestAnimationFrame(scroll);
+  id = requestAnimationFrame(scroll);
+  return () => cancelAnimationFrame(id);
 };
 
 const scrollEarlierLeft = 10;
@@ -123,61 +124,50 @@ const speeder = (speed) => speed ** 0.5 / 10;
 /**
  * @param {HTMLElement} task
  * @param {()=>Element} getNearestRow
- * @returns {object}
+ * @returns {(()=>void)[]}
  */
 const addGlobalScroll = (task, getNearestRow) => {
-  const globalController = {
-    toLeft: {}, toRight: {}, toUp: {}, toDown: {},
-  };
   const toRight = () => scrollEarlierRight
     + task.getBoundingClientRect().right
     - document.body.offsetWidth;
-  customScrollRule(
-    () => document.getElementById('rows-container'),
-    'horizontal',
-    toRight,
-    () => speeder(toRight()),
-    globalController.toRight,
-  );
   const toLeft = () => scrollEarlierLeft - task.getBoundingClientRect().left;
-  customScrollRule(
-    () => document.getElementById('rows-container'),
-    'horizontal',
-    toLeft,
-    () => -speeder(toLeft()),
-    globalController.toLeft,
-  );
   const toDown = () => scrollEarlierDown
     + task.getBoundingClientRect().bottom
     - getNearestRow().offsetTop
     - getNearestRow().offsetHeight;
-  customScrollRule(
-    getNearestRow,
-    'vertical',
-    toDown,
-    () => speeder(toDown()),
-    globalController.toDown,
-  );
   const toUp = () => scrollEarlierUp + getNearestRow().offsetTop - task.getBoundingClientRect().top;
-  customScrollRule(
-    getNearestRow,
-    'vertical',
-    toUp,
-    () => -speeder(toUp()),
-    globalController.toUp,
-  );
-  return globalController;
+  return [
+    customScrollRule(
+      () => document.getElementById('rows-container'),
+      'horizontal',
+      toRight,
+      () => speeder(toRight()),
+    ),
+    customScrollRule(
+      () => document.getElementById('rows-container'),
+      'horizontal',
+      toLeft,
+      () => -speeder(toLeft()),
+    ),
+    customScrollRule(
+      getNearestRow,
+      'vertical',
+      toDown,
+      () => speeder(toDown()),
+    ),
+    customScrollRule(
+      getNearestRow,
+      'vertical',
+      toUp,
+      () => -speeder(toUp()),
+    ),
+  ];
 };
 
 /**
- * @param {object} globalController
+ * @param {(()=>void)[]} globalController
  */
-const deleteGlobalScroll = (globalController) => {
-  cancelAnimationFrame(globalController.toLeft.id);
-  cancelAnimationFrame(globalController.toRight.id);
-  cancelAnimationFrame(globalController.toUp.id);
-  cancelAnimationFrame(globalController.toDown.id);
-};
+const deleteGlobalScroll = (globalController) => globalController.forEach((elem) => elem());
 
 /**
  * @param {HTMLElement} param0
@@ -207,7 +197,6 @@ const onMouseDown = (task, eventBus) => ({ offsetX: shiftX, offsetY: shiftY }) =
   const moveAt = moveElementAtWithShift(task, shiftX, shiftY);
 
   const allRows = [...document.getElementsByClassName('row-body')];
-  let nearestRow = allRows[0];
 
   let isMoveStarted = false;
   const bufOnclick = task.onclick;
@@ -217,6 +206,17 @@ const onMouseDown = (task, eventBus) => ({ offsetX: shiftX, offsetY: shiftY }) =
    * @param {MouseEvent} onMouseMoveEvent
    */
   const onMouseMove = ({ pageX, pageY }) => {
+    moveAt(pageX, pageY);
+
+    const correctCenterTask = getCenter(task);
+
+    correctCenterTask.x += document.getElementById('rows-container').scrollLeft;
+    const nearestRow = nearestRowByX(allRows, correctCenterTask);
+    correctCenterTask.y += nearestRow.scrollTop;
+    const nearestTask = nearestTaskByY([...nearestRow.getElementsByClassName('task'), ghostTask], correctCenterTask);
+
+    nearestTask[correctCenterTask.y < getCenter(nearestTask).y ? 'after' : 'before'](ghostTask);
+
     if (!isMoveStarted) {
       task.after(ghostTask);
       fixHeight(task, task.offsetHeight - 20);
@@ -226,17 +226,6 @@ const onMouseDown = (task, eventBus) => ({ offsetX: shiftX, offsetY: shiftY }) =
       globalController = addGlobalScroll(task, () => nearestRow);
     }
     isMoveStarted = true;
-
-    moveAt(pageX, pageY);
-
-    const correctCenterTask = getCenter(task);
-
-    correctCenterTask.x += document.getElementById('rows-container').scrollLeft;
-    nearestRow = nearestRowByX(allRows, correctCenterTask);
-    correctCenterTask.y += nearestRow.scrollTop;
-    const nearestTask = nearestTaskByY([...nearestRow.getElementsByClassName('task'), ghostTask], correctCenterTask);
-
-    nearestTask[correctCenterTask.y < getCenter(nearestTask).y ? 'after' : 'before'](ghostTask);
   };
 
   document.addEventListener('mousemove', onMouseMove);
@@ -258,7 +247,7 @@ const onMouseDown = (task, eventBus) => ({ offsetX: shiftX, offsetY: shiftY }) =
       document.body.style.overflow = null;
       setTimeout(() => {
         task.onclick = bufOnclick;
-      }, 0);
+      });
       replaceObjectPropForNSeconds(task.style, 'transition', 'none', {}, 0);
     }
     document.removeEventListener('mousemove', onMouseMove);
