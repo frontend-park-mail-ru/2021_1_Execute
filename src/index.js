@@ -1,5 +1,6 @@
 import './css/reset.css';
 import './css/menu.css';
+import './css/header.css';
 import LoginController from './login/loginController.js';
 import ProfileController from './profile/profileController.js';
 import RegistrationController from './registration/registrationController.js';
@@ -7,7 +8,6 @@ import BoardPageController from './boardPage/boardPageController.js';
 import MainPageController from './mainPage/mainPageController.js';
 import Router from './utils/router.js';
 import { ConstantEventsString, ConstantEventsRegExp } from './constants.js';
-import './css/header.css';
 
 const root = document.getElementById('root');
 const router = new Router();

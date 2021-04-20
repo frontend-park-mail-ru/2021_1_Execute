@@ -22,16 +22,12 @@ module.exports = {
         loader: 'handlebars-loader',
       },
       {
-        test: /\.css$/i,
-        use: [MiniCssExtractPlugin.loader, 'css-loader'],
-      },
-      {
-        test: /\.svg$/,
-        loader: 'svg-inline-loader',
-      },
-      {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
         type: 'asset/resource',
+      },
+      {
+        test: /\.css$/i,
+        use: [MiniCssExtractPlugin.loader, 'css-loader'],
       },
       {
         test: /\.(js)$/,
