@@ -9,7 +9,8 @@
     "eslint": "eslint '**/*.js'",
     "template": "find . -name \"*.handlebars\" -exec handlebars {} -f {}.js \\;",
     "start": "npm run build && node server/server.js",
-    "build": "webpack"
+    "dev": "webpack --config webpack.dev.js && webpack serve --config webpack.dev.js",
+    "build": "webpack --config webpack.prod.js"
   },
   "hooks": {
     "pre-commit": "nmp run lint"
@@ -32,21 +33,25 @@
     "eslint-plugin-import": "^2.22.1",
     "handlebars": "^4.7.7",
     "handlebars-loader": "^1.7.1",
-    "html-webpack-plugin": "^5.3.1",
     "husky": "^5.0.9",
-    "mini-css-extract-plugin": "^1.5.0",
+    "postcss": "^8.2.12",
+    "style-loader": "^2.0.0",
     "stylelint": "^13.10.0",
     "stylelint-config-standard": "^20.0.0",
     "webpack": "^5.34.0",
-    "webpack-cli": "^4.6.0"
+    "debug": "^4.1.1",
+    "webpack-cli": "^4.6.0",
+    "webpack-dev-server": "^3.11.2"
   },
   "dependencies": {
-    "body-parser": "^1.18.3",
-    "cookie-parser": "^1.4.4",
-    "debug": "^4.1.1",
+    "clean-webpack-plugin": "^4.0.0-alpha.0",
+    "css-minimizer-webpack-plugin": "^2.0.0",
     "express": "^4.16.4",
+    "html-webpack-plugin": "^5.3.1",
+    "mini-css-extract-plugin": "^1.5.0",
     "morgan": "^1.9.1",
-    "node-fetch": "^2.6.1",
-    "uuid": "^3.3.2"
+    "terser-webpack-plugin": "^5.1.1",
+    "uuid": "^3.3.2",
+    "webpack-merge": "^5.7.3"
   }
 }
