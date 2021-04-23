@@ -18,7 +18,8 @@ module.exports = {
       template: './src/index.html',
       minify: false,
       publicPath: '/',
-    })],
+    }),
+  ],
   module: {
     rules: [
       {
