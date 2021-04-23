@@ -10,14 +10,9 @@ export const ApiRoutes = {
   exit: '/logout/',
   uploadAvatar: '/upload/',
   authorized: '/authorized/',
-  getBoards: '/boards/',
-  getTasks: '/tasks/',
-  postBoards: '/boards/',
-  postRows: '/rows/',
-  postTasks: '/tasks/',
-  deleteRow: '/rows/',
-  deleteTask: '/tasks/',
-  deleteBoard: '/boards/',
+  boards: '/boards/',
+  rows: '/rows/',
+  tasks: '/tasks/',
 };
 
 /**
@@ -144,16 +139,16 @@ export const isAuthorized = () => get(ApiRoutes.authorized);
  * @param  {number} id
  * @returns {Promise}
  */
-export const boardGetById = (id) => get(`${ApiRoutes.getBoards + id}/`);
+export const boardGetById = (id) => get(`${ApiRoutes.boards + id}/`);
 
-export const taskGetById = (id) => get(`${ApiRoutes.getTasks + id}/`);
+export const taskGetById = (id) => get(`${ApiRoutes.tasks + id}/`);
 
-export const boardsGet = () => get(ApiRoutes.getBoards);
+export const boardsGet = () => get(ApiRoutes.boards);
 
 /**
  * @param {!string} name
  */
-export const boardCreate = (name) => postJson({ name }, ApiRoutes.postBoards);
+export const boardCreate = (name) => postJson({ name }, ApiRoutes.boards);
 
 /**
  * @param {Object} rowInfo
@@ -161,7 +156,7 @@ export const boardCreate = (name) => postJson({ name }, ApiRoutes.postBoards);
  * @param {string} rowInfo.name
  * @param {number} rowInfo.position
  */
-export const rowCreate = (rowInfo) => postJson(rowInfo, ApiRoutes.postRows);
+export const rowCreate = (rowInfo) => postJson(rowInfo, ApiRoutes.rows);
 
 /**
  * @param {Object} taskInfo
@@ -169,19 +164,35 @@ export const rowCreate = (rowInfo) => postJson(rowInfo, ApiRoutes.postRows);
  * @param {string} taskInfo.name
  * @param {number} taskInfo.position
  */
-export const taskCreate = (taskInfo) => postJson(taskInfo, ApiRoutes.postTasks);
+export const taskCreate = (taskInfo) => postJson(taskInfo, ApiRoutes.tasks);
 
 /**
  * @param {number} rowId
  */
-export const rowDelete = (rowId) => deleteEmpty(`${ApiRoutes.deleteRow + rowId}/`);
+export const rowDelete = (rowId) => deleteEmpty(`${ApiRoutes.rows + rowId}/`);
 
 /**
  * @param {number} taskId
  */
-export const taskDelete = (taskId) => deleteEmpty(`${ApiRoutes.deleteTask + taskId}/`);
+export const taskDelete = (taskId) => deleteEmpty(`${ApiRoutes.tasks + taskId}/`);
 
 /**
  * @param {number} boardId
  */
-export const boardDelete = (boardId) => deleteEmpty(`${ApiRoutes.deleteBoard + boardId}/`);
+export const boardDelete = (boardId) => deleteEmpty(`${ApiRoutes.boards + boardId}/`);
+
+/**
+ *
+ * @param {number} rowId
+ * @param {Object} patchInfo
+ * @param {string} patchInfo.name
+ * @param {Object} [patchInfo.carry_over] Перенос на другой столбец
+ * @param {Object} [patchInfo.move] Перенос внутри столбца
+ */
+export const rowPatch = (rowId, patchInfo) => patchJson(patchInfo, `${ApiRoutes.rows + rowId}/`);
+
+/**
+ * @param {Object} taskInfo
+ * @param {number} taskId
+ */
+export const taskPatch = (taskInfo, taskId) => patchJson(taskInfo, `${ApiRoutes.tasks + taskId}/`);

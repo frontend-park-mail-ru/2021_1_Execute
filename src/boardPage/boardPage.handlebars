@@ -18,6 +18,7 @@
         </div>
     </div>
     <div id="row-body-{{id}}" data-id="{{id}}" class="row-body tasks-container menu-wrapper-column">
+        <div class="task zero-delay"></div>
         {{#each tasks}}
         {{> task task=this}}
         {{/each}}
@@ -47,12 +48,14 @@
         {{!-- search id and past template --}}
     </div>
     {{#if error}}
+    <title>{{error.title}}</title>
     <div class="board-error">
         <h1>{{error.title}}</h1>
         <p>{{error.message}}</p>
     </div>
     {{/if}}
     {{#if board}}
+    <title>{{board.name}}</title>
     <div class="board">
         <div class="board-panel">
             <div class="board-panel-group">
@@ -100,13 +103,7 @@
             {{#each board.rows}}
             {{> row row=this}}
             {{/each}}
-            <div class="row text-btn menu-wrapper-column" id="add-row-btn">
-                <div class="row-name">
-                    Добавить колонку
-                </div>
-                <div class="tasks-container">
-                </div>
-            </div>
+            <div class="add-row-button" id="add-row-btn">Добавить колонку</div>
         </div>
     </div>
     {{/if}}

@@ -13,7 +13,7 @@ export default class LoginController {
   constructor(router, root) {
     this.root = root;
     this.eventBus = new EventBus();
-    this.eventBus.subscribe(LoginEvents.profile, () => router.go(ConstantEventsString.profile));
+    this.eventBus.subscribe(LoginEvents.mainPage, () => router.go(ConstantEventsString.main));
     this.eventBus.subscribe(LoginEvents.registration,
       () => router.go(ConstantEventsString.registration));
     this.model = new LoginModel(this.eventBus);

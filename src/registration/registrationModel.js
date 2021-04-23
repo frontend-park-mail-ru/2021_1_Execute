@@ -17,7 +17,7 @@ export default class RegistrationModel {
     isAuthorized()
       .then((resp) => {
         if (resp.status === 200) {
-          this.eventBus.call(RegistrationEvents.profile);
+          this.eventBus.call(RegistrationEvents.mainPage);
         } else {
           this.eventBus.call(RegistrationEvents.render);
         }
@@ -43,7 +43,7 @@ export default class RegistrationModel {
         switch (resp.status) {
           case 200:
           case 308:
-            this.eventBus.call(RegistrationEvents.profile);
+            this.eventBus.call(RegistrationEvents.mainPage);
             break;
           case 400:
             callError(RegistrationMessage.errorValidation);
