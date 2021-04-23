@@ -4,6 +4,7 @@ import boardPopupTemplate from './popupsTemplates/boardPopup.handlebars';
 import taskPopupTemplate from './popupsTemplates/taskPopup.handlebars';
 import { BoardPageEvent } from './boardPageEvents.js';
 import '../css/board.css';
+import { addDnDForAllTasks, addDnDForTask } from './DnD.js';
 
 export default class BoardPageView {
   /**
@@ -30,6 +31,8 @@ export default class BoardPageView {
       (user, board, error) => this.boardErrorBoard(user, board, error));
     this.eventBus.subscribe(BoardPageEvent.boardError,
       (user, board, error) => this.boardErrorBoard(user, board, error));
+    this.eventBus.subscribe(BoardPageEvent.renderUpdateTask,
+      (taskInfo) => this.renderUpdateTask(taskInfo));
   }
 
   /**
@@ -66,11 +69,11 @@ export default class BoardPageView {
    * @property {number} id
    * @property {number} position
    * @property {string} name
-   * @property {taskOutter[]} tasks
+   * @property {taskOuter[]} tasks
    */
 
   /**
-   * @typedef {Object} taskOutter
+   * @typedef {Object} taskOuter
    * @property {string} name
    * @property {number} id
    * @property {number} position
@@ -94,6 +97,7 @@ export default class BoardPageView {
 
     this.findNeedElem();
     this.addEventListeners();
+    addDnDForAllTasks(this.eventBus);
   }
 
   findNeedElem() {
@@ -113,9 +117,9 @@ export default class BoardPageView {
     this.buttonSettings?.addEventListener('click', () => this.eventBus.call(BoardPageEvent.openSettings));
     this.buttonFavorite?.addEventListener('click', this.addToFavorite);
     this.buttonAddRow?.addEventListener('click', () => this.eventBus.call(BoardPageEvent.clickAddRow, 'Новая колонка'));
-    this.buttonsTask.forEach((elem) => elem.addEventListener(
-      'click', () => this.eventBus.call(BoardPageEvent.openTask, +elem.dataset.id),
-    ));
+    this.buttonsTask.forEach((elem) => {
+      elem.onclick = () => this.eventBus.call(BoardPageEvent.openTask, +elem.dataset.id);
+    });
     this.buttonsAddTask.forEach((elem) => elem.addEventListener(
       'click', () => this.eventBus.call(BoardPageEvent.clickAddTask, +elem.dataset.id, 'Новая задача'),
     ));
@@ -135,8 +139,26 @@ export default class BoardPageView {
     buttonClose.addEventListener('click', () => this.closePopup());
 
     const buttonsTaskDelete = document.getElementById(`task-delete-${task.id}`);
-    buttonsTaskDelete.addEventListener('click',
-      () => this.eventBus.call(BoardPageEvent.clickDeleteTask, +buttonsTaskDelete.dataset.id));
+    buttonsTaskDelete.addEventListener(
+      'click', () => this.eventBus.call(BoardPageEvent.clickDeleteTask, +buttonsTaskDelete.dataset.id),
+    );
+
+    const buttonTaskUpdate = document.getElementById(`task-update-${task.id}`);
+    buttonTaskUpdate.addEventListener('click', () => this.clickUpdateTask(task));
+  }
+
+  clickUpdateTask(task) {
+    const taskName = document.getElementById(`task-name-${task.id}`).textContent;
+    const taskDescription = document.getElementById(`task-description-${task.id}`).textContent;
+
+    const newTaskName = taskName || task.name;
+    const newTaskDescription = taskDescription || task.description;
+
+    this.eventBus.call(BoardPageEvent.clickUpdateTask, {
+      id: task.id,
+      name: newTaskName,
+      description: newTaskDescription,
+    });
   }
 
   renderPopupBoard(board) {
@@ -149,8 +171,9 @@ export default class BoardPageView {
     buttonClose.addEventListener('click', () => this.closePopup());
 
     const buttonsBoardDelete = document.getElementById('board-delete');
-    buttonsBoardDelete.addEventListener('click',
-      () => this.eventBus.call(BoardPageEvent.clickDeleteBoard));
+    buttonsBoardDelete.addEventListener(
+      'click', () => this.eventBus.call(BoardPageEvent.clickDeleteBoard),
+    );
   }
 
   closePopup() {
@@ -193,7 +216,7 @@ export default class BoardPageView {
   }
 
   /**
-   * @param {taskOutter} task
+   * @param {taskOuter} task
    * @param {number} rowPosition
    */
   renderNewTask(task, rowPosition) {
@@ -202,10 +225,12 @@ export default class BoardPageView {
     );
     document.getElementsByClassName('row-body')[rowPosition].append(newDocumentFragmentTask);
     const newHTMLElementTask = document.getElementById(`task-${task.id}`);
-    newHTMLElementTask.addEventListener(
-      'click', () => this.eventBus.call(BoardPageEvent.openTask, +newHTMLElementTask.dataset.id),
+    newHTMLElementTask.onclick = () => this.eventBus.call(
+      BoardPageEvent.openTask,
+      +newHTMLElementTask.dataset.id,
     );
     this.buttonsTask.push(newHTMLElementTask);
+    addDnDForTask(newHTMLElementTask, this.eventBus);
   }
 
   /**
@@ -224,5 +249,16 @@ export default class BoardPageView {
   renderDeleteTask(taskId) {
     this.closePopup();
     document.getElementById(`task-${taskId}`).remove();
+  }
+
+  /**
+   *
+   * @param {Object} task
+   * @param {number} task.id
+   * @param {string} task.name
+   */
+  renderUpdateTask(task) {
+    this.closePopup();
+    document.getElementById(`task-${task.id}`).innerText = task.name;
   }
 }
