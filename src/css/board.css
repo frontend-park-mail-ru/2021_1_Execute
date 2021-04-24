@@ -171,17 +171,29 @@
   flex: 0 0 auto;
 }
 
-.row-delete, .task-delete, .board-delete {
+.row-delete {
   border-radius: 3px;
   margin: 10px 4px auto auto;
-  width: 20px;
-  height: 20px;
+  padding: 2px;
+  width: 16px;
+  height: 16px;
   background-color: var(--btn-exit-hover);
+  background-size: 100%;
+  transition: 0.25s;
+}
+
+.task-delete, .board-delete {
+  border-radius: 5px;
+  margin: auto 0 0 auto;
+  padding: 5px;
+  width: 25px;
+  height: 25px;
+  background-color: var(--btn-exit-hover);
+  background-size: 100%;
   transition: 0.25s;
 }
 
 .row-delete:hover, .task-delete:hover, .board-delete:hover {
-  background-image: url('/img/trash.svg');
   background-color: red;
 }
 
