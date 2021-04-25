@@ -14,6 +14,7 @@ export default class MainPageController {
     this.root = root;
     this.eventBus = new EventBus();
     this.eventBus.subscribe(MainPageEvent.profile, () => router.go(ConstantEventsString.profile));
+    this.eventBus.subscribe(MainPageEvent.main, () => router.go(ConstantEventsString.main));
     this.eventBus.subscribe(MainPageEvent.login, () => router.go(ConstantEventsString.login));
     this.eventBus.subscribe(MainPageEvent.board, (boardId) => router.go(getBoardRoute(boardId)));
     this.model = new MainPageModel(this.eventBus);

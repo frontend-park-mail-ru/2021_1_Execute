@@ -1,5 +1,6 @@
 export const MainPageEvent = {
   getData: 'mainPage.model.getData',
+  main: 'main.controller.start',
   profile: 'profile.controller.start',
   login: 'login.controller.start',
   board: 'board.controller.start',

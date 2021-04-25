@@ -59,6 +59,7 @@ export default class MainPageView {
    * @param {boards} boards
    */
   findNeedElem(boards) {
+    this.buttonToMain = document.getElementById('logo');
     this.photoAvatar = document.getElementById('avatar-photo');
     this.buttonAddBoard = document.getElementById('addBoard');
     this.buttonsBoards = [
@@ -71,6 +72,7 @@ export default class MainPageView {
   }
 
   addEventListeners() {
+    this.buttonToMain.addEventListener('click', () => this.eventBus.call(MainPageEvent.main));
     this.photoAvatar.addEventListener('click', () => this.eventBus.call(MainPageEvent.profile));
     this.buttonAddBoard.addEventListener('click', () => this.eventBus.call(MainPageEvent.clickAddBoard, 'Новая доска'));
     this.buttonsBoards.forEach((buttonBoard) => buttonBoard.addEventListener(

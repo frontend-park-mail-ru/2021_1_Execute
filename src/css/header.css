@@ -23,13 +23,8 @@
   height: 100%;
 }
 
-.max-block {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
 #logo {
+  cursor: pointer;
   background-repeat: no-repeat;
   background-image: url("/hello_removedbg.png");
   background-position: center;
