@@ -303,6 +303,6 @@ body {
   padding: 5px;
 }
 
-.btn-icon-div :hover {
+.btn-icon-div:hover {
   background: padding-box var(--btn-exit-hover);
 }
