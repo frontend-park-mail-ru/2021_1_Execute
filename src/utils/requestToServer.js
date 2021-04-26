@@ -1,7 +1,5 @@
-const PORT = 1323;
-// Don't change or move FIRST Line
-const BACKEND_API_ADDRESS = `http://89.208.199.114:${PORT}/api`;
-// const BACKEND_API_ADDRESS = `http://localhost:${PORT}/api`;
+// eslint-disable-next-line no-undef
+const API_ADDRESS = `${WEBPACK_API_URL}:${WEBPACK_API_PORT}/api`;
 
 export const ApiRoutes = {
   login: '/login/',
@@ -21,8 +19,8 @@ export const ApiRoutes = {
  * @param {string} route - путь запроса
  * @returns {Promise}
  */
-const postJson = (data, route) => fetch(BACKEND_API_ADDRESS + route, {
-  credentials: 'include',
+const postJson = (data, route) => fetch(API_ADDRESS + route, {
+  credADDRESSials: 'include',
   method: 'POST',
   body: JSON.stringify(data),
   headers: {
@@ -36,8 +34,8 @@ const postJson = (data, route) => fetch(BACKEND_API_ADDRESS + route, {
  * @param {string} route - путь запроса
  * @returns {Promise}
  */
-const patchJson = (data, route) => fetch(BACKEND_API_ADDRESS + route, {
-  credentials: 'include',
+const patchJson = (data, route) => fetch(API_ADDRESS + route, {
+  credADDRESSials: 'include',
   method: 'PATCH',
   body: JSON.stringify(data),
   headers: {
@@ -50,8 +48,8 @@ const patchJson = (data, route) => fetch(BACKEND_API_ADDRESS + route, {
  * @param {string} route - путь запроса
  * @returns {Promise}
  */
-const deleteEmpty = (route) => fetch(BACKEND_API_ADDRESS + route, {
-  credentials: 'include',
+const deleteEmpty = (route) => fetch(API_ADDRESS + route, {
+  credADDRESSials: 'include',
   method: 'DELETE',
   headers: {
     'Content-Type': 'application/json',
@@ -63,8 +61,8 @@ const deleteEmpty = (route) => fetch(BACKEND_API_ADDRESS + route, {
  * @param {string} route - путь запроса
  * @returns {Promise}
  */
-const get = (route) => fetch(BACKEND_API_ADDRESS + route, {
-  credentials: 'include',
+const get = (route) => fetch(API_ADDRESS + route, {
+  credADDRESSials: 'include',
   method: 'GET',
   headers: {
     'Content-Type': 'application/json',
@@ -121,7 +119,7 @@ export const profileAvatarUpload = (file) => {
   const formData = new FormData();
   formData.append('file', file);
 
-  return fetch(BACKEND_API_ADDRESS + ApiRoutes.uploadAvatar, {
+  return fetch(API_ADDRESS + ApiRoutes.uploaADDRESSatar, {
     credentials: 'include',
     method: 'POST',
     body: formData,

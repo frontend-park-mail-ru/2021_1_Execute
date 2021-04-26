@@ -31,7 +31,7 @@
 
 #logo {
   background-repeat: no-repeat;
-  background-image: url("/hello_removedbg.png");
+  background-image: url("../../img/hello_removedbg.svg");
   background-position: center;
   background-size: contain;
   height: 100%;
@@ -39,7 +39,7 @@
 }
 
 @media (max-width: 505px) {
-  #logo { background-image: url("/extinguisher_removedbg.png"); }
+  #logo { background-image: url("../../img/extinguisher_removedbg.png"); }
 }
 
 .header-container-center-elem {

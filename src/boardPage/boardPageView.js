@@ -1,8 +1,9 @@
-import './boardPage.handlebars.js';
-import '../header/header.handlebars.js';
-import './popupsTemplates/boardPopup.handlebars.js';
-import './popupsTemplates/taskPopup.handlebars.js';
+import boardTemplate from './boardPage.handlebars';
+import headerTemplate from '../header/header.handlebars';
+import boardPopupTemplate from './popupsTemplates/boardPopup.handlebars';
+import taskPopupTemplate from './popupsTemplates/taskPopup.handlebars';
 import { BoardPageEvent } from './boardPageEvents.js';
+import '../css/board.css';
 import { addDnDForAllTasks, addDnDForTask } from './DnD.js';
 
 export default class BoardPageView {
@@ -91,10 +92,8 @@ export default class BoardPageView {
    * @param {?Object} error
    */
   renderData(user, board, avatars, error) {
-    // eslint-disable-next-line no-undef
-    this.root.innerHTML = Handlebars.templates.header(user);
-    // eslint-disable-next-line no-undef
-    this.root.innerHTML += Handlebars.templates.boardPage({ board, avatars, error });
+    this.root.innerHTML = headerTemplate(user);
+    this.root.innerHTML += boardTemplate({ board, avatars, error });
 
     this.findNeedElem();
     this.addEventListeners();
@@ -130,8 +129,7 @@ export default class BoardPageView {
   }
 
   renderPopupTask(task) {
-    // eslint-disable-next-line no-undef
-    this.popupContainer.innerHTML = Handlebars.templates.taskPopup(task);
+    this.popupContainer.innerHTML = taskPopupTemplate(task);
     // todo вынести таску в отдельную модель
 
     this.popupContainer.classList.remove('menu-hidden');
@@ -164,8 +162,7 @@ export default class BoardPageView {
   }
 
   renderPopupBoard(board) {
-    // eslint-disable-next-line no-undef
-    this.popupContainer.innerHTML = Handlebars.templates.boardPopup(board);
+    this.popupContainer.innerHTML = boardPopupTemplate(board);
 
     this.popupContainer.classList.remove('menu-hidden');
     document.body.classList.add('root-while-popup');
@@ -201,8 +198,7 @@ export default class BoardPageView {
    */
   renderNewRow(row) {
     const newDocumentFragmentRow = document.createRange().createContextualFragment(
-      // eslint-disable-next-line no-undef
-      Handlebars.templates.boardPage({ ...row, singleRow: true }),
+      boardTemplate({ ...row, singleRow: true }),
     );
     document.getElementById('add-row-btn').before(newDocumentFragmentRow);
     const newHTMLElementAddTask = document.getElementById(`add-card-to-${row.id}`);
@@ -225,8 +221,7 @@ export default class BoardPageView {
    */
   renderNewTask(task, rowPosition) {
     const newDocumentFragmentTask = document.createRange().createContextualFragment(
-      // eslint-disable-next-line no-undef
-      Handlebars.templates.boardPage({ ...task, singleTask: true }),
+      boardTemplate({ ...task, singleTask: true }),
     );
     document.getElementsByClassName('row-body')[rowPosition].append(newDocumentFragmentTask);
     const newHTMLElementTask = document.getElementById(`task-${task.id}`);

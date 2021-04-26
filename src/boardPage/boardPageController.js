@@ -1,5 +1,4 @@
 import EventBus from '../utils/eventBus.js';
-import './boardPage.handlebars.js';
 import BoardPageModel from './boardPageModel.js';
 import BoardPageView from './boardPageView.js';
 import { BoardPageEvent } from './boardPageEvents.js';
