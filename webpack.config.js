@@ -12,7 +12,7 @@ module.exports = {
   },
   plugins: [
     new webpack.DefinePlugin({
-      WEBPACK_API_PORT: process.env.API_PORT || '"1323"',
+      WEBPACK_API_PORT: JSON.stringify(process.env.API_PORT) || '"1323"',
     }),
     new MiniCssExtractPlugin({
       filename: '[name].[contenthash].css',
