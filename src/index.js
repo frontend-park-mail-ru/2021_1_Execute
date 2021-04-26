@@ -8,6 +8,7 @@ import BoardPageController from './boardPage/boardPageController.js';
 import MainPageController from './mainPage/mainPageController.js';
 import Router from './utils/router.js';
 import { ConstantEventsString, ConstantEventsRegExp } from './constants.js';
+import './css/final.css';
 
 const root = document.getElementById('root');
 const router = new Router();

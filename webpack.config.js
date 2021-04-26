@@ -1,4 +1,5 @@
 const { resolve } = require('path');
+const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
@@ -10,6 +11,9 @@ module.exports = {
     path: resolve(__dirname, 'dist'),
   },
   plugins: [
+    new webpack.DefinePlugin({
+      WEBPACK_API_PORT: process.env.API_PORT || '"1323"',
+    }),
     new MiniCssExtractPlugin({
       filename: '[name].[contenthash].css',
     }),

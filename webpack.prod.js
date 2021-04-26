@@ -8,7 +8,7 @@ module.exports = merge(common, {
   mode: 'production',
   plugins: [
     new webpack.DefinePlugin({
-      IP: '"89.208.199.114"',
+      WEBPACK_API_URL: process.env.API_URL || '"http://89.208.199.114"',
     }),
   ],
   optimization: {
