@@ -1,5 +1,6 @@
-import './mainPage.handlebars.js';
-import '../header/header.handlebars.js';
+import '../css/mainPage.css';
+import * as pageTemplate from './mainPage.handlebars';
+import * as headerTemplate from '../header/header.handlebars';
 import { MainPageEvent } from './mainPageEvents.js';
 
 export default class MainPageView {
@@ -45,11 +46,9 @@ export default class MainPageView {
    * @param {boards} boards
    */
   renderData(user, boards) {
-    // eslint-disable-next-line no-undef
-    this.root.innerHTML = Handlebars.templates.header(user);
+    this.root.innerHTML = headerTemplate(user);
 
-    // eslint-disable-next-line no-undef
-    this.root.innerHTML += Handlebars.templates.mainPage(boards);
+    this.root.innerHTML += pageTemplate(boards);
 
     this.findNeedElem(boards);
     this.addEventListeners();
@@ -82,8 +81,7 @@ export default class MainPageView {
 
   renderNewBoard(board) {
     const newDocumentFragmentButtonBoard = document.createRange().createContextualFragment(
-      // eslint-disable-next-line no-undef
-      Handlebars.templates.mainPage({ ...board, single: true }),
+      pageTemplate({ ...board, single: true }),
     );
     this.buttonAddBoard.after(newDocumentFragmentButtonBoard);
     const newHTMLElementButtonBoard = this.buttonAddBoard.nextElementSibling;
