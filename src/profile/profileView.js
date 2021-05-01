@@ -65,6 +65,7 @@ export default class ProfileView {
     this.messageAfterUsername = getNextMessage(this.textboxUserName);
     this.messageAfterPassword = getNextMessage(this.textboxPassword);
     this.messageAfterRepeatPassword = getNextMessage(this.textboxRepeatPassword);
+    this.buttonToMain = document.getElementById('to-main');
     this.buttonExit = document.getElementById('exit');
     this.buttonChangeData = document.getElementById('change-data');
     this.checker = makeChecker(this);
@@ -72,6 +73,7 @@ export default class ProfileView {
 
   addEventListeners() {
     this.inputAvatar.addEventListener('change', () => this.eventBus.call(ProfileEvent.clickChangeAvatar, this.inputAvatar.files[0]));
+    this.buttonToMain.addEventListener('click', () => this.eventBus.call(ProfileEvent.main));
     this.buttonExit.addEventListener('click', () => this.eventBus.call(ProfileEvent.exit));
     this.buttonChangeData.addEventListener('click', () => {
       replaceObjectPropForSecond(this.buttonChangeData, 'disabled', true, this.checker.buttonChangeData);

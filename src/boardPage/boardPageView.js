@@ -101,6 +101,7 @@ export default class BoardPageView {
   }
 
   findNeedElem() {
+    this.buttonToMain = document.getElementById('logo');
     this.photoAvatar = document.getElementById('avatar-photo');
     this.buttonSettings = document.getElementById('board-panel-settings');
     this.buttonFavorite = document.getElementById('btn-favorite');
@@ -113,6 +114,7 @@ export default class BoardPageView {
   }
 
   addEventListeners() {
+    this.buttonToMain?.addEventListener('click', () => this.eventBus.call(BoardPageEvent.main));
     this.photoAvatar?.addEventListener('click', () => this.eventBus.call(BoardPageEvent.profile));
     this.buttonSettings?.addEventListener('click', () => this.eventBus.call(BoardPageEvent.openSettings));
     this.buttonFavorite?.addEventListener('click', this.addToFavorite);
