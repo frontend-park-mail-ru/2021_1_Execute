@@ -20,7 +20,7 @@ export const ApiRoutes = {
  * @returns {Promise}
  */
 const postJson = (data, route) => fetch(API_ADDRESS + route, {
-  credADDRESSials: 'include',
+  credentials: 'include',
   method: 'POST',
   body: JSON.stringify(data),
   headers: {
@@ -35,7 +35,7 @@ const postJson = (data, route) => fetch(API_ADDRESS + route, {
  * @returns {Promise}
  */
 const patchJson = (data, route) => fetch(API_ADDRESS + route, {
-  credADDRESSials: 'include',
+  credentials: 'include',
   method: 'PATCH',
   body: JSON.stringify(data),
   headers: {
@@ -49,7 +49,7 @@ const patchJson = (data, route) => fetch(API_ADDRESS + route, {
  * @returns {Promise}
  */
 const deleteEmpty = (route) => fetch(API_ADDRESS + route, {
-  credADDRESSials: 'include',
+  credentials: 'include',
   method: 'DELETE',
   headers: {
     'Content-Type': 'application/json',
@@ -62,7 +62,7 @@ const deleteEmpty = (route) => fetch(API_ADDRESS + route, {
  * @returns {Promise}
  */
 const get = (route) => fetch(API_ADDRESS + route, {
-  credADDRESSials: 'include',
+  credentials: 'include',
   method: 'GET',
   headers: {
     'Content-Type': 'application/json',
