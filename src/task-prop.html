@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+    <link rel="shortcut icon" href="./img/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/menu.css">
+    <link rel="stylesheet" href="./css/profile.css">
+    <link rel="stylesheet" href="./css/mainPage.css">
+    <link rel="stylesheet" href="./css/board.css">
+    <link rel="stylesheet" href="./css/header.css">
+    <link rel="stylesheet" href="./css/final.css">
+</head>
+
+<body>
+    <div id="root" style="width: 100%; height: 100%;">
+
+
+        <div class="popup-module menu-wrapper-column ">
+            <div class="popup-content">
+                <div class="close-icon-div btn-icon-div" id='btn-close'>
+                    <svg class="btn-icon" viewBox="0 0 32 32" width="24" height="24">
+                        <defs>
+                            <style>
+                                .cls-1 {
+                                    fill: none;
+                                    stroke: #000;
+                                    stroke-linecap: round;
+                                    stroke-linejoin: round;
+                                    stroke-width: 2px;
+                                }
+                            </style>
+                        </defs>
+                        <title />
+                        <g>
+                            <line class="cls-1" x1="7" x2="25" y1="7" y2="25" />
+                            <line class="cls-1" x1="7" x2="25" y1="25" y2="7" />
+                        </g>
+                    </svg>
+                </div>
+
+
+                <div class="task-header">
+                    <span id="task-name-{{id}}" class="span-textarea" role="textbox" contenteditable>task-name</span>
+                </div>
+
+
+                <div class="task-description-heading">Участники:</div>
+                <div class="task-user-container">
+                    <div id="p" class="task-user-photo" data-checked="0">
+                        <img src="../img/32.jpg" onerror='this.src="../img/not-available.png"'>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+                            <path
+                                d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="task-makemessage-container">
+                    <span class="task-makemessage-text" role="textbox" contenteditable></span>
+                    <div class="task-makemessage-btn menu-btn-success">Добавить</div>
+                </div>
+                <button class="menu-btn menu-btn-success" style="margin: 10px auto;">Присоединиться</button>
+                <script>
+                    let p = document.getElementById('p');
+                    for (let i = 1; i < 20; i++) p.after(p.cloneNode(true));
+                    [...document.getElementsByClassName('task-user-photo')].forEach((elem) => elem.addEventListener(
+                        'click',
+                        () => elem.dataset.checked = 1 - elem.dataset.checked,
+                    ))
+                </script>
+
+
+                <div class="task-description-heading">Метки:</div>
+                <div class="type-checkbox-container">
+                    <div id="t" class="type-checkbox">
+                        <input id="t1" type="checkbox" name="type-checkbox" class="type-checkbox-input">
+                        <label id="t2" class="type-checkbox-helper red"></label>
+                    </div>
+                </div>
+                <script>
+                    let alltypeclass = ['red', 'orange', 'green', 'orchid', 'purple'];
+                    let t = document.getElementById('t');
+                    for (let i = 1; i < 20; i++) {
+                        t.after(t.cloneNode(true))
+                        t.nextElementSibling.lastElementChild.classList.replace('red', alltypeclass[i % 5])
+                    }
+                    [...document.getElementsByClassName('type-checkbox-helper')].forEach((elem) => elem.addEventListener(
+                        'click',
+                        () => elem.previousElementSibling.checked ^= true,
+                    ))
+                </script>
+
+
+                <div class="task-description-heading">Описание:</div>
+                <span id="task-description-{{id}}" class="span-textarea description-textarea" role="textbox"
+                    contenteditable>ывалываьжывьадыдваыв алфывдл адоыфтвадл ьфылвьадл ьфылжв а</span>
+
+
+                <div class="task-description-heading">Вложение:</div>
+                <div class="task-downloadfile-container">
+                    <div class="task-firstmessage">
+                        Нет никаких вложений
+                    </div>
+                    <a class="task-downloadfile" id="kek" href="../css/fon1.jpg" download>
+                        <div class="task-downloadfile-photo"></div>
+                        <div class="task-downloadfile-name">Red</div>
+                    </a>
+                </div>
+                <div class="task-makemessage-container">
+                    <input style="width: calc(100% - 125px);" type="file">
+                    <div class="task-makemessage-btn menu-btn-success">Загрузить</div>
+                </div>
+                <script>
+                    let kek = document.getElementById('kek')
+                    if (Math.random() < 0.5) {
+                        kek.remove()
+                    } else {
+                        for (let i = 0; i < 10; i++) kek.after(kek.cloneNode(true))
+                    }
+                </script>
+
+
+                <div class="task-description-heading">Комментарии:</div>
+                <div class="task-message-container">
+                    <div class="task-firstmessage">
+                        Нет никаких комментариев
+                    </div>
+                    <div class="task-message" id="lol">
+                        <div class="task-message-photo">
+                            <img src="../img/fon1.jpg" onerror='this.src="../img/not-available.png"'>
+                        </div>
+                        <div style="width: -webkit-fill-available;">
+                            <div class="task-message-author">Red</div>
+                            <div class="task-message-text">
+                                Ма дик из выаываы ваываываыв ы ва ыва ыв аы ва ыв а ыва ы ва ыв аы ва ы ва ыв аы ва ыв а
+                                ыва ыв аы ва
+                                ы ва ыва ы ва ыва ы ва ыв аы ва ыва ы ва ыва вери биг т и лирли лри ри ри ол или лои лил
+                                ил
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="task-makemessage-container">
+                    <span class="task-makemessage-text" role="textbox" contenteditable></span>
+                    <div class="task-makemessage-btn menu-btn-success">Отправить</div>
+                </div>
+                <script>
+                    let lol = document.getElementById('lol')
+                    if (Math.random() < 0.5) {
+                        lol.remove()
+                    } else {
+                        for (let i = 0; i < 10; i++) lol.after(lol.cloneNode(true))
+                    }
+                </script>
+
+
+                <div style="display: flex;">
+                    <button id="task-update-{{id}}" data-id="{{id}}"
+                        class="menu-btn menu-btn-success">Сохранить</button>
+                    <div id="task-delete-{{id}}" data-id="{{id}}" class="task-delete">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                            <path
+                                d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                            <path fill-rule="evenodd"
+                                d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                        </svg>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+    </div>
+</body>
+
+</html>

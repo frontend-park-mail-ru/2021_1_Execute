@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+    <link rel="shortcut icon" href="./img/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/menu.css">
+    <link rel="stylesheet" href="./css/profile.css">
+    <link rel="stylesheet" href="./css/mainPage.css">
+    <link rel="stylesheet" href="./css/board.css">
+    <link rel="stylesheet" href="./css/header.css">
+    <link rel="stylesheet" href="./css/final.css">
+</head>
+
+<body>
+    <div id="root">
+
+        <div align="left" class="header-container">
+            <div class="header-container-left">
+            </div>
+
+            <div align="center" class="header-container-center">
+                <div class="header-container-center-elem" id="logo">
+                </div>
+
+            </div>
+
+            <div class="header-container-right">
+                <div class="header-container-right-elem profile-avatar-small">
+                    <img id="avatar-photo" class="profile-avatar-photo" src="{{ avatarUrl }}"
+                        onerror='this.src="../img/not-available.png"'>
+                </div>
+            </div>
+        </div>
+
+        <div class="board-page">
+            <div class="board-panel">
+            </div>
+            <div class="board">
+                <div id="rows-container" class="rows-container">
+
+                    <div id="row-0" data-id="0" class="row menu-wrapper-column">
+                        <div class="row-head">
+                            <span class="row-name span-textarea" role="textbox" contenteditable>
+                                row-name
+                            </span>
+                            <div id="row-delete-0" data-id="0" class="row-delete">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                                    <path
+                                        d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                                    <path fill-rule="evenodd"
+                                        d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div id="row-body-0" data-id="0" class="row-body tasks-container menu-wrapper-column">
+                            <div class="task zero-delay"></div>
+                            <div id="task-0" data-id="0" class="task">
+                                <div class="task-type-container">
+                                    <div class="task-type red"></div>
+                                    <div class="task-type green"></div>
+                                    <div class="task-type orange"></div>
+                                    <div class="task-type orchid"></div>
+                                    <div class="task-type purple"></div>
+                                </div>
+                                task-name
+                            </div>
+                        </div>
+                        <div id="add-card-to-0" data-id="0" class="add-card-button">
+                            Добавить карточку
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+</body>
+
+</html>
