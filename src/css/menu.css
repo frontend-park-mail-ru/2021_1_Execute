@@ -19,9 +19,14 @@
   --blue: #034395;
   --blue-bright: #3677ca;
   --blue-light: #5d8dca;
+  --grey-light: #95a5a6;
+  --grey-bright: #eaf0f0c9;
   --body-bg-color: #34495e;
+  --row-bg-color: rgba(255, 255, 255, 0.7);
+  --board-panel-buttons-bg: rgba(255, 255, 255, 0.5);
   --box-bg-color: #ecf0f1;
-  --btn-primary-bg-color: #95a5a6;
+  --btn-primary-bg-color: var(--grey-light);
+  --btn-exit-hover: rgba(172, 172, 172, 0.5);
   --text-placeholder-color: #252525;
   --btn-success-pasive-bg-color: var(--btn-primary-bg-color);
   --btn-success-pasive-text-color: black;
@@ -45,6 +50,10 @@
   --btn-error-hover-text-color: white;
   --btn-error-active-bg-color: var(--red);
   --btn-error-active-text-color: white;
+
+  margin-right: calc(100vw - 100%);
+
+  --header-height: 55px;
 }
 
 body {
@@ -62,10 +71,14 @@ body {
   padding: 40px;
   border-radius: 5px;
   background-color: var(--box-bg-color);
+  animation-duration: 1s;
+  animation-fill-mode: both;
   box-shadow: 0 0 10px;
+  transition: 0.5s;
 }
 
 .menu-box h1 {
+  user-select: none;
   border-bottom: 4px solid;
   font-size: 40px;
   margin: 0 0 20px 0;
@@ -74,7 +87,6 @@ body {
 
 .menu-textbox {
   width: 100%;
-  overflow: hidden;
   font-size: 20px;
   padding: 8px 0;
   margin: 8px 0;
@@ -96,7 +108,6 @@ body {
   float: left;
   text-align: center;
   margin: 3px 5px;
-  transition: none;
 }
 
 .menu-textbox input {
@@ -117,7 +128,48 @@ body {
   color: var(--text-placeholder-color);
 }
 
+.menu-father-message {
+  width: 100%;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease;
+}
+
+.call-message-wait + .menu-father-message,
+.call-message-error + .menu-father-message,
+.call-message-success + .menu-father-message {
+  max-height: 100px;
+  transition: max-height 0.7s ease;
+}
+
+.menu-message {
+  margin: 0 8px;
+  font-size: 14px;
+  border-radius: 5px;
+  text-align: left;
+  transition: 2s;
+}
+
+.call-message-wait + .menu-father-message > .menu-message {
+  border-color: var(--grey-light);
+  color: var(--grey-light);
+  transition: 0.25s;
+}
+
+.call-message-error + .menu-father-message > .menu-message {
+  border-color: var(--red-dark);
+  color: var(--red-dark);
+  transition: 0.25s;
+}
+
+.call-message-success + .menu-father-message > .menu-message {
+  border-color: var(--green-dark);
+  color: var(--green-dark);
+  transition: 0.25s;
+}
+
 .menu-btn {
+  user-select: none;
   border: 2px solid;
   padding: 5px;
   font-size: 18px;
@@ -198,6 +250,7 @@ body {
 }
 
 .menu-linebtn {
+  user-select: none;
   cursor: pointer;
   border: 0;
   padding: 0 10px;
@@ -213,6 +266,10 @@ body {
 }
 
 .menu-linebtn-green {
+  color: #006340;
+}
+
+.menu-linebtn-active-green:hover {
   color: #006340;
 }
 
@@ -232,4 +289,24 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.menu-hidden {
+  display: none;
+}
+
+.btn-icon-div {
+  user-select: none;
+  cursor: pointer;
+  display: flex;
+  align-content: center;
+}
+
+.btn-icon {
+  border-radius: 50%;
+  padding: 5px;
+}
+
+.btn-icon-div:hover {
+  background: padding-box var(--btn-exit-hover);
 }

@@ -1,4 +1,5 @@
 import { ProfileMessage } from '../profile/profileEvents.js';
+import { RegistrationMessage } from '../registration/registrationEvents.js';
 
 /**
  * Проверка корректности строки как имени пользователя
@@ -6,7 +7,7 @@ import { ProfileMessage } from '../profile/profileEvents.js';
  * @return {boolean}
  */
 export const correctUserName = (username) => typeof username === 'string'
-  && username.match(/^[a-zA-Z0-9]+.{6,16}$/) !== null;
+  && username.match(/^([a-zA-Z0-9а-яА-Я]+){3,16}$/) !== null;
 
 /**
  * Проверка корректности строки как e-mail
@@ -14,7 +15,7 @@ export const correctUserName = (username) => typeof username === 'string'
  * @return {boolean}
  */
 export const correctEmail = (email) => typeof email === 'string'
-  && email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)
+  && email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+$/)
   !== null;
 
 /**
@@ -75,15 +76,25 @@ export const correctChangeProfile = (profile, callError) => {
  * @param {string} profile.username
  * @param {string} profile.password
  * @param {string} profile.repeatPassword
- * @return {boolean}
+ * @return {string|null} Текст ошибки
  */
-export const correctRegistrationProfile = (profile) => typeof profile === 'object'
-  && profile !== null
-  && correctEmail(profile.email)
-  && correctUserName(profile.username)
-  && correctPassword(profile.repeatPassword)
-  && correctPassword(profile.password);
+export const correctRegistrationProfile = (profile) => {
+  if (typeof profile !== 'object' || profile === null) {
+    return RegistrationMessage.errorValidation;
+  }
+  if (!correctEmail(profile.email)) {
+    return RegistrationMessage.emailErrorValidation;
+  }
+  if (!correctUserName(profile.username)) {
+    return RegistrationMessage.usernameErrorValidation;
+  }
+  if (!correctPassword(profile.password)) {
+    return RegistrationMessage.passwordErrorValidation;
+  }
+  return null;
+};
 
 export const passwordsAreTheSame = (profile) => typeof profile === 'object'
   && profile !== null
-  && correctPassword(profile.repeatPassword) === correctPassword(profile.password);
+  && correctPassword(profile.repeatPassword)
+  && profile.repeatPassword === profile.password;

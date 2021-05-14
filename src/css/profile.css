@@ -1,7 +1,28 @@
+.profile-avatar-small {
+  user-select: none;
+  position: relative;
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+  outline: none;
+}
+
+.profile-avatar-small img {
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+  transition: 0.25s;
+  object-fit: cover;
+}
+
 .profile-avatar-big {
+  position: relative;
+  user-select: none;
   width: 200px;
   height: 200px;
   border-radius: 100px;
+  margin-bottom: 12px;
+  outline: none;
 }
 
 .profile-avatar-big img {
@@ -16,13 +37,29 @@
   box-shadow: 0 0 10px;
 }
 
-.profile-avatar-big:hover img {
+.profile-avatar-big label {
+  position: absolute;
+  background-position: center center;
+  background-size: cover;
+  width: 200px;
+  height: 200px;
+  border-radius: 100px;
+  transition: 0.25s;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.profile-avatar-big input {
+  display: none;
+}
+
+.profile-avatar-big:hover img, .profile-avatar-big label {
   border-radius: 15px;
   opacity: 0.75;
 }
 
 .profile-avatar-big svg {
-  position: relative;
+  position: absolute;
   left: 50px;
   top: 50px;
   width: 100px;

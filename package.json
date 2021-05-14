@@ -8,7 +8,9 @@
     "stylelint": "stylelint '**/*.css'",
     "eslint": "eslint '**/*.js'",
     "template": "find . -name \"*.handlebars\" -exec handlebars {} -f {}.js \\;",
-    "start": "npm run template && node server/server.js"
+    "start": "npm run build && node server/server.js",
+    "dev": "webpack --config webpack.dev.js && webpack serve --config webpack.dev.js",
+    "build": "webpack --config webpack.prod.js"
   },
   "hooks": {
     "pre-commit": "nmp run lint"
@@ -24,21 +26,32 @@
   },
   "homepage": "https://github.com/frontend-park-mail-ru/2021_1_Execute#readme",
   "devDependencies": {
-    "eslint": "^7.20.0",
+    "babel-loader": "^8.2.2",
+    "css-loader": "^5.2.4",
+    "debug": "^4.1.1",
+    "eslint": "^7.24.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.22.1",
     "handlebars": "^4.7.7",
-    "husky": "^5.0.9",
-    "stylelint": "^13.10.0",
-    "stylelint-config-standard": "^20.0.0"
+    "handlebars-loader": "^1.7.1",
+    "husky": "^5.2.0",
+    "postcss": "^8.2.12",
+    "style-loader": "^2.0.0",
+    "stylelint": "^13.12.0",
+    "stylelint-config-standard": "^20.0.0",
+    "webpack-cli": "^4.6.0",
+    "webpack-dev-server": "^3.11.2"
   },
   "dependencies": {
-    "body-parser": "^1.18.3",
-    "cookie-parser": "^1.4.4",
-    "debug": "^4.1.1",
+    "webpack": "^5.35.0",
+    "clean-webpack-plugin": "^4.0.0-alpha.0",
+    "css-minimizer-webpack-plugin": "^2.0.0",
     "express": "^4.16.4",
+    "html-webpack-plugin": "^5.3.1",
+    "mini-css-extract-plugin": "^1.5.0",
     "morgan": "^1.9.1",
-    "node-fetch": "^2.6.1",
-    "uuid": "^3.3.2"
+    "terser-webpack-plugin": "^5.1.1",
+    "uuid": "^3.3.2",
+    "webpack-merge": "^5.7.3"
   }
 }

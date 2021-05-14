@@ -1,110 +1,196 @@
-const BACKEND_API_ADDRESS = 'http://89.208.199.114:1323/api';
+// eslint-disable-next-line no-undef
+const API_ADDRESS = `${WEBPACK_API_URL}:${WEBPACK_API_PORT}/api`;
 
 export const ApiRoutes = {
-  loginForm: '/login/',
   login: '/login/',
-  profileForm: '/users/',
-  profile: '/profile',
+  profile: '/users/',
   registration: '/users/',
   exit: '/logout/',
   uploadAvatar: '/upload/',
+  authorized: '/authorized/',
+  boards: '/boards/',
+  rows: '/rows/',
+  tasks: '/tasks/',
 };
 
 /**
- * Запрос на сервер авторизации
+ * Создает POST запрос с телом JSON
+ * @param {object} data - становится телом в формате JSON
+ * @param {string} route - путь запроса
+ * @returns {Promise}
+ */
+const postJson = (data, route) => fetch(API_ADDRESS + route, {
+  credentials: 'include',
+  method: 'POST',
+  body: JSON.stringify(data),
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+/**
+ * Создает PATCH запрос с телом JSON
+ * @param {object} data - становится телом в формате JSON
+ * @param {string} route - путь запроса
+ * @returns {Promise}
+ */
+const patchJson = (data, route) => fetch(API_ADDRESS + route, {
+  credentials: 'include',
+  method: 'PATCH',
+  body: JSON.stringify(data),
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+/**
+ * Создает DELETE запрос без тела
+ * @param {string} route - путь запроса
+ * @returns {Promise}
+ */
+const deleteEmpty = (route) => fetch(API_ADDRESS + route, {
+  credentials: 'include',
+  method: 'DELETE',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+/**
+ * Создает GET запрос без тела
+ * @param {string} route - путь запроса
+ * @returns {Promise}
+ */
+const get = (route) => fetch(API_ADDRESS + route, {
+  credentials: 'include',
+  method: 'GET',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+/**
+ * Запрос авторизации
  * @param {Object} profile
  * @param {string} profile.email
  * @param {string} profile.password
  * @return {Promise}
  */
-export const loginForm = (profile) => fetch(BACKEND_API_ADDRESS + ApiRoutes.loginForm, {
-  credentials: 'include',
-  method: 'POST',
-  body: JSON.stringify(profile),
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
-
-export const exitRequest = () => fetch(BACKEND_API_ADDRESS + ApiRoutes.exit, {
-  method: 'DELETE',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  credentials: 'include',
-});
+export const login = (profile) => postJson(profile, ApiRoutes.login);
 
 /**
- * Запрос на сервер изменения профиля
- * @param {string} id
+ * Запрос регистрации
  * @param {Object} profile
+ * @param {string} profile.email
  * @param {string} profile.username
  * @param {string} profile.password
  * @return {Promise}
  */
-export const profilePatchForm = (profile) => fetch(
-  BACKEND_API_ADDRESS + ApiRoutes.profileForm, {
-    method: 'PATCH',
-    body: JSON.stringify(profile),
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    credentials: 'include',
-  },
-);
+export const registration = (profile) => postJson(profile, ApiRoutes.registration);
 
 /**
- * Запрос на сервер изменения аватара
+ * Запрос для выхода
+ * @return {Promise}
+ */
+export const exit = () => deleteEmpty(ApiRoutes.exit);
+
+/**
+ * Запрос изменения профиля
+ * @param {Object} profile
+ * @param {string} profile.email
+ * @param {string} profile.username
+ * @param {string} profile.password
+ * @return {Promise}
+ */
+export const profilePatch = (profile) => patchJson(profile, ApiRoutes.profile);
+
+/**
+ * Запрос получения своего профиля на сервер
+ * @return {Promise}
+ */
+export const profileGet = () => get(ApiRoutes.profile);
+
+/**
+ * Запрос изменения аватара
  * @param {File} file
  * @return {Promise}
  */
 export const profileAvatarUpload = (file) => {
   const formData = new FormData();
   formData.append('file', file);
-  fetch(BACKEND_API_ADDRESS + ApiRoutes.uploadAvatar, {
+
+  return fetch(API_ADDRESS + ApiRoutes.uploaADDRESSatar, {
+    credentials: 'include',
     method: 'POST',
     body: formData,
-    credentials: 'include',
   });
 };
 
 /**
- * Запрос на сервер получения профиля
- * @param {string} id
- * @return {Promise}
+ * Запрос проверки авторизованности
+ * @return  {Promise}
  */
-export const profileGetForm = () => fetch(BACKEND_API_ADDRESS + ApiRoutes.profileForm, {
-  method: 'GET',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  credentials: 'include',
-});
-
-export const waitAnsFromServer = (prom, callError, callSuccess) => {
-  let timer;
-  prom
-    .then(callSuccess)
-    .catch((err) => callError(err.error))
-    .finally(() => clearTimeout(timer));
-  timer = setTimeout(() => callError('Превышенно время ожидания сервера'), 5 * 1000);
-};
+export const isAuthorized = () => get(ApiRoutes.authorized);
 
 /**
- * Запрос на сервер регистрации
- * @param {Object} profile
- * @param {string} profile.email
- * @param {string} profile.username
- * @param {string} profile.password
- * @return {Promise}
+ * Запрос получения доски по id
+ * @param  {number} id
+ * @returns {Promise}
  */
-export const registrationForm = (profile) => fetch(
-  BACKEND_API_ADDRESS + ApiRoutes.registration, {
-    credentials: 'include',
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(profile),
-  },
-);
+export const boardGetById = (id) => get(`${ApiRoutes.boards + id}/`);
+
+export const taskGetById = (id) => get(`${ApiRoutes.tasks + id}/`);
+
+export const boardsGet = () => get(ApiRoutes.boards);
+
+/**
+ * @param {!string} name
+ */
+export const boardCreate = (name) => postJson({ name }, ApiRoutes.boards);
+
+/**
+ * @param {Object} rowInfo
+ * @param {number} rowInfo.board_id
+ * @param {string} rowInfo.name
+ * @param {number} rowInfo.position
+ */
+export const rowCreate = (rowInfo) => postJson(rowInfo, ApiRoutes.rows);
+
+/**
+ * @param {Object} taskInfo
+ * @param {number} taskInfo.row_id
+ * @param {string} taskInfo.name
+ * @param {number} taskInfo.position
+ */
+export const taskCreate = (taskInfo) => postJson(taskInfo, ApiRoutes.tasks);
+
+/**
+ * @param {number} rowId
+ */
+export const rowDelete = (rowId) => deleteEmpty(`${ApiRoutes.rows + rowId}/`);
+
+/**
+ * @param {number} taskId
+ */
+export const taskDelete = (taskId) => deleteEmpty(`${ApiRoutes.tasks + taskId}/`);
+
+/**
+ * @param {number} boardId
+ */
+export const boardDelete = (boardId) => deleteEmpty(`${ApiRoutes.boards + boardId}/`);
+
+/**
+ *
+ * @param {number} rowId
+ * @param {Object} patchInfo
+ * @param {string} patchInfo.name
+ * @param {Object} [patchInfo.carry_over] Перенос на другой столбец
+ * @param {Object} [patchInfo.move] Перенос внутри столбца
+ */
+export const rowPatch = (rowId, patchInfo) => patchJson(patchInfo, `${ApiRoutes.rows + rowId}/`);
+
+/**
+ * @param {Object} taskInfo
+ * @param {number} taskId
+ */
+export const taskPatch = (taskInfo, taskId) => patchJson(taskInfo, `${ApiRoutes.tasks + taskId}/`);
